@@ -1,6 +1,10 @@
-//
-// Created by marco on 05.11.19.
-//
+/**
+ * @file MainMenu.h
+ * @ingroup MainMenu
+ * @author Marco Deuscher
+ * @date 05.11.2019
+ * @brief defining MainMenu
+ */
 
 #ifndef SFMLTEST_MAINMENU_H
 #define SFMLTEST_MAINMENU_H
@@ -12,7 +16,10 @@
 #define MAINMENU_FONTLOADING_ERROR ((-1))
 #define MAINMENU_SUCCESS ((0))
 
-
+/**
+ * @class       MainMenu
+ * @brief       MainMenu functionality is implemented in here
+ */
 class MainMenu {
 
 public:
