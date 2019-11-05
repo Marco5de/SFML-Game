@@ -1,0 +1,12 @@
+digraph "main"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="main",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="MainMenu::handleMainMenu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_main_menu.html#ab849dbe0f56adfed51f58e80a536c5f8",tooltip="this function is called from the main game loop "];
+  Node0 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="MainMenu::initMainMenu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_main_menu.html#a3c15af2faff50d642ab6920e2fdcd297",tooltip="initializing MainMenu "];
+}

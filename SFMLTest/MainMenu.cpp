@@ -47,7 +47,7 @@ int MainMenu::initMainMenu() {
 /**
  * @brief       this function is called from the main game loop
  *
- * @return      returns MAINMENU_SUCCESS if successfull
+ * @return      MAINMENU_SUCCESS if successfull
  */
 int MainMenu::handleMainMenu() {
     //sf::Event event;
