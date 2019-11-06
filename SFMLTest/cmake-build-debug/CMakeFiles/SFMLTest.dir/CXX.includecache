@@ -7,18 +7,14 @@
 #IncludeRegexTransform: 
 
 /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.cpp
-MainMenu.h
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
-
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
-SFML/Graphics.hpp
--
-
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/main.cpp
-SFML/Graphics.hpp
--
 iostream
 -
 MainMenu.h
 /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
+
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
+SFML/Graphics.hpp
+-
+SFML/Graphics/Drawable.hpp
+-
 

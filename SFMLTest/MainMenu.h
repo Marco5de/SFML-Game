@@ -10,10 +10,12 @@
 #define SFMLTEST_MAINMENU_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Drawable.hpp>
 
-#define FONTS_MAINMENU_PATH ("/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Fonts/arial.ttf")
+
 
 #define MAINMENU_FONTLOADING_ERROR ((-1))
+#define MAINMENU_IMAGELOADING_ERROR ((-2))
 #define MAINMENU_SUCCESS ((0))
 
 /**
@@ -33,12 +35,25 @@ public:
 private:
     int windowWidth;
     int windowHeight;
+
     sf::Font mainMenuFont;
+    sf::Font titleFont;
+
+    sf::Texture backgroundImage;
+    sf::Sprite backgroundSprite;
+
     sf::Text textStartGame;
     sf::Text textLeaveGame;
+    sf::Text textTitle;
 
     sf::Event event;
+    sf::Vector2i currMousePos;
+    sf::Vector2f currWorldMousePos;
     sf::RenderWindow *mainMenuWindow;
+
+    std::vector<sf::Drawable> drawableVector;
+
+    void handleMouseCursor();
 
 };
 

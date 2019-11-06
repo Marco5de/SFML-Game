@@ -7,7 +7,17 @@
  * @brief Implementing Main Menu
  */
 
+
+#include <iostream>
 #include "MainMenu.h"
+
+#define FONTS_MAINMENU_PATH ("/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Fonts/arial.ttf")
+#define FONTS_TITLE_PATH ("/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Fonts/orange juice 2.0.ttf")
+#define BACKGROUNDIMAGE_MAINMENU_PATH ("/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/images/MainMenu/background.jpg")
+
+
+//Todo alle drawables in einen std::vector<drawable> packen
+
 
 /**
  * @brief Constructor
@@ -16,7 +26,8 @@
  * @param windowWidth           width of the given window
  * @param windowHeight          height of the given window
  */
-MainMenu::MainMenu(sf::RenderWindow *window, int windowWidth, int windowHeight) : windowWidth(windowWidth), windowHeight(windowHeight){
+MainMenu::MainMenu(sf::RenderWindow *window, int windowWidth, int windowHeight) : windowWidth(windowWidth),
+                                                                                  windowHeight(windowHeight) {
     mainMenuWindow = window;
 }
 
@@ -27,19 +38,33 @@ MainMenu::MainMenu(sf::RenderWindow *window, int windowWidth, int windowHeight) 
  * @return      MAINMENU_FONTLOADING_ERROR if loading the font failed, MAINMENU_SUCCESS if successfull
  */
 int MainMenu::initMainMenu() {
-    if (!mainMenuFont.loadFromFile(FONTS_MAINMENU_PATH)) {
+    if (!mainMenuFont.loadFromFile(FONTS_MAINMENU_PATH))
         return MAINMENU_FONTLOADING_ERROR;
-    }
+    if(!titleFont.loadFromFile(FONTS_TITLE_PATH))
+        return MAINMENU_FONTLOADING_ERROR;
+    if(!backgroundImage.loadFromFile(BACKGROUNDIMAGE_MAINMENU_PATH))
+        return MAINMENU_IMAGELOADING_ERROR;
+
+
+    backgroundSprite.setTexture(backgroundImage);
 
     textStartGame.setFont(mainMenuFont);
     textStartGame.setString("Start Game");
-    textStartGame.setCharacterSize(20);
-    textStartGame.setPosition(0 * windowWidth, .9 * windowHeight);
+    textStartGame.setCharacterSize(30);
+    textStartGame.setPosition(.05 * windowWidth, .9 * windowHeight);
 
     textLeaveGame.setFont(mainMenuFont);
     textLeaveGame.setString("Leave Game");
-    textLeaveGame.setCharacterSize(20);
-    textLeaveGame.setPosition(.75 * windowWidth, .9 * windowHeight);
+    textLeaveGame.setCharacterSize(30);
+    textLeaveGame.setPosition(.65 * windowWidth, .9 * windowHeight);
+
+    textTitle.setFont(titleFont);
+    textTitle.setString("Flappy Birds");
+    textTitle.setCharacterSize(120);
+    textTitle.setPosition(.075 * windowWidth, .15 * windowHeight);
+    textTitle.setFillColor(sf::Color::Magenta);
+    textTitle.setOutlineColor(sf::Color::Black);
+
 
     return MAINMENU_SUCCESS;
 }
@@ -56,10 +81,46 @@ int MainMenu::handleMainMenu() {
             mainMenuWindow->close();
     }
 
+    handleMouseCursor();
+
     mainMenuWindow->clear();
+    mainMenuWindow->draw(backgroundSprite);
     mainMenuWindow->draw(textStartGame);
     mainMenuWindow->draw(textLeaveGame);
+    mainMenuWindow->draw(textTitle);
+
     mainMenuWindow->display();
 
     return MAINMENU_SUCCESS;
+}
+
+/**
+ * @brief   handle everything MouseCursor related inside this function. Color of text is changed is hovering above
+ *          Also checking for Mouse Button presses on the textfield, so they act es buttons!
+ * @note Take care, that imageCoords have to be transformed to global coords
+ */
+void MainMenu::handleMouseCursor() {
+    //get current mouse position relative to the window and convert from images coords to global coords
+    currMousePos = sf::Mouse::getPosition(*mainMenuWindow);
+    currWorldMousePos = mainMenuWindow->mapPixelToCoords(currMousePos);
+    if (textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+        textStartGame.setColor(sf::Color::Cyan);
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+            //Todo handle button press und nur einzelnen click handeln, sonst über mehrere frames mehrfach!
+            std::cout << "Button is pressed" << std::endl;
+        }
+    } else {
+        textStartGame.setColor(sf::Color::White);
+    }
+
+    if (textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+        textLeaveGame.setColor(sf::Color::Red);
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
+            //Todo sauberes abbrechen des Spiels!
+            mainMenuWindow->close();
+            std::exit(0);
+        }
+    } else {
+        textLeaveGame.setColor(sf::Color::White);
+    }
 }

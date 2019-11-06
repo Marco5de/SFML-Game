@@ -6,7 +6,9 @@
 
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(720, 480), "SFML created Window");
+    sf::RenderWindow window(sf::VideoMode(720, 480), "SFML Flappy Birds",sf::Style::Titlebar | sf::Style::Close);
+    window.setFramerateLimit(60);
+
 
     MainMenu mainMenu(&window,720,480);
     if (mainMenu.initMainMenu() != MAINMENU_SUCCESS) {
