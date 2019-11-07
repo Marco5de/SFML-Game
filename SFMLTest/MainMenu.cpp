@@ -11,9 +11,9 @@
 #include <iostream>
 #include "MainMenu.h"
 
-#define FONTS_MAINMENU_PATH ("/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Fonts/arial.ttf")
-#define FONTS_TITLE_PATH ("/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Fonts/orange juice 2.0.ttf")
-#define BACKGROUNDIMAGE_MAINMENU_PATH ("/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/images/MainMenu/background.jpg")
+#define FONTS_MAINMENU_PATH ("Fonts/arial.ttf")
+#define FONTS_TITLE_PATH ("Fonts/orange juice 2.0.ttf")
+#define BACKGROUNDIMAGE_MAINMENU_PATH ("images/MainMenu/background.jpg")
 
 
 //Todo alle drawables in einen std::vector<drawable> packen
@@ -26,9 +26,10 @@
  * @param windowWidth           width of the given window
  * @param windowHeight          height of the given window
  */
-MainMenu::MainMenu(sf::RenderWindow *window, int windowWidth, int windowHeight) : windowWidth(windowWidth),
+MainMenu::MainMenu(sf::RenderWindow *window, const int windowWidth, const int windowHeight, gameState *gs) : windowWidth(windowWidth),
                                                                                   windowHeight(windowHeight) {
     mainMenuWindow = window;
+    currentGameState = gs;
 }
 
 /**
@@ -91,6 +92,7 @@ int MainMenu::handleMainMenu() {
 
     mainMenuWindow->display();
 
+
     return MAINMENU_SUCCESS;
 }
 
@@ -108,6 +110,7 @@ void MainMenu::handleMouseCursor() {
         if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             //Todo handle button press und nur einzelnen click handeln, sonst über mehrere frames mehrfach!
             std::cout << "Button is pressed" << std::endl;
+            *currentGameState = gameState::INGAME;
         }
     } else {
         textStartGame.setColor(sf::Color::White);

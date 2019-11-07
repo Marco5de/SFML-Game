@@ -6,15 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.cpp
-iostream
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Game.h
+
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.cpp
+GameView.h
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.h
+
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.h
+SFML/Graphics/RenderWindow.hpp
 -
-MainMenu.h
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
+SFML/Window/Event.hpp
+-
+SFML/Graphics/Texture.hpp
+-
+SFML/Graphics/Sprite.hpp
+-
+SFML/Graphics/Drawable.hpp
+-
+Game.h
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Game.h
 
 /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
 SFML/Graphics.hpp
 -
 SFML/Graphics/Drawable.hpp
 -
+Game.h
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Game.h
+
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/main.cpp
+SFML/Graphics.hpp
+-
+iostream
+-
+MainMenu.h
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
+GameView.h
+/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.h
 
