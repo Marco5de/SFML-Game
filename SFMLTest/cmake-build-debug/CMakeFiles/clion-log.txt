@@ -1,5 +1,5 @@
-/home/marco/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.7142.39/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest
--- Found SFML 2.5.1 in /usr/lib/x86_64-linux-gnu/cmake/SFML
+/home/marco/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.7142.39/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/marco/GitHub/SFML-Game/SFMLTest
+-- Found SFML 2.5.0 in /usr/lib/x86_64-linux-gnu/cmake/SFML
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug
+-- Build files have been written to: /home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug

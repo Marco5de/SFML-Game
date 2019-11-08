@@ -43,10 +43,10 @@ RM = /home/marco/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.7142.39/bin/
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest
+CMAKE_SOURCE_DIR = /home/marco/GitHub/SFML-Game/SFMLTest
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug
+CMAKE_BINARY_DIR = /home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/SFMLTest.dir/depend.make
@@ -59,42 +59,42 @@ include CMakeFiles/SFMLTest.dir/flags.make
 
 CMakeFiles/SFMLTest.dir/main.cpp.o: CMakeFiles/SFMLTest.dir/flags.make
 CMakeFiles/SFMLTest.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SFMLTest.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SFMLTest.dir/main.cpp.o -c /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SFMLTest.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SFMLTest.dir/main.cpp.o -c /home/marco/GitHub/SFML-Game/SFMLTest/main.cpp
 
 CMakeFiles/SFMLTest.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SFMLTest.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/main.cpp > CMakeFiles/SFMLTest.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marco/GitHub/SFML-Game/SFMLTest/main.cpp > CMakeFiles/SFMLTest.dir/main.cpp.i
 
 CMakeFiles/SFMLTest.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SFMLTest.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/main.cpp -o CMakeFiles/SFMLTest.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marco/GitHub/SFML-Game/SFMLTest/main.cpp -o CMakeFiles/SFMLTest.dir/main.cpp.s
 
 CMakeFiles/SFMLTest.dir/MainMenu.cpp.o: CMakeFiles/SFMLTest.dir/flags.make
 CMakeFiles/SFMLTest.dir/MainMenu.cpp.o: ../MainMenu.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SFMLTest.dir/MainMenu.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SFMLTest.dir/MainMenu.cpp.o -c /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SFMLTest.dir/MainMenu.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SFMLTest.dir/MainMenu.cpp.o -c /home/marco/GitHub/SFML-Game/SFMLTest/MainMenu.cpp
 
 CMakeFiles/SFMLTest.dir/MainMenu.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SFMLTest.dir/MainMenu.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.cpp > CMakeFiles/SFMLTest.dir/MainMenu.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marco/GitHub/SFML-Game/SFMLTest/MainMenu.cpp > CMakeFiles/SFMLTest.dir/MainMenu.cpp.i
 
 CMakeFiles/SFMLTest.dir/MainMenu.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SFMLTest.dir/MainMenu.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.cpp -o CMakeFiles/SFMLTest.dir/MainMenu.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marco/GitHub/SFML-Game/SFMLTest/MainMenu.cpp -o CMakeFiles/SFMLTest.dir/MainMenu.cpp.s
 
 CMakeFiles/SFMLTest.dir/GameView.cpp.o: CMakeFiles/SFMLTest.dir/flags.make
 CMakeFiles/SFMLTest.dir/GameView.cpp.o: ../GameView.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SFMLTest.dir/GameView.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SFMLTest.dir/GameView.cpp.o -c /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SFMLTest.dir/GameView.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SFMLTest.dir/GameView.cpp.o -c /home/marco/GitHub/SFML-Game/SFMLTest/GameView.cpp
 
 CMakeFiles/SFMLTest.dir/GameView.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SFMLTest.dir/GameView.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.cpp > CMakeFiles/SFMLTest.dir/GameView.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/marco/GitHub/SFML-Game/SFMLTest/GameView.cpp > CMakeFiles/SFMLTest.dir/GameView.cpp.i
 
 CMakeFiles/SFMLTest.dir/GameView.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SFMLTest.dir/GameView.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.cpp -o CMakeFiles/SFMLTest.dir/GameView.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/marco/GitHub/SFML-Game/SFMLTest/GameView.cpp -o CMakeFiles/SFMLTest.dir/GameView.cpp.s
 
 # Object files for target SFMLTest
 SFMLTest_OBJECTS = \
@@ -109,12 +109,12 @@ SFMLTest: CMakeFiles/SFMLTest.dir/main.cpp.o
 SFMLTest: CMakeFiles/SFMLTest.dir/MainMenu.cpp.o
 SFMLTest: CMakeFiles/SFMLTest.dir/GameView.cpp.o
 SFMLTest: CMakeFiles/SFMLTest.dir/build.make
-SFMLTest: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1
-SFMLTest: /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1
-SFMLTest: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
-SFMLTest: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
+SFMLTest: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.0
+SFMLTest: /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.0
+SFMLTest: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.0
+SFMLTest: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.0
 SFMLTest: CMakeFiles/SFMLTest.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable SFMLTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable SFMLTest"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SFMLTest.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -127,6 +127,6 @@ CMakeFiles/SFMLTest.dir/clean:
 .PHONY : CMakeFiles/SFMLTest.dir/clean
 
 CMakeFiles/SFMLTest.dir/depend:
-	cd /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles/SFMLTest.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/marco/GitHub/SFML-Game/SFMLTest /home/marco/GitHub/SFML-Game/SFMLTest /home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug /home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug /home/marco/GitHub/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles/SFMLTest.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/SFMLTest.dir/depend
 
