@@ -41,20 +41,15 @@ private:
 
     sf::RenderWindow *gameWindow;
 
-    sf::Texture playerTexture;
-    sf::Sprite playerSprite;
+    sf::Texture playingFieldTexture;
 
-    std::vector<sf::Drawable> drawableVector;
+    std::vector<sf::CircleShape> playingField;
 
-    float accelaration_x;
-    float acceleration_y;
-    float velocity_x;
-    float velocity_y;
-    float dt;           /**< discrete time stamp used for physics */
+
 
     gameState *currentGameState;
 
-    void physics();
+    void createPlayingField();
 
 };
 

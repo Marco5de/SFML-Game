@@ -16,7 +16,8 @@
 #define BACKGROUNDIMAGE_MAINMENU_PATH ("images/MainMenu/background.jpg")
 
 
-//Todo alle drawables in einen std::vector<drawable> packen
+//Todo alle drawables in einen std::vector<drawable> packen (Problem ist das iterieren darüber!
+//todo alles unabhängig von der Fenstergröße machen
 
 
 /**
@@ -51,18 +52,18 @@ int MainMenu::initMainMenu() {
 
     textStartGame.setFont(mainMenuFont);
     textStartGame.setString("Start Game");
-    textStartGame.setCharacterSize(30);
+    textStartGame.setCharacterSize(60);
     textStartGame.setPosition(.05 * windowWidth, .9 * windowHeight);
 
     textLeaveGame.setFont(mainMenuFont);
     textLeaveGame.setString("Leave Game");
-    textLeaveGame.setCharacterSize(30);
+    textLeaveGame.setCharacterSize(60);
     textLeaveGame.setPosition(.65 * windowWidth, .9 * windowHeight);
 
     textTitle.setFont(titleFont);
-    textTitle.setString("Flappy Birds");
-    textTitle.setCharacterSize(120);
-    textTitle.setPosition(.075 * windowWidth, .15 * windowHeight);
+    textTitle.setString("Hexxagon");
+    textTitle.setCharacterSize(200);
+    textTitle.setPosition(.15 * windowWidth, .15 * windowHeight);
     textTitle.setFillColor(sf::Color::Magenta);
     textTitle.setOutlineColor(sf::Color::Black);
 
