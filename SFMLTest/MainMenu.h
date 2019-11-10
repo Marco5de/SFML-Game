@@ -41,6 +41,8 @@ private:
     sf::Texture backgroundImage;    /**< Texture containing the background image of the main menu */
     sf::Sprite backgroundSprite;    /**< Sprite used for displaying the background image in the main menu*/
 
+    sf::RectangleShape backgroundRect;
+
     sf::Text textStartGame;         /**< text acting as a button to start the game, changes color when hovered above*/
     sf::Text textLeaveGame;         /**< text acting as a button to leave the game, changes color when hovered above*/
     sf::Text textTitle;             /**< text displaying the name of the game*/

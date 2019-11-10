@@ -1,5 +1,5 @@
 /**
- * @file MainMenu.h
+ * @file Game.h
  * @defgroup genPurpose General Purpose
  * @ingroup genPurpose
  * @author Marco Deuscher
@@ -10,10 +10,14 @@
 #ifndef SFMLTEST_GAME_H
 #define SFMLTEST_GAME_H
 
+#include <string>
+
 enum class gameState{
     MAINMENU,
     INGAME
 };
+
+std::string getStringFromFile(std::string filepath); /**< read String from File to a String. Can be used for text Ressources */
 
 
 #endif //SFMLTEST_GAME_H

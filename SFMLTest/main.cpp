@@ -12,6 +12,7 @@
 int main() {
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Flappy Birds", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
+    window.setKeyRepeatEnabled(false);
 
     //Todo handing enum raw pointer to class works but isn't a nice way to do this!
     gameState gameState = gameState::MAINMENU;

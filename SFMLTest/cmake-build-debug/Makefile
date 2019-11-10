@@ -123,6 +123,33 @@ SFMLTest/fast:
 	$(MAKE) -f CMakeFiles/SFMLTest.dir/build.make CMakeFiles/SFMLTest.dir/build
 .PHONY : SFMLTest/fast
 
+Game.o: Game.cpp.o
+
+.PHONY : Game.o
+
+# target to build an object file
+Game.cpp.o:
+	$(MAKE) -f CMakeFiles/SFMLTest.dir/build.make CMakeFiles/SFMLTest.dir/Game.cpp.o
+.PHONY : Game.cpp.o
+
+Game.i: Game.cpp.i
+
+.PHONY : Game.i
+
+# target to preprocess a source file
+Game.cpp.i:
+	$(MAKE) -f CMakeFiles/SFMLTest.dir/build.make CMakeFiles/SFMLTest.dir/Game.cpp.i
+.PHONY : Game.cpp.i
+
+Game.s: Game.cpp.s
+
+.PHONY : Game.s
+
+# target to generate assembly for a file
+Game.cpp.s:
+	$(MAKE) -f CMakeFiles/SFMLTest.dir/build.make CMakeFiles/SFMLTest.dir/Game.cpp.s
+.PHONY : Game.cpp.s
+
 GameView.o: GameView.cpp.o
 
 .PHONY : GameView.o
@@ -213,6 +240,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... SFMLTest"
 	@echo "... edit_cache"
+	@echo "... Game.o"
+	@echo "... Game.i"
+	@echo "... Game.s"
 	@echo "... GameView.o"
 	@echo "... GameView.i"
 	@echo "... GameView.s"

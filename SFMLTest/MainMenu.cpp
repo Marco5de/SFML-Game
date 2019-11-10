@@ -11,6 +11,7 @@
 #include <iostream>
 #include "MainMenu.h"
 
+
 #define FONTS_MAINMENU_PATH ("Fonts/arial.ttf")
 #define FONTS_TITLE_PATH ("Fonts/orange juice 2.0.ttf")
 #define BACKGROUNDIMAGE_MAINMENU_PATH ("images/MainMenu/background.jpg")
@@ -50,6 +51,13 @@ int MainMenu::initMainMenu() {
 
     backgroundSprite.setTexture(backgroundImage);
 
+    backgroundRect.setPosition(.1 * windowWidth, .2 * windowHeight);
+    backgroundRect.setFillColor(sf::Color::Black);
+    backgroundRect.setOutlineColor(sf::Color::Magenta);
+    backgroundRect.setOutlineThickness(10);
+    sf::Vector2f size(.75 * windowWidth,.325 * windowHeight);
+    backgroundRect.setSize(size);
+
     textStartGame.setFont(mainMenuFont);
     textStartGame.setString("Start Game");
     textStartGame.setCharacterSize(60);
@@ -77,18 +85,24 @@ int MainMenu::initMainMenu() {
  * @return      MAINMENU_SUCCESS if successfull
  */
 int MainMenu::handleMainMenu() {
+    handleMouseCursor();
     //sf::Event event;
     while (mainMenuWindow->pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             mainMenuWindow->close();
+        else if(event.type == sf::Event::MouseButtonPressed && textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
+            *currentGameState = gameState::INGAME;
+        else if(event.type == sf::Event::MouseButtonPressed && textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
+            mainMenuWindow->close();
     }
 
-    handleMouseCursor();
+
 
     mainMenuWindow->clear();
     mainMenuWindow->draw(backgroundSprite);
     mainMenuWindow->draw(textStartGame);
     mainMenuWindow->draw(textLeaveGame);
+    mainMenuWindow->draw(backgroundRect);
     mainMenuWindow->draw(textTitle);
 
     mainMenuWindow->display();
@@ -108,22 +122,12 @@ void MainMenu::handleMouseCursor() {
     currWorldMousePos = mainMenuWindow->mapPixelToCoords(currMousePos);
     if (textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         textStartGame.setColor(sf::Color::Cyan);
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-            //Todo handle button press und nur einzelnen click handeln, sonst über mehrere frames mehrfach!
-            std::cout << "Button is pressed" << std::endl;
-            *currentGameState = gameState::INGAME;
-        }
     } else {
         textStartGame.setColor(sf::Color::White);
     }
 
     if (textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         textLeaveGame.setColor(sf::Color::Red);
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
-            //Todo sauberes abbrechen des Spiels!
-            mainMenuWindow->close();
-            std::exit(0);
-        }
     } else {
         textLeaveGame.setColor(sf::Color::White);
     }
