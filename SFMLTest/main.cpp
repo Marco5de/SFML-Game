@@ -31,6 +31,11 @@ int main() {
         std::exit(1);
     }
 
+    //todo remove, just for testing
+    gameView.setScore(17,12);
+    gameView.setMoveTracker(false);
+
+
     while (window.isOpen()) {
         switch (gameState) {
             case gameState::MAINMENU:

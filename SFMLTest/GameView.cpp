@@ -75,6 +75,55 @@ int GameView::initGameView() {
     menuText.setPosition(.015 * windowWidth, .9 * windowHeight);
     menuText.setCharacterSize(50);
 
+    scoreBlue.setFont(menuFont);
+    scoreBlue.setColor(sf::Color::Blue);
+    scoreBlue.setOutlineThickness(1);
+    scoreBlue.setOutlineColor(sf::Color::Yellow);
+    //todo remove hardcoded value, put players score in here
+    scoreBlue.setString("0");
+    scoreBlue.setPosition(.015 * windowWidth, .01 * windowHeight);
+    scoreBlue.setCharacterSize(50);
+
+    scoreRed.setFont(menuFont);
+    scoreRed.setColor(sf::Color::Red);
+    scoreRed.setOutlineColor(sf::Color::Yellow);
+    scoreRed.setOutlineThickness(1);
+    scoreRed.setString("0");
+    scoreRed.setPosition(.015 * windowWidth, 0.07 * windowHeight);
+    scoreRed.setCharacterSize(50);
+
+    moveTracker.setRadius(10);
+    moveTracker.setPointCount(3);
+    moveTracker.setFillColor(sf::Color::Yellow);
+    moveTracker.setOutlineColor(sf::Color::Blue);
+    moveTracker.setOutlineThickness(1.5);
+    moveTracker.setPosition(.055 * windowWidth, .075 * windowHeight);
+    moveTracker.rotate(-90);
+    moveTracker.setScale(2,2);
+
+
+    menuBackground.setPosition(.075 * windowWidth, .25 * windowHeight);
+    menuBackground.setSize(sf::Vector2f(.25 * windowWidth, .5 * windowHeight));
+    menuBackground.setFillColor(sf::Color::Black);
+    menuBackground.setOutlineColor(sf::Color::Yellow);
+    menuBackground.setOutlineThickness(5);
+
+    menuMainMenu.setPosition(.08 * windowWidth, .275 * windowHeight);
+    menuMainMenu.setCharacterSize(30);
+    menuMainMenu.setFont(menuFont);
+    menuMainMenu.setColor(sf::Color::Yellow);
+    menuMainMenu.setOutlineThickness(5);
+    menuMainMenu.setOutlineColor(sf::Color::Blue);
+    menuMainMenu.setString("Return to Main Menu");
+
+    menuClose.setPosition(.08 * windowWidth, .375 * windowHeight);
+    menuClose.setCharacterSize(30);
+    menuClose.setFont(menuFont);
+    menuClose.setColor(sf::Color::Yellow);
+    menuClose.setOutlineThickness(5);
+    menuClose.setOutlineColor(sf::Color::Blue);
+    menuClose.setString("Close Menu");
+
     for(int i=0; i<61; i++){
         playingField.push_back(sf::CircleShape(40.0f,6));
         if(std::find(forbiddenFields.begin(), forbiddenFields.end(), i+1) != forbiddenFields.end()) {
@@ -119,12 +168,8 @@ void GameView::createPlayingField() {
 int GameView::handleGameView() {
     handleMouseCursour();
 
-
     while (gameWindow->pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
-            gameWindow->close();
-        if(event.type == sf::Event::MouseButtonPressed && menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-            *currentGameState = gameState::MAINMENU;
+        handleEvent();
     }
 
     gameWindow->clear();
@@ -135,12 +180,38 @@ int GameView::handleGameView() {
     gameWindow->draw(titleText);
     gameWindow->draw(helpText);
     gameWindow->draw(menuText);
+    gameWindow->draw(scoreRed);
+    gameWindow->draw(scoreBlue);
+    gameWindow->draw(moveTracker);
+
+    if(menuOpen){
+        gameWindow->draw(menuBackground);
+        gameWindow->draw(menuMainMenu);
+        gameWindow->draw(menuClose);
+    }
 
     gameWindow->display();
 
 
     return GAMEVIEW_SUCCESS;
 }
+
+void GameView::handleEvent() {
+    if (event.type == sf::Event::Closed)
+        gameWindow->close();
+    if(event.type == sf::Event::MouseButtonPressed && menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+        //*currentGameState = gameState::MAINMENU;
+        menuOpen ? menuOpen= false : menuOpen= true;
+    }
+    if(menuOpen){
+        if(event.type == sf::Event::MouseButtonPressed && menuMainMenu.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y))
+            *currentGameState = gameState::MAINMENU;
+        else if(event.type == sf::Event::MouseButtonPressed && menuClose.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y))
+            menuOpen = false;
+    }
+}
+
+
 
 
 void GameView::handleMouseCursour() {
@@ -152,6 +223,23 @@ void GameView::handleMouseCursour() {
     } else {
         menuText.setColor(sf::Color::Yellow);
     }
+}
+
+
+void GameView::setScore(int scoreRed, int scoreBlue) {
+    this->scoreBlue.setString(std::to_string(scoreBlue));
+    this->scoreRed.setString(std::to_string(scoreRed));
+}
+
+void GameView::setMoveTracker(bool red) {
+    if(red){
+        moveTracker.setOutlineColor(sf::Color::Red);
+        moveTracker.setPosition(.055 * windowWidth, .14 * windowHeight);
+        return;
+    }
+    moveTracker.setOutlineColor(sf::Color::Blue);
+    moveTracker.setPosition(.055 * windowWidth, .075 * windowHeight);
+    return;
 }
 
 

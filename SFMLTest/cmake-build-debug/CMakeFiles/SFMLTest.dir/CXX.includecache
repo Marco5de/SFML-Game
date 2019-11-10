@@ -33,24 +33,8 @@ SFML/Graphics/Font.hpp
 -
 SFML/Graphics/Text.hpp
 -
-Game.h
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Game.h
-
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
-SFML/Graphics.hpp
--
-SFML/Graphics/Drawable.hpp
+SFML/Graphics/RectangleShape.hpp
 -
 Game.h
 /home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Game.h
-
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/main.cpp
-SFML/Graphics.hpp
--
-iostream
--
-MainMenu.h
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.h
-GameView.h
-/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.h
 

@@ -88,15 +88,8 @@ int MainMenu::handleMainMenu() {
     handleMouseCursor();
     //sf::Event event;
     while (mainMenuWindow->pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
-            mainMenuWindow->close();
-        else if(event.type == sf::Event::MouseButtonPressed && textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-            *currentGameState = gameState::INGAME;
-        else if(event.type == sf::Event::MouseButtonPressed && textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-            mainMenuWindow->close();
+        handleEvent();
     }
-
-
 
     mainMenuWindow->clear();
     mainMenuWindow->draw(backgroundSprite);
@@ -131,4 +124,14 @@ void MainMenu::handleMouseCursor() {
     } else {
         textLeaveGame.setColor(sf::Color::White);
     }
+}
+
+
+void MainMenu::handleEvent() {
+    if (event.type == sf::Event::Closed)
+        mainMenuWindow->close();
+    else if(event.type == sf::Event::MouseButtonPressed && textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
+        *currentGameState = gameState::INGAME;
+    else if(event.type == sf::Event::MouseButtonPressed && textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
+        mainMenuWindow->close();
 }

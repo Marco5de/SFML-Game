@@ -56,6 +56,7 @@ private:
     std::vector<sf::Drawable> drawableVector; /**< vector containing all the drawables to simplify the drawing porcess, currently NOT used */
 
     void handleMouseCursor();
+    void handleEvent();
 
     gameState *currentGameState; /**< enum class which holds the current game state */
 

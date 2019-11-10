@@ -5,6 +5,9 @@
 * Problem mit iterieren über drawable vectoren --> allg. lösung dafür finden!
 ## MainMenu
 * Name eingeben und möglichen übergang zur Lobbyübersicht implementieren!
+* Doc weiterschreiben
 ## GameView
 * evtl eine andere Textur für die void Felder, eine etwas dunklere wäre da cooler
 * Menu nicht nur game verlassen, sondern dialog implementieren, wo eine möglichkeit spiel verlassen ist
+* Format score
+* Doc weiter schreiben

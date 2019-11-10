@@ -17,6 +17,7 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "Game.h"
 
 
@@ -34,11 +35,14 @@ public:
     GameView(sf::RenderWindow *gameWindow, const int windoowWidth, const int windowHeight, gameState *gs);
     int initGameView();
     int handleGameView();
-
+    void setScore(int scoreRed, int scoreBlue);
+    void setMoveTracker(bool red);
 
 private:
     const int windowWidth;
     const int windowHeight;
+
+    bool menuOpen = false;
 
     sf::Event event;
 
@@ -47,6 +51,9 @@ private:
     sf::Texture playingFieldTexture;
     sf::Texture playingFieldVoidTexture;
     std::vector<int> forbiddenFields{3,14,16,29,31,33,46,48,59};
+
+    sf::Text scoreRed;
+    sf::Text scoreBlue;
 
     sf::Font textFont;
     sf::Font titleFont;
@@ -57,6 +64,12 @@ private:
     sf::Text menuText;
     std::string helpString;
 
+    sf::RectangleShape menuBackground;
+    sf::Text menuMainMenu;
+    sf::Text menuClose;
+
+    sf::CircleShape moveTracker;
+
     std::vector<sf::CircleShape> playingField;
 
     gameState *currentGameState;
@@ -66,6 +79,9 @@ private:
 
     void createPlayingField();
     void handleMouseCursour();
+    void handleEvent();
+
+
 
 };
 
