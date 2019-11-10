@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/ChangeNameMenu.cpp" "/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles/SFMLTest.dir/ChangeNameMenu.cpp.o"
   "/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Game.cpp" "/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles/SFMLTest.dir/Game.cpp.o"
   "/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/GameView.cpp" "/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles/SFMLTest.dir/GameView.cpp.o"
   "/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/MainMenu.cpp" "/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/cmake-build-debug/CMakeFiles/SFMLTest.dir/MainMenu.cpp.o"

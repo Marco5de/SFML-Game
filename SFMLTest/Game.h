@@ -14,7 +14,8 @@
 
 enum class gameState{
     MAINMENU,
-    INGAME
+    INGAME,
+    CHANGENAME
 };
 
 std::string getStringFromFile(std::string filepath); /**< read String from File to a String. Can be used for text Ressources */

@@ -84,6 +84,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/ChangeNameMenu.cpp">
+			<Option target="SFMLTest"/>
+		</Unit>
+		<Unit filename="/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/ChangeNameMenu.h">
+			<Option target="SFMLTest"/>
+		</Unit>
 		<Unit filename="/home/marco/CLionProjects/CppProj/SFML-Game/SFMLTest/Game.cpp">
 			<Option target="SFMLTest"/>
 		</Unit>

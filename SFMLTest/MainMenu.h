@@ -41,6 +41,15 @@ private:
     sf::Texture backgroundImage;    /**< Texture containing the background image of the main menu */
     sf::Sprite backgroundSprite;    /**< Sprite used for displaying the background image in the main menu*/
 
+    sf::Texture menuTexture;
+    sf::Sprite menuButton;
+    bool menuOpen = false;
+    sf::RectangleShape subMenuBackground;
+    sf::Text subMenuChangeName;
+
+    sf::RectangleShape nameBackground;
+    sf::Text displayName;
+
     sf::RectangleShape backgroundRect;
 
     sf::Text textStartGame;         /**< text acting as a button to start the game, changes color when hovered above*/

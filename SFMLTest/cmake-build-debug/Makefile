@@ -123,6 +123,33 @@ SFMLTest/fast:
 	$(MAKE) -f CMakeFiles/SFMLTest.dir/build.make CMakeFiles/SFMLTest.dir/build
 .PHONY : SFMLTest/fast
 
+ChangeNameMenu.o: ChangeNameMenu.cpp.o
+
+.PHONY : ChangeNameMenu.o
+
+# target to build an object file
+ChangeNameMenu.cpp.o:
+	$(MAKE) -f CMakeFiles/SFMLTest.dir/build.make CMakeFiles/SFMLTest.dir/ChangeNameMenu.cpp.o
+.PHONY : ChangeNameMenu.cpp.o
+
+ChangeNameMenu.i: ChangeNameMenu.cpp.i
+
+.PHONY : ChangeNameMenu.i
+
+# target to preprocess a source file
+ChangeNameMenu.cpp.i:
+	$(MAKE) -f CMakeFiles/SFMLTest.dir/build.make CMakeFiles/SFMLTest.dir/ChangeNameMenu.cpp.i
+.PHONY : ChangeNameMenu.cpp.i
+
+ChangeNameMenu.s: ChangeNameMenu.cpp.s
+
+.PHONY : ChangeNameMenu.s
+
+# target to generate assembly for a file
+ChangeNameMenu.cpp.s:
+	$(MAKE) -f CMakeFiles/SFMLTest.dir/build.make CMakeFiles/SFMLTest.dir/ChangeNameMenu.cpp.s
+.PHONY : ChangeNameMenu.cpp.s
+
 Game.o: Game.cpp.o
 
 .PHONY : Game.o
@@ -240,6 +267,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... SFMLTest"
 	@echo "... edit_cache"
+	@echo "... ChangeNameMenu.o"
+	@echo "... ChangeNameMenu.i"
+	@echo "... ChangeNameMenu.s"
 	@echo "... Game.o"
 	@echo "... Game.i"
 	@echo "... Game.s"
