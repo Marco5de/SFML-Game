@@ -1,6 +1,6 @@
 reated by https://www.gitignore.io/api/c++,clion
 # Edit at https://www.gitignore.io/?templates=c++,clion
-
+out
 ### C++ ###
 # Prerequisites
 *.d
