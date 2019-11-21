@@ -7,6 +7,7 @@
  * @brief All the game logic and display are inside this class
  */
 #include <SFML/Graphics/CircleShape.hpp>
+#include <iostream>
 #include "GameView.h"
 #include "Game.h"
 
@@ -20,7 +21,6 @@
 #define TEXTRESSOURCES_HELPTEXT ("TextRessources/help.txt")
 
 
-
 /**
  *
  * @param gameWindow
@@ -28,7 +28,8 @@
  * @param windowHeight
  * @param gs
  */
-GameView::GameView(sf::RenderWindow *gw,const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(windowHeight),windowWidth(windowWidth){
+GameView::GameView(sf::RenderWindow *gw, const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(
+        windowHeight), windowWidth(windowWidth) {
     gameWindow = gw;
     currentGameState = gs;
 }
@@ -38,15 +39,15 @@ GameView::GameView(sf::RenderWindow *gw,const int windowWidth, const int windowH
  * @return
  */
 int GameView::initGameView() {
-    if(!playingFieldTexture.loadFromFile(IMAGE_PLAYINGFIELD_PATH))
+    if (!playingFieldTexture.loadFromFile(IMAGE_PLAYINGFIELD_PATH))
         return GAMEVIEW_IMAGELOADING_ERROR;
-    if(!playingFieldVoidTexture.loadFromFile(IMAGE_PLAYINGFIELDVOID_PATH))
+    if (!playingFieldVoidTexture.loadFromFile(IMAGE_PLAYINGFIELDVOID_PATH))
         return GAMEVIEW_IMAGELOADING_ERROR;
-    if(!titleFont.loadFromFile(FONT_GAMEVIEW_TITLE))
+    if (!titleFont.loadFromFile(FONT_GAMEVIEW_TITLE))
         return GAMEVIEW_FONTLOADING_ERROR;
-    if(!textFont.loadFromFile(FONT_GAMEVIEW_HELP))
+    if (!textFont.loadFromFile(FONT_GAMEVIEW_HELP))
         return GAMEVIEW_FONTLOADING_ERROR;
-    if(!menuFont.loadFromFile(FONT_GAMEVIEW_MENU))
+    if (!menuFont.loadFromFile(FONT_GAMEVIEW_MENU))
         return GAMEVIEW_FONTLOADING_ERROR;
 
 
@@ -99,7 +100,7 @@ int GameView::initGameView() {
     moveTracker.setOutlineThickness(1.5);
     moveTracker.setPosition(.055 * windowWidth, .075 * windowHeight);
     moveTracker.rotate(-90);
-    moveTracker.setScale(2,2);
+    moveTracker.setScale(2, 2);
 
 
     menuBackground.setPosition(.075 * windowWidth, .25 * windowHeight);
@@ -124,11 +125,11 @@ int GameView::initGameView() {
     menuClose.setOutlineColor(sf::Color::Blue);
     menuClose.setString("Close Menu");
 
-    for(int i=0; i<61; i++){
-        playingField.push_back(sf::CircleShape(40.0f,6));
-        if(std::find(forbiddenFields.begin(), forbiddenFields.end(), i+1) != forbiddenFields.end()) {
+    for (int i = 0; i < 61; i++) {
+        playingField.push_back(sf::CircleShape(40.0f, 6));
+        if (std::find(forbiddenFields.begin(), forbiddenFields.end(), i + 1) != forbiddenFields.end()) {
             playingField[i].setTexture(&playingFieldVoidTexture);
-        }else
+        } else
             playingField[i].setTexture(&playingFieldTexture);
         //rotate so that long edge is horizontally
         playingField[i].rotate(30);
@@ -144,24 +145,24 @@ int GameView::initGameView() {
 //todo das spielfeld darf auf gar keinen Fall hardcoded sein! finde abhängigkeit zwischen abstand, bildgröße und spritegröße!
 void GameView::createPlayingField() {
     //offset below are .075
-    for(int i=0; i<5; i++){
-        playingField[i].setPosition(.1 * windowWidth, (.25 + i*.1) * windowHeight);
-        playingField[56+i].setPosition(.5 * windowWidth, (.25 + i*.1) * windowHeight);
+    for (int i = 0; i < 5; i++) {
+        playingField[i].setPosition(.1 * windowWidth, (.25 + i * .1) * windowHeight);
+        playingField[56 + i].setPosition(.5 * windowWidth, (.25 + i * .1) * windowHeight);
     }
-    for(int i=0; i<6; i++){
-        playingField[5+i].setPosition(.15 * windowWidth, (.2 + i*.1) * windowHeight);
-        playingField[50+i].setPosition(.45 * windowWidth, (.2 + i*.1) * windowHeight);
+    for (int i = 0; i < 6; i++) {
+        playingField[5 + i].setPosition(.15 * windowWidth, (.2 + i * .1) * windowHeight);
+        playingField[50 + i].setPosition(.45 * windowWidth, (.2 + i * .1) * windowHeight);
     }
-    for(int i=0; i<7; i++){
-        playingField[11+i].setPosition(.2 * windowWidth, (.15 + i*.1) * windowHeight);
-        playingField[43+i].setPosition(.4 * windowWidth, (.15 + i*.1) * windowHeight);
+    for (int i = 0; i < 7; i++) {
+        playingField[11 + i].setPosition(.2 * windowWidth, (.15 + i * .1) * windowHeight);
+        playingField[43 + i].setPosition(.4 * windowWidth, (.15 + i * .1) * windowHeight);
     }
-    for(int i=0; i<8;i++){
-        playingField[18+i].setPosition(.25 * windowWidth, (.1 + i*.1) * windowHeight);
-        playingField[35+i].setPosition(.35 * windowWidth, (.1 + i*.1) * windowHeight);
+    for (int i = 0; i < 8; i++) {
+        playingField[18 + i].setPosition(.25 * windowWidth, (.1 + i * .1) * windowHeight);
+        playingField[35 + i].setPosition(.35 * windowWidth, (.1 + i * .1) * windowHeight);
     }
-    for(int i=0; i<9; i++){
-        playingField[26+i].setPosition(.3 * windowWidth, (.05 + i*.1) * windowHeight);
+    for (int i = 0; i < 9; i++) {
+        playingField[26 + i].setPosition(.3 * windowWidth, (.05 + i * .1) * windowHeight);
     }
 }
 
@@ -174,7 +175,7 @@ int GameView::handleGameView() {
 
     gameWindow->clear();
 
-    for(sf::CircleShape cs : playingField){
+    for (sf::CircleShape cs : playingField) {
         gameWindow->draw(cs);
     }
     gameWindow->draw(titleText);
@@ -184,7 +185,7 @@ int GameView::handleGameView() {
     gameWindow->draw(scoreBlue);
     gameWindow->draw(moveTracker);
 
-    if(menuOpen){
+    if (menuOpen) {
         gameWindow->draw(menuBackground);
         gameWindow->draw(menuMainMenu);
         gameWindow->draw(menuClose);
@@ -199,19 +200,31 @@ int GameView::handleGameView() {
 void GameView::handleEvent() {
     if (event.type == sf::Event::Closed)
         gameWindow->close();
-    if(event.type == sf::Event::MouseButtonPressed && menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+    if (event.type == sf::Event::MouseButtonPressed &&
+        menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         //*currentGameState = gameState::MAINMENU;
-        menuOpen ? menuOpen= false : menuOpen= true;
+        menuOpen ? menuOpen = false : menuOpen = true;
     }
-    if(menuOpen){
-        if(event.type == sf::Event::MouseButtonPressed && menuMainMenu.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y))
+    //Todo fix, that field are double detected by checking if in close proximity of oriign
+    //todo --> fit circle shape in hexagon, that is fully contained!
+    if (!menuOpen) {
+        for (int i = 0; i < playingField.size(); i++) {
+            if (event.type == sf::Event::MouseButtonPressed &&
+                playingField[i].getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+                std::cout << "Clicked Field #" << i << std::endl;
+            }
+        }
+    }
+
+    if (menuOpen) {
+        if (event.type == sf::Event::MouseButtonPressed &&
+            menuMainMenu.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
             *currentGameState = gameState::MAINMENU;
-        else if(event.type == sf::Event::MouseButtonPressed && menuClose.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y))
+        else if (event.type == sf::Event::MouseButtonPressed &&
+                 menuClose.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
             menuOpen = false;
     }
 }
-
-
 
 
 void GameView::handleMouseCursour() {
@@ -223,6 +236,19 @@ void GameView::handleMouseCursour() {
     } else {
         menuText.setColor(sf::Color::Yellow);
     }
+
+    //Todo fix, that field are double detected by checking if in close proximity of oriign
+    //todo --> fit circle shape in hexagon, that is fully contained!
+    //todo remove code douplitcation! --> combine handle cursor and handleEvent
+    if(!menuOpen) {
+        for (auto &shape : playingField) {
+            if (shape.getGlobalBounds().contains(currWorldMousePos.x, currMousePos.y)) {
+                shape.setOutlineColor(sf::Color::Yellow);
+            } else
+                shape.setOutlineColor(sf::Color::White);
+        }
+    }
+
 }
 
 
@@ -232,7 +258,7 @@ void GameView::setScore(int scoreRed, int scoreBlue) {
 }
 
 void GameView::setMoveTracker(bool red) {
-    if(red){
+    if (red) {
         moveTracker.setOutlineColor(sf::Color::Red);
         moveTracker.setPosition(.055 * windowWidth, .14 * windowHeight);
         return;

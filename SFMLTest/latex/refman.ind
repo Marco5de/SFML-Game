@@ -1,0 +1,42 @@
+\begin{theindex}
+
+  \item {Change\+Name\+Menu}, \hyperpage{13}
+
+  \indexspace
+
+  \item {Game View}, \hyperpage{10}
+  \item {Game.\+cpp}, \hyperpage{17}
+    \subitem {get\+String\+From\+File}, \hyperpage{17}
+  \item {Game.\+h}, \hyperpage{18}
+    \subitem {get\+String\+From\+File}, \hyperpage{19}
+  \item {Game\+View}, \hyperpage{13}
+    \subitem {Game\+View}, \hyperpage{13}
+    \subitem {init\+Game\+View}, \hyperpage{14}
+  \item {General Purpose}, \hyperpage{9}
+  \item {get\+String\+From\+File}
+    \subitem {Game.\+cpp}, \hyperpage{17}
+    \subitem {Game.\+h}, \hyperpage{19}
+
+  \indexspace
+
+  \item {handle\+Main\+Menu}
+    \subitem {Main\+Menu}, \hyperpage{15}
+
+  \indexspace
+
+  \item {init\+Game\+View}
+    \subitem {Game\+View}, \hyperpage{14}
+  \item {init\+Main\+Menu}
+    \subitem {Main\+Menu}, \hyperpage{15}
+
+  \indexspace
+
+  \item {Main Menu}, \hyperpage{11}
+  \item {Main\+Menu}, \hyperpage{14}
+    \subitem {handle\+Main\+Menu}, \hyperpage{15}
+    \subitem {init\+Main\+Menu}, \hyperpage{15}
+    \subitem {Main\+Menu}, \hyperpage{15}
+  \item {Main\+Menu.\+cpp}, \hyperpage{19}
+  \item {Main\+Menu.\+h}, \hyperpage{20}
+
+\end{theindex}

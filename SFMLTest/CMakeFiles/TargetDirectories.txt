@@ -1,0 +1,3 @@
+/home/marco/GitHub/SFML-Game/SFMLTest/CMakeFiles/rebuild_cache.dir
+/home/marco/GitHub/SFML-Game/SFMLTest/CMakeFiles/SFMLTest.dir
+/home/marco/GitHub/SFML-Game/SFMLTest/CMakeFiles/edit_cache.dir
