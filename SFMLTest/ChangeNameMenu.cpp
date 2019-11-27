@@ -10,9 +10,8 @@
 
 
 ChangeNameMenu::ChangeNameMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight,
-                               gameState *gs) : windowHeight(windowHeight), windowWidth(windowWidth),
-                                                changeNameWindow(window) {
-    currentGameState = gs;
+                               GameProperties &gameProperties) :
+        changeNameWindow(window), gameProperties(gameProperties),windowHeight(gameProperties.WINDOW_HEIGHT),windowWidth(gameProperties.WINDOW_WIDTH) {
 }
 
 
@@ -107,7 +106,7 @@ void ChangeNameMenu::handleEvent() {
             break;
         case sf::Event::MouseButtonPressed:
             if (returnToMainMenu.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
-                *currentGameState = gameState::MAINMENU;
+                gameProperties.currentGameState = gameState::MAINMENU;
                 changeNameWindow.setKeyRepeatEnabled(false);
             }
             break;

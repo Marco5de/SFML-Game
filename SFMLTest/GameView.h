@@ -32,7 +32,7 @@
 
 class GameView{
 public:
-    GameView(sf::RenderWindow &gameWindow, const int windoowWidth, const int windowHeight, gameState *gs);
+    GameView(sf::RenderWindow &gameWindow, const int windoowWidth, const int windowHeight, GameProperties &gameProperties);
     int initGameView();
     int handleGameView();
     void setScore(int scoreRed, int scoreBlue);
@@ -41,6 +41,7 @@ public:
 private:
     const int windowWidth;
     const int windowHeight;
+    GameProperties &gameProperties;
 
     bool menuOpen = false;
 
@@ -72,7 +73,7 @@ private:
 
     std::vector<sf::CircleShape> playingField;
 
-    gameState *currentGameState;
+    //gameState *currentGameState;
 
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */

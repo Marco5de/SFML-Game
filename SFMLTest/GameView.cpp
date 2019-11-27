@@ -29,8 +29,9 @@
  * @param gs
  */
 
-GameView::GameView(sf::RenderWindow &gw,const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(windowHeight),windowWidth(windowWidth),gameWindow(gw){
-    currentGameState = gs;
+GameView::GameView(sf::RenderWindow &gw, const int windowWidth, const int windowHeight, GameProperties &gameProperties)
+        : gameWindow(gw), gameProperties(gameProperties),
+          windowWidth(gameProperties.WINDOW_WIDTH), windowHeight(gameProperties.WINDOW_HEIGHT) {
 }
 
 /**
@@ -175,7 +176,7 @@ int GameView::handleGameView() {
     gameWindow.clear();
 
 
-    for(sf::CircleShape cs : playingField){
+    for (sf::CircleShape cs : playingField) {
         gameWindow.draw(cs);
     }
     gameWindow.draw(titleText);
@@ -186,7 +187,7 @@ int GameView::handleGameView() {
     gameWindow.draw(moveTracker);
 
 
-    if(menuOpen){
+    if (menuOpen) {
         gameWindow.draw(menuBackground);
         gameWindow.draw(menuMainMenu);
         gameWindow.draw(menuClose);
@@ -201,7 +202,8 @@ int GameView::handleGameView() {
 void GameView::handleEvent() {
     if (event.type == sf::Event::Closed)
         gameWindow.close();
-    if(event.type == sf::Event::MouseButtonPressed && menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+    if (event.type == sf::Event::MouseButtonPressed &&
+        menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         //*currentGameState = gameState::MAINMENU;
         menuOpen ? menuOpen = false : menuOpen = true;
     }
@@ -219,7 +221,7 @@ void GameView::handleEvent() {
     if (menuOpen) {
         if (event.type == sf::Event::MouseButtonPressed &&
             menuMainMenu.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-            *currentGameState = gameState::MAINMENU;
+            gameProperties.currentGameState = gameState::MAINMENU;
         else if (event.type == sf::Event::MouseButtonPressed &&
                  menuClose.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
             menuOpen = false;
@@ -240,7 +242,7 @@ void GameView::handleMouseCursour() {
     //Todo fix, that field are double detected by checking if in close proximity of oriign
     //todo --> fit circle shape in hexagon, that is fully contained!
     //todo remove code douplitcation! --> combine handle cursor and handleEvent
-    if(!menuOpen) {
+    if (!menuOpen) {
         for (auto &shape : playingField) {
             if (shape.getGlobalBounds().contains(currWorldMousePos.x, currMousePos.y)) {
                 shape.setOutlineColor(sf::Color::Yellow);

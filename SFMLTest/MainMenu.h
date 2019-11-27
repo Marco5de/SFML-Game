@@ -25,13 +25,15 @@
 class MainMenu {
 
 public:
-    MainMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, gameState *gs);
+    MainMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, GameProperties &gameProperties);
 
     int initMainMenu(); /**< in this function all the objects are created, font loaded etc. */
     int handleMainMenu(); /**< in this function the sprites/text etc. are drawn, this function is called from the main thread */
 
 
 private:
+    GameProperties &gameProperties;
+
     const int windowWidth;     /**< Width of the window (not resizeable) */
     const int windowHeight;   /**< Height of the window (note resizeable)*/
 
@@ -67,7 +69,7 @@ private:
     void handleMouseCursor();
     void handleEvent();
 
-    gameState *currentGameState; /**< enum class which holds the current game state */
+    //gameState *currentGameState; /**< enum class which holds the current game state */
 
 };
 

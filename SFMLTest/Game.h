@@ -11,6 +11,7 @@
 #define SFMLTEST_GAME_H
 
 #include <string>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 enum class gameState{
     MAINMENU,
@@ -20,5 +21,17 @@ enum class gameState{
 
 std::string getStringFromFile(std::string filepath); /**< read String from File to a String. Can be used for text Ressources */
 
+class GameProperties{
+public:
+    GameProperties(const unsigned int windowWidth, const unsigned int windowHeight,const unsigned int level);
+    //sf::RenderWindow window;
+    const unsigned int WINDOW_WIDTH;
+    const unsigned int WINDOW_HEIGHT;
+    sf::ContextSettings settings;
+    gameState currentGameState;
+private:
+
+
+};
 
 #endif //SFMLTEST_GAME_H

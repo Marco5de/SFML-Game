@@ -21,10 +21,11 @@ int main() {
 
     //Todo handing enum raw pointer to class works but isn't a nice way to do this!
     gameState gameState = gameState::MAINMENU;
+    GameProperties gameProperties(WINDOW_WIDTH,WINDOW_HEIGHT,8);
 
-    MainMenu mainMenu(window, WINDOW_WIDTH, WINDOW_HEIGHT, &gameState);
-    GameView gameView(window,WINDOW_WIDTH,WINDOW_HEIGHT,&gameState);
-    ChangeNameMenu changeNameMenu(window,WINDOW_WIDTH,WINDOW_HEIGHT,&gameState);
+    MainMenu mainMenu(window, WINDOW_WIDTH, WINDOW_HEIGHT, gameProperties);
+    GameView gameView(window,WINDOW_WIDTH,WINDOW_HEIGHT,gameProperties);
+    ChangeNameMenu changeNameMenu(window,WINDOW_WIDTH,WINDOW_HEIGHT,gameProperties);
 
 
     if (mainMenu.initMainMenu() != MAINMENU_SUCCESS) {
@@ -48,7 +49,7 @@ int main() {
 
 
     while (window.isOpen()) {
-        switch (gameState) {
+        switch (gameProperties.currentGameState) {
             case gameState::MAINMENU:
                 mainMenu.handleMainMenu();
                 break;

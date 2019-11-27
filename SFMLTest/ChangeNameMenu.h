@@ -21,13 +21,14 @@
 
 class ChangeNameMenu {
 public:
-    ChangeNameMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, gameState *gs);
+    ChangeNameMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, GameProperties &gameProperties);
     int initChangeNameMenu();
     void handleChangeNameMenu();
 
 private:
     const int windowWidth;     /**< Width of the window (not resizeable) */
     const int windowHeight;   /**< Height of the window (note resizeable)*/
+    GameProperties &gameProperties;
 
     sf::Font menuFont;  /**< Font used for the two text Buttons (Start Game and Leave Game)*/
     sf::Texture backgroundImage;    /**< Texture containing the background image of the main menu */
@@ -48,7 +49,7 @@ private:
     sf::Event event;                    /**< sf::Event used to check if window is still open (can also be used for button presses!)*/
 
     sf::RenderWindow &changeNameWindow;   /**< RenderWindow in which the mainMenu is drawn */
-    gameState *currentGameState;
+    //gameState *currentGameState;
 
     void handleEvent();
     void handleMouseCursour();

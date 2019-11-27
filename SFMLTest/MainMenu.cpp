@@ -29,10 +29,9 @@
  * @param windowWidth           width of the given window
  * @param windowHeight          height of the given window
  */
-MainMenu::MainMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, gameState *gs)
+MainMenu::MainMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, GameProperties &gameProperties)
         : windowWidth(windowWidth),
-          windowHeight(windowHeight), mainMenuWindow(window) {
-    currentGameState = gs;
+          windowHeight(windowHeight), mainMenuWindow(window),gameProperties(gameProperties) {;
 }
 
 /**
@@ -173,7 +172,7 @@ void MainMenu::handleEvent() {
         mainMenuWindow.close();
     else if (event.type == sf::Event::MouseButtonPressed &&
              textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-        *currentGameState = gameState::INGAME;
+        gameProperties.currentGameState = gameState::INGAME;
     else if (event.type == sf::Event::MouseButtonPressed &&
              textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
         mainMenuWindow.close();
@@ -184,7 +183,7 @@ void MainMenu::handleEvent() {
 
     if(menuOpen){
         if(event.type == sf::Event::MouseButtonPressed && subMenuChangeName.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y)) {
-            *currentGameState = gameState::CHANGENAME;
+            gameProperties.currentGameState = gameState::CHANGENAME;
             mainMenuWindow.setKeyRepeatEnabled(true);
         }
 
