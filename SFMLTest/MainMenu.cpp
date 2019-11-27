@@ -29,10 +29,9 @@
  * @param windowWidth           width of the given window
  * @param windowHeight          height of the given window
  */
-MainMenu::MainMenu(sf::RenderWindow *window, const int windowWidth, const int windowHeight, gameState *gs)
+MainMenu::MainMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, gameState *gs)
         : windowWidth(windowWidth),
-          windowHeight(windowHeight) {
-    mainMenuWindow = window;
+          windowHeight(windowHeight), mainMenuWindow(window) {
     currentGameState = gs;
 }
 
@@ -122,25 +121,25 @@ int MainMenu::initMainMenu() {
 int MainMenu::handleMainMenu() {
     handleMouseCursor();
     //sf::Event event;
-    while (mainMenuWindow->pollEvent(event)) {
+    while (mainMenuWindow.pollEvent(event)) {
         handleEvent();
     }
 
-    mainMenuWindow->clear();
-    mainMenuWindow->draw(backgroundSprite);
-    mainMenuWindow->draw(textStartGame);
-    mainMenuWindow->draw(textLeaveGame);
-    mainMenuWindow->draw(backgroundRect);
-    mainMenuWindow->draw(textTitle);
-    mainMenuWindow->draw(menuButton);
-    mainMenuWindow->draw(nameBackground);
-    mainMenuWindow->draw(displayName);
+    mainMenuWindow.clear();
+    mainMenuWindow.draw(backgroundSprite);
+    mainMenuWindow.draw(textStartGame);
+    mainMenuWindow.draw(textLeaveGame);
+    mainMenuWindow.draw(backgroundRect);
+    mainMenuWindow.draw(textTitle);
+    mainMenuWindow.draw(menuButton);
+    mainMenuWindow.draw(nameBackground);
+    mainMenuWindow.draw(displayName);
     if (menuOpen) {
-        mainMenuWindow->draw(subMenuBackground);
-        mainMenuWindow->draw(subMenuChangeName);
+        mainMenuWindow.draw(subMenuBackground);
+        mainMenuWindow.draw(subMenuChangeName);
     }
 
-    mainMenuWindow->display();
+    mainMenuWindow.display();
 
 
     return MAINMENU_SUCCESS;
@@ -153,8 +152,8 @@ int MainMenu::handleMainMenu() {
  */
 void MainMenu::handleMouseCursor() {
     //get current mouse position relative to the window and convert from images coords to global coords
-    currMousePos = sf::Mouse::getPosition(*mainMenuWindow);
-    currWorldMousePos = mainMenuWindow->mapPixelToCoords(currMousePos);
+    currMousePos = sf::Mouse::getPosition(mainMenuWindow);
+    currWorldMousePos = mainMenuWindow.mapPixelToCoords(currMousePos);
     if (textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         textStartGame.setColor(sf::Color::Cyan);
     } else {
@@ -171,13 +170,13 @@ void MainMenu::handleMouseCursor() {
 
 void MainMenu::handleEvent() {
     if (event.type == sf::Event::Closed)
-        mainMenuWindow->close();
+        mainMenuWindow.close();
     else if (event.type == sf::Event::MouseButtonPressed &&
              textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
         *currentGameState = gameState::INGAME;
     else if (event.type == sf::Event::MouseButtonPressed &&
              textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-        mainMenuWindow->close();
+        mainMenuWindow.close();
 
     if (event.type == sf::Event::MouseButtonPressed &&
         menuButton.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
@@ -186,7 +185,7 @@ void MainMenu::handleEvent() {
     if(menuOpen){
         if(event.type == sf::Event::MouseButtonPressed && subMenuChangeName.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y)) {
             *currentGameState = gameState::CHANGENAME;
-            mainMenuWindow->setKeyRepeatEnabled(true);
+            mainMenuWindow.setKeyRepeatEnabled(true);
         }
 
     }

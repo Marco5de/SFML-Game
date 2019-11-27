@@ -28,8 +28,7 @@
  * @param windowHeight
  * @param gs
  */
-GameView::GameView(sf::RenderWindow *gw,const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(windowHeight),windowWidth(windowWidth){
-    gameWindow = gw;
+GameView::GameView(sf::RenderWindow &gw,const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(windowHeight),windowWidth(windowWidth),gameWindow(gw){
     currentGameState = gs;
 }
 
@@ -168,29 +167,29 @@ void GameView::createPlayingField() {
 int GameView::handleGameView() {
     handleMouseCursour();
 
-    while (gameWindow->pollEvent(event)) {
+    while (gameWindow.pollEvent(event)) {
         handleEvent();
     }
 
-    gameWindow->clear();
+    gameWindow.clear();
 
     for(sf::CircleShape cs : playingField){
-        gameWindow->draw(cs);
+        gameWindow.draw(cs);
     }
-    gameWindow->draw(titleText);
-    gameWindow->draw(helpText);
-    gameWindow->draw(menuText);
-    gameWindow->draw(scoreRed);
-    gameWindow->draw(scoreBlue);
-    gameWindow->draw(moveTracker);
+    gameWindow.draw(titleText);
+    gameWindow.draw(helpText);
+    gameWindow.draw(menuText);
+    gameWindow.draw(scoreRed);
+    gameWindow.draw(scoreBlue);
+    gameWindow.draw(moveTracker);
 
     if(menuOpen){
-        gameWindow->draw(menuBackground);
-        gameWindow->draw(menuMainMenu);
-        gameWindow->draw(menuClose);
+        gameWindow.draw(menuBackground);
+        gameWindow.draw(menuMainMenu);
+        gameWindow.draw(menuClose);
     }
 
-    gameWindow->display();
+    gameWindow.display();
 
 
     return GAMEVIEW_SUCCESS;
@@ -198,7 +197,7 @@ int GameView::handleGameView() {
 
 void GameView::handleEvent() {
     if (event.type == sf::Event::Closed)
-        gameWindow->close();
+        gameWindow.close();
     if(event.type == sf::Event::MouseButtonPressed && menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         //*currentGameState = gameState::MAINMENU;
         menuOpen ? menuOpen= false : menuOpen= true;
@@ -216,8 +215,8 @@ void GameView::handleEvent() {
 
 void GameView::handleMouseCursour() {
     //get current mouse position relative to the window and convert from images coords to global coords
-    currMousePos = sf::Mouse::getPosition(*gameWindow);
-    currWorldMousePos = gameWindow->mapPixelToCoords(currMousePos);
+    currMousePos = sf::Mouse::getPosition(gameWindow);
+    currWorldMousePos = gameWindow.mapPixelToCoords(currMousePos);
     if (menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         menuText.setColor(sf::Color::Red);
     } else {

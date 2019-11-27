@@ -25,7 +25,7 @@
 class MainMenu {
 
 public:
-    MainMenu(sf::RenderWindow *window, const int windowWidth, const int windowHeight, gameState *gs);
+    MainMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, gameState *gs);
 
     int initMainMenu(); /**< in this function all the objects are created, font loaded etc. */
     int handleMainMenu(); /**< in this function the sprites/text etc. are drawn, this function is called from the main thread */
@@ -59,7 +59,7 @@ private:
     sf::Event event;                    /**< sf::Event used to check if window is still open (can also be used for button presses!)*/
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
-    sf::RenderWindow *mainMenuWindow;   /**< RenderWindow in which the mainMenu is drawn */
+    sf::RenderWindow &mainMenuWindow;   /**< RenderWindow in which the mainMenu is drawn */
 
     /* todo implement */
     std::vector<sf::Drawable> drawableVector; /**< vector containing all the drawables to simplify the drawing porcess, currently NOT used */
