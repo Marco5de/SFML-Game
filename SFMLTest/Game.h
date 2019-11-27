@@ -23,8 +23,8 @@ std::string getStringFromFile(std::string filepath); /**< read String from File 
 
 class GameProperties{
 public:
-    GameProperties(const unsigned int windowWidth, const unsigned int windowHeight,const unsigned int level);
-    //sf::RenderWindow window;
+    GameProperties(const unsigned int windowWidth, const unsigned int windowHeight,const unsigned int level,sf::RenderWindow &window);
+    sf::RenderWindow &window;
     const unsigned int WINDOW_WIDTH;
     const unsigned int WINDOW_HEIGHT;
     sf::ContextSettings settings;

@@ -32,7 +32,7 @@
 
 class GameView{
 public:
-    GameView(sf::RenderWindow &gameWindow, const int windoowWidth, const int windowHeight, GameProperties &gameProperties);
+    GameView(sf::RenderWindow &gameWindow,  GameProperties &gameProperties);
     int initGameView();
     int handleGameView();
     void setScore(int scoreRed, int scoreBlue);

@@ -21,7 +21,7 @@
 
 class ChangeNameMenu {
 public:
-    ChangeNameMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, GameProperties &gameProperties);
+    ChangeNameMenu(sf::RenderWindow &window, GameProperties &gameProperties);
     int initChangeNameMenu();
     void handleChangeNameMenu();
 

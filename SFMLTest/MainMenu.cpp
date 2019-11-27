@@ -8,7 +8,6 @@
  */
 
 
-#include <iostream>
 #include "MainMenu.h"
 
 
@@ -29,9 +28,9 @@
  * @param windowWidth           width of the given window
  * @param windowHeight          height of the given window
  */
-MainMenu::MainMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, GameProperties &gameProperties)
-        : windowWidth(windowWidth),
-          windowHeight(windowHeight), mainMenuWindow(window),gameProperties(gameProperties) {;
+MainMenu::MainMenu(sf::RenderWindow &window, GameProperties &gameProperties)
+        : windowWidth(gameProperties.WINDOW_WIDTH),
+          windowHeight(gameProperties.WINDOW_HEIGHT), mainMenuWindow(window),gameProperties(gameProperties) {;
 }
 
 /**
@@ -184,6 +183,8 @@ void MainMenu::handleEvent() {
     if(menuOpen){
         if(event.type == sf::Event::MouseButtonPressed && subMenuChangeName.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y)) {
             gameProperties.currentGameState = gameState::CHANGENAME;
+            //todo verursacht flicker, weil frame nochmal gemalt wird, bevor screen gewechselt wird
+            menuOpen = false;
             mainMenuWindow.setKeyRepeatEnabled(true);
         }
 

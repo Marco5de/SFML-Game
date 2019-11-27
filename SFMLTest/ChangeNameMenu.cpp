@@ -9,9 +9,10 @@
 #define BACKGROUND_IMAGE ("images/MainMenu/background.jpg")
 
 
-ChangeNameMenu::ChangeNameMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight,
+ChangeNameMenu::ChangeNameMenu(sf::RenderWindow &window,
                                GameProperties &gameProperties) :
-        changeNameWindow(window), gameProperties(gameProperties),windowHeight(gameProperties.WINDOW_HEIGHT),windowWidth(gameProperties.WINDOW_WIDTH) {
+        changeNameWindow(window), gameProperties(gameProperties), windowHeight(gameProperties.WINDOW_HEIGHT),
+        windowWidth(gameProperties.WINDOW_WIDTH) {
 }
 
 

@@ -25,7 +25,7 @@
 class MainMenu {
 
 public:
-    MainMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, GameProperties &gameProperties);
+    MainMenu(sf::RenderWindow &window,  GameProperties &gameProperties);
 
     int initMainMenu(); /**< in this function all the objects are created, font loaded etc. */
     int handleMainMenu(); /**< in this function the sprites/text etc. are drawn, this function is called from the main thread */

@@ -12,7 +12,6 @@
 #include "Game.h"
 
 
-#define IMAGE_PLAYER_PATH ("images/GameView/player.png")
 #define IMAGE_PLAYINGFIELD_PATH ("images/GameView/lavafull.jpg")
 #define IMAGE_PLAYINGFIELDVOID_PATH ("images/GameView/sky_tryker_dusk_fair.png")
 #define FONT_GAMEVIEW_HELP ("Fonts/arial.ttf")
@@ -29,7 +28,7 @@
  * @param gs
  */
 
-GameView::GameView(sf::RenderWindow &gw, const int windowWidth, const int windowHeight, GameProperties &gameProperties)
+GameView::GameView(sf::RenderWindow &gw,  GameProperties &gameProperties)
         : gameWindow(gw), gameProperties(gameProperties),
           windowWidth(gameProperties.WINDOW_WIDTH), windowHeight(gameProperties.WINDOW_HEIGHT) {
 }

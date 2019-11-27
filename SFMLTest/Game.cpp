@@ -10,6 +10,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <iostream>
 #include "Game.h"
 
 
@@ -28,10 +29,8 @@ std::string getStringFromFile(std::string filepath) {
 
 
 GameProperties::GameProperties(const unsigned int windowWidth, const unsigned int windowHeight,
-                               const unsigned int level) : WINDOW_WIDTH(windowWidth), WINDOW_HEIGHT(windowHeight),
-                                                           settings(0, 0, level)
-                                                           /*,window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
-                                                                  "SFML Hexxagon",
-                                                                  sf::Style::Titlebar | sf::Style::Close, settings) */{
+                               const unsigned int level, sf::RenderWindow &window) : WINDOW_WIDTH(windowWidth),
+                                                                                     WINDOW_HEIGHT(windowHeight),
+                                                                                     window(window){
     currentGameState = gameState::MAINMENU;
 }
