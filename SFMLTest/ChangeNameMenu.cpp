@@ -8,9 +8,10 @@
 #define FONT ("Fonts/arial.ttf")
 #define BACKGROUND_IMAGE ("images/MainMenu/background.jpg")
 
-ChangeNameMenu::ChangeNameMenu(sf::RenderWindow *window, const int windowWidth, const int windowHeight,
-                               gameState *gs) : windowHeight(windowHeight), windowWidth(windowWidth) {
-    changeNameWindow = window;
+
+ChangeNameMenu::ChangeNameMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight,
+                               gameState *gs) : windowHeight(windowHeight), windowWidth(windowWidth),
+                                                changeNameWindow(window) {
     currentGameState = gs;
 }
 
@@ -64,31 +65,31 @@ int ChangeNameMenu::initChangeNameMenu() {
 
 void ChangeNameMenu::handleChangeNameMenu() {
     handleMouseCursour();
-    while (changeNameWindow->pollEvent(event)) {
+    while (changeNameWindow.pollEvent(event)) {
         handleEvent();
     }
 
+    changeNameWindow.clear();
+    changeNameWindow.draw(backgroundSprite);
+    changeNameWindow.draw(backgroundText);
+    changeNameWindow.draw(enterText);
+    changeNameWindow.draw(enteredTextBackground);
+    changeNameWindow.draw(enteredText);
+    changeNameWindow.draw(returnToMainMenu);
 
-    changeNameWindow->clear();
-    changeNameWindow->draw(backgroundSprite);
-    changeNameWindow->draw(backgroundText);
-    changeNameWindow->draw(enterText);
-    changeNameWindow->draw(enteredTextBackground);
-    changeNameWindow->draw(enteredText);
-    changeNameWindow->draw(returnToMainMenu);
+    changeNameWindow.display();
 
-    changeNameWindow->display();
 }
 
 void ChangeNameMenu::handleMouseCursour() {
-    currMousePos = sf::Mouse::getPosition(*changeNameWindow);
-    currWorldMousePos = changeNameWindow->mapPixelToCoords(currMousePos);
+    currMousePos = sf::Mouse::getPosition(changeNameWindow);
+    currWorldMousePos = changeNameWindow.mapPixelToCoords(currMousePos);
 }
 
 void ChangeNameMenu::handleEvent() {
     switch (event.type) {
         case sf::Event::Closed:
-            changeNameWindow->close();
+            changeNameWindow.close();
             break;
         case sf::Event::TextEntered:
             if (event.text.unicode == '\b') {
@@ -107,7 +108,7 @@ void ChangeNameMenu::handleEvent() {
         case sf::Event::MouseButtonPressed:
             if (returnToMainMenu.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 *currentGameState = gameState::MAINMENU;
-                changeNameWindow->setKeyRepeatEnabled(false);
+                changeNameWindow.setKeyRepeatEnabled(false);
             }
             break;
     }

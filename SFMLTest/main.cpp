@@ -15,16 +15,16 @@ int main() {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Flappy Birds", sf::Style::Titlebar | sf::Style::Close,settings);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Hexxagon", sf::Style::Titlebar | sf::Style::Close,settings);
     window.setFramerateLimit(60);
     window.setKeyRepeatEnabled(false);
 
     //Todo handing enum raw pointer to class works but isn't a nice way to do this!
     gameState gameState = gameState::MAINMENU;
 
-    MainMenu mainMenu(&window, WINDOW_WIDTH, WINDOW_HEIGHT, &gameState);
-    GameView gameView(&window,WINDOW_WIDTH,WINDOW_HEIGHT,&gameState);
-    ChangeNameMenu changeNameMenu(&window,WINDOW_WIDTH,WINDOW_HEIGHT,&gameState);
+    MainMenu mainMenu(window, WINDOW_WIDTH, WINDOW_HEIGHT, &gameState);
+    GameView gameView(window,WINDOW_WIDTH,WINDOW_HEIGHT,&gameState);
+    ChangeNameMenu changeNameMenu(window,WINDOW_WIDTH,WINDOW_HEIGHT,&gameState);
 
 
     if (mainMenu.initMainMenu() != MAINMENU_SUCCESS) {

@@ -28,9 +28,13 @@
  * @param windowHeight
  * @param gs
  */
+<<<<<<< HEAD
 GameView::GameView(sf::RenderWindow *gw, const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(
         windowHeight), windowWidth(windowWidth) {
     gameWindow = gw;
+=======
+GameView::GameView(sf::RenderWindow &gw,const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(windowHeight),windowWidth(windowWidth),gameWindow(gw){
+>>>>>>> f1052b9
     currentGameState = gs;
 }
 
@@ -169,29 +173,41 @@ void GameView::createPlayingField() {
 int GameView::handleGameView() {
     handleMouseCursour();
 
-    while (gameWindow->pollEvent(event)) {
+    while (gameWindow.pollEvent(event)) {
         handleEvent();
     }
 
-    gameWindow->clear();
+    gameWindow.clear();
 
+<<<<<<< HEAD
     for (sf::CircleShape cs : playingField) {
         gameWindow->draw(cs);
+=======
+    for(sf::CircleShape cs : playingField){
+        gameWindow.draw(cs);
+>>>>>>> f1052b9
     }
-    gameWindow->draw(titleText);
-    gameWindow->draw(helpText);
-    gameWindow->draw(menuText);
-    gameWindow->draw(scoreRed);
-    gameWindow->draw(scoreBlue);
-    gameWindow->draw(moveTracker);
+    gameWindow.draw(titleText);
+    gameWindow.draw(helpText);
+    gameWindow.draw(menuText);
+    gameWindow.draw(scoreRed);
+    gameWindow.draw(scoreBlue);
+    gameWindow.draw(moveTracker);
 
+<<<<<<< HEAD
     if (menuOpen) {
         gameWindow->draw(menuBackground);
         gameWindow->draw(menuMainMenu);
         gameWindow->draw(menuClose);
+=======
+    if(menuOpen){
+        gameWindow.draw(menuBackground);
+        gameWindow.draw(menuMainMenu);
+        gameWindow.draw(menuClose);
+>>>>>>> f1052b9
     }
 
-    gameWindow->display();
+    gameWindow.display();
 
 
     return GAMEVIEW_SUCCESS;
@@ -199,9 +215,14 @@ int GameView::handleGameView() {
 
 void GameView::handleEvent() {
     if (event.type == sf::Event::Closed)
+<<<<<<< HEAD
         gameWindow->close();
     if (event.type == sf::Event::MouseButtonPressed &&
         menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+=======
+        gameWindow.close();
+    if(event.type == sf::Event::MouseButtonPressed && menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+>>>>>>> f1052b9
         //*currentGameState = gameState::MAINMENU;
         menuOpen ? menuOpen = false : menuOpen = true;
     }
@@ -229,8 +250,8 @@ void GameView::handleEvent() {
 
 void GameView::handleMouseCursour() {
     //get current mouse position relative to the window and convert from images coords to global coords
-    currMousePos = sf::Mouse::getPosition(*gameWindow);
-    currWorldMousePos = gameWindow->mapPixelToCoords(currMousePos);
+    currMousePos = sf::Mouse::getPosition(gameWindow);
+    currWorldMousePos = gameWindow.mapPixelToCoords(currMousePos);
     if (menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         menuText.setColor(sf::Color::Red);
     } else {

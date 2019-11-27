@@ -32,7 +32,7 @@
 
 class GameView{
 public:
-    GameView(sf::RenderWindow *gameWindow, const int windoowWidth, const int windowHeight, gameState *gs);
+    GameView(sf::RenderWindow &gameWindow, const int windoowWidth, const int windowHeight, gameState *gs);
     int initGameView();
     int handleGameView();
     void setScore(int scoreRed, int scoreBlue);
@@ -46,7 +46,7 @@ private:
 
     sf::Event event;
 
-    sf::RenderWindow *gameWindow;
+    sf::RenderWindow &gameWindow;
 
     sf::Texture playingFieldTexture;
     sf::Texture playingFieldVoidTexture;

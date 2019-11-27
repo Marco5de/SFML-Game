@@ -21,7 +21,7 @@
 
 class ChangeNameMenu {
 public:
-    ChangeNameMenu(sf::RenderWindow *window, const int windowWidth, const int windowHeight, gameState *gs);
+    ChangeNameMenu(sf::RenderWindow &window, const int windowWidth, const int windowHeight, gameState *gs);
     int initChangeNameMenu();
     void handleChangeNameMenu();
 
@@ -47,7 +47,7 @@ private:
     sf::Text enteredName;
     sf::Event event;                    /**< sf::Event used to check if window is still open (can also be used for button presses!)*/
 
-    sf::RenderWindow *changeNameWindow;   /**< RenderWindow in which the mainMenu is drawn */
+    sf::RenderWindow &changeNameWindow;   /**< RenderWindow in which the mainMenu is drawn */
     gameState *currentGameState;
 
     void handleEvent();
