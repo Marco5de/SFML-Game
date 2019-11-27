@@ -28,13 +28,8 @@
  * @param windowHeight
  * @param gs
  */
-<<<<<<< HEAD
-GameView::GameView(sf::RenderWindow *gw, const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(
-        windowHeight), windowWidth(windowWidth) {
-    gameWindow = gw;
-=======
+
 GameView::GameView(sf::RenderWindow &gw,const int windowWidth, const int windowHeight, gameState *gs) : windowHeight(windowHeight),windowWidth(windowWidth),gameWindow(gw){
->>>>>>> f1052b9
     currentGameState = gs;
 }
 
@@ -179,13 +174,9 @@ int GameView::handleGameView() {
 
     gameWindow.clear();
 
-<<<<<<< HEAD
-    for (sf::CircleShape cs : playingField) {
-        gameWindow->draw(cs);
-=======
+
     for(sf::CircleShape cs : playingField){
         gameWindow.draw(cs);
->>>>>>> f1052b9
     }
     gameWindow.draw(titleText);
     gameWindow.draw(helpText);
@@ -194,17 +185,11 @@ int GameView::handleGameView() {
     gameWindow.draw(scoreBlue);
     gameWindow.draw(moveTracker);
 
-<<<<<<< HEAD
-    if (menuOpen) {
-        gameWindow->draw(menuBackground);
-        gameWindow->draw(menuMainMenu);
-        gameWindow->draw(menuClose);
-=======
+
     if(menuOpen){
         gameWindow.draw(menuBackground);
         gameWindow.draw(menuMainMenu);
         gameWindow.draw(menuClose);
->>>>>>> f1052b9
     }
 
     gameWindow.display();
@@ -215,14 +200,8 @@ int GameView::handleGameView() {
 
 void GameView::handleEvent() {
     if (event.type == sf::Event::Closed)
-<<<<<<< HEAD
-        gameWindow->close();
-    if (event.type == sf::Event::MouseButtonPressed &&
-        menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
-=======
         gameWindow.close();
     if(event.type == sf::Event::MouseButtonPressed && menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
->>>>>>> f1052b9
         //*currentGameState = gameState::MAINMENU;
         menuOpen ? menuOpen = false : menuOpen = true;
     }
