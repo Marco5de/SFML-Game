@@ -39,6 +39,11 @@ void Controller::initController() {
 }
 
 void Controller::loop() {
+   handleGUI();
+}
+
+
+void Controller::handleGUI() {
     while (gameProperties.window.isOpen()) {
         switch (gameProperties.currentGameState) {
             case gameState::MAINMENU:

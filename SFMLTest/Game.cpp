@@ -27,6 +27,12 @@ std::string getStringFromFile(std::string filepath) {
     return buffer.str();
 }
 
+void writeStringToFile(std::string filepath,std::string name){
+    std::ofstream file;
+    file.open(filepath);
+    file << name;
+    file.close();
+}
 
 GameProperties::GameProperties(const unsigned int windowWidth, const unsigned int windowHeight,
                                const unsigned int level, sf::RenderWindow &window) : WINDOW_WIDTH(windowWidth),

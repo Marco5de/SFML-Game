@@ -124,6 +124,7 @@ int GameView::initGameView() {
     menuClose.setOutlineColor(sf::Color::Blue);
     menuClose.setString("Close Menu");
 
+
     for (int i = 0; i < 61; i++) {
         playingField.push_back(sf::CircleShape(40.0f, 6));
         if (std::find(forbiddenFields.begin(), forbiddenFields.end(), i + 1) != forbiddenFields.end()) {
@@ -132,7 +133,8 @@ int GameView::initGameView() {
             playingField[i].setTexture(&playingFieldTexture);
         //rotate so that long edge is horizontally
         playingField[i].rotate(30);
-        playingField[i].setOutlineThickness(2.5);
+        //playingField[i].setOutlineThickness(2.5);
+        playingField[i].setOutlineThickness(1);
         playingField[i].setOutlineColor(sf::Color::White);
     }
 
@@ -210,8 +212,7 @@ void GameView::handleEvent() {
     //todo --> fit circle shape in hexagon, that is fully contained!
     if (!menuOpen) {
         for (int i = 0; i < playingField.size(); i++) {
-            if (event.type == sf::Event::MouseButtonPressed &&
-                playingField[i].getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+            if (event.type == sf::Event::MouseButtonPressed && isInside(playingField[i])) {
                 std::cout << "Clicked Field #" << i << std::endl;
             }
         }
@@ -227,6 +228,22 @@ void GameView::handleEvent() {
     }
 }
 
+bool GameView::isInside(sf::CircleShape &shape) {
+    sf::Vector2f middle;
+    sf::Vector2f transformed;
+    float v = shape.getGlobalBounds().width;
+    float h = shape.getGlobalBounds().height;
+
+    middle.x = shape.getGlobalBounds().left + .5 * v;
+    middle.y = shape.getGlobalBounds().top + .5 * h;
+    transformed.x = std::abs(currWorldMousePos.x - middle.x);
+    transformed.y = std::abs(currWorldMousePos.y - middle.y);
+
+    if(transformed.x > shape.getGlobalBounds().width/2 || transformed.y > shape.getGlobalBounds().height/2)
+        return false;
+
+    return v/2 * h/2 - v/4 * transformed.x - h/2 * transformed.y >= 0;
+}
 
 void GameView::handleMouseCursour() {
     //get current mouse position relative to the window and convert from images coords to global coords
@@ -243,7 +260,7 @@ void GameView::handleMouseCursour() {
     //todo remove code douplitcation! --> combine handle cursor and handleEvent
     if (!menuOpen) {
         for (auto &shape : playingField) {
-            if (shape.getGlobalBounds().contains(currWorldMousePos.x, currMousePos.y)) {
+            if (isInside(shape)) {
                 shape.setOutlineColor(sf::Color::Yellow);
             } else
                 shape.setOutlineColor(sf::Color::White);

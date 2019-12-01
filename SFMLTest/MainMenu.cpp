@@ -8,6 +8,7 @@
  */
 
 
+#include <iostream>
 #include "MainMenu.h"
 
 
@@ -101,12 +102,11 @@ int MainMenu::initMainMenu() {
     nameBackground.setOutlineThickness(5);
 
     displayName.setFont(mainMenuFont);
-    //todo add playername read in from file!
-    displayName.setString("Hey name");
     displayName.setCharacterSize(30);
     displayName.setPosition(.35 * windowWidth, .65 * windowHeight);
     displayName.setColor(sf::Color::Magenta);
 
+    gameProperties.playerName = std::string("Hey ").append(getStringFromFile("nameConfig.txt"));
 
     return MAINMENU_SUCCESS;
 }
@@ -122,6 +122,10 @@ int MainMenu::handleMainMenu() {
     while (mainMenuWindow.pollEvent(event)) {
         handleEvent();
     }
+
+    //Todo sollte nicht jedes mal neu gemacht werden
+    std::string name = std::string("Hey ").append(gameProperties.playerName);
+    displayName.setString(name);
 
     mainMenuWindow.clear();
     mainMenuWindow.draw(backgroundSprite);

@@ -71,6 +71,7 @@ private:
 
     sf::CircleShape moveTracker;
 
+
     std::vector<sf::CircleShape> playingField;
 
     //gameState *currentGameState;
@@ -80,7 +81,8 @@ private:
 
     void createPlayingField();
     void handleMouseCursour();
-    void handleEvent(           );
+    void handleEvent();
+    bool isInside(sf::CircleShape &shape );
 
 
 

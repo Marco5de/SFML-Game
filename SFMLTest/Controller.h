@@ -15,12 +15,16 @@ public:
     Controller(const unsigned int windowHeight, const unsigned int windowWidth,const unsigned int aliasingLevel,sf::RenderWindow &window);
     void initController();
     void loop();
+    std::string playerName;
 
 private:
     GameProperties gameProperties;
     MainMenu mainMenu;
     GameView gameView;
     ChangeNameMenu changeNameMenu;
+
+
+    void handleGUI();
 
 };
 

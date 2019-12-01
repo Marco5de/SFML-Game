@@ -108,6 +108,9 @@ void ChangeNameMenu::handleEvent() {
         case sf::Event::MouseButtonPressed:
             if (returnToMainMenu.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
+                //todo nur zum testen, später in richtiges config file!
+                writeStringToFile("nameConfig.txt",enteredString);
+                gameProperties.playerName = enteredString;
                 changeNameWindow.setKeyRepeatEnabled(false);
             }
             break;

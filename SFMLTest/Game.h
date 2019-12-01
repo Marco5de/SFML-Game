@@ -20,6 +20,7 @@ enum class gameState{
 };
 
 std::string getStringFromFile(std::string filepath); /**< read String from File to a String. Can be used for text Ressources */
+void writeStringToFile(std::string filepath,std::string name);
 
 class GameProperties{
 public:
@@ -29,6 +30,7 @@ public:
     const unsigned int WINDOW_HEIGHT;
     sf::ContextSettings settings;
     gameState currentGameState;
+    std::string playerName;
 private:
 
 
