@@ -71,10 +71,7 @@ private:
 
     sf::CircleShape moveTracker;
 
-
     std::vector<sf::CircleShape> playingField;
-
-    //gameState *currentGameState;
 
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
