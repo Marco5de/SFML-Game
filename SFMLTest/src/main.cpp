@@ -2,7 +2,8 @@
 
 #include "Controller.h"
 
-#include "Utils/Logging/Include/logger.h"
+#include "logger.h"
+
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
@@ -13,7 +14,7 @@ int main() {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    LOG("Test");
+    LOG("Hallo Welt");
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Hexxagon", sf::Style::Titlebar | sf::Style::Close,settings);
     window.setFramerateLimit(60);

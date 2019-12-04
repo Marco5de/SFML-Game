@@ -126,7 +126,6 @@ namespace logging {
 
         void write(const std::string &msg) override{
             (*out_stream) << msg << std::endl << std::flush;
-            std::cout << msg << std::endl<<std::flush;
         }
 
         ~file_log_policy(){
