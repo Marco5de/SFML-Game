@@ -22,6 +22,10 @@ enum class gameState{
 std::string getStringFromFile(std::string filepath); /**< read String from File to a String. Can be used for text Ressources */
 void writeStringToFile(std::string filepath,std::string name);
 
+float addFloatTestFunc(float t1,float t2){
+    return t1+t2;
+}
+
 class GameProperties{
 public:
     GameProperties(const unsigned int windowWidth, const unsigned int windowHeight,const unsigned int level,sf::RenderWindow &window);
