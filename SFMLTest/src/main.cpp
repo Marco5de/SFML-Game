@@ -2,6 +2,9 @@
 
 #include "Controller.h"
 
+
+#define LOGGING_LEVEL_1
+//#define LOGGING_FILE
 #include "logger.h"
 
 
@@ -15,6 +18,8 @@ int main() {
     settings.antialiasingLevel = 8;
 
     LOG("Hallo Welt");
+    LOG_WARN("Hallo Warning");
+    LOG_ERR("Hallo ERR");
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Hexxagon", sf::Style::Titlebar | sf::Style::Close,settings);
     window.setFramerateLimit(60);

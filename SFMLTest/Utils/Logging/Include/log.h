@@ -36,19 +36,31 @@ namespace logging {
                 delete policy;
             }
         };
-
+//todo mach das nicht mit preprocessor, überlade methoden (ähnlich zu dem github example)
         template<logmsg_type level, typename ...Args>
         void print(Args...args){
             write_mutex.lock();
             switch (level) {
                 case logmsg_type::debug:
-                    log_stream << "<DEBUG> :";
+#ifndef LOGGING_FILE
+                    log_stream << "\033[1;32m<DEBUG>\033[0m: ";
+#else
+                    log_stream << "<DEBUG> : ";
+#endif
                     break;
                 case logmsg_type::warning:
-                    log_stream << "<WARNING> :";
+#ifndef LOGGING_FILE
+                    log_stream << "\033[1;33m<WARNING>\033[0m: ";
+#else
+                    log_stream << "<WARNING> : ";
+#endif
                     break;
                 case logmsg_type::error:
-                    log_stream << "<ERROR> :";
+#ifndef LOGGING_FILE
+                    log_stream << "\033[1;31m<ERROR>\033[0m: ";
+#else
+                    log_stream << "<ERROR> : ";
+#endif
                     break;
             }
             print_impl(args...);
@@ -136,6 +148,31 @@ namespace logging {
 
     private:
         std::unique_ptr<std::ofstream> out_stream;
+    };
+
+    //Todo fix use of strings
+    class console_log_policy : log_policy_interface{
+    public:
+        console_log_policy() : out_stream(new std::ostringstream){}
+        void open_ostream(const std::string &name){
+            /* nothing to do in here*/
+        }
+
+        void close_ostream(){
+            /* nothing to do in here */
+        }
+
+        void write(const std::string &msg){
+            //(*out_stream) << msg << std::endl << std::flush;
+            std::cout << msg << std::endl;
+        }
+        ~console_log_policy(){
+            //(*out_stream) << "End of logging stream" << std::endl << std::flush;
+        }
+
+
+    private:
+        std::unique_ptr<std::ostringstream> out_stream;
     };
 
 #endif //SFMLTEST_LOG_H

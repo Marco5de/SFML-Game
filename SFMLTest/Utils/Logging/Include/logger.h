@@ -10,38 +10,42 @@
 
 #include "log.h"
 
-//todo overwrite operator << instead of function call
-static logging::logger<logging::file_log_policy> log_inst("output.log");
+//#define LOGGING_FILE
 
-//todo remove
-#define LOGGING_LEVEL_1
+//todo overwrite operator << instead of function call
+
+#ifdef LOGGING_FILE
+    static logging::logger<logging::file_log_policy> log_inst("output.log");
+#else
+    static logging::logger<logging::console_log_policy> log_inst("output.log");
+#endif
+
 
 #ifdef LOGGING_LEVEL_1
 
-#define LOG log_inst.print<logging::logmsg_type::debug>
-#define LOG_ERR log_inst.print<logging::logmsg_type::error>
-#define LOG_WARN log_inst.print<logging::logmsg_type::warning>
+    #define LOG log_inst.print<logging::logmsg_type::debug>
+    #define LOG_ERR log_inst.print<logging::logmsg_type::error>
+    #define LOG_WARN log_inst.print<logging::logmsg_type::warning>
 
 #else
 
-#define LOG(...)
-#define LOG_ERR(...)
-#define LOG_WARN(...)
+    #define LOG(...)
+    #define LOG_ERR(...)
+    #define LOG_WARN(...)
 
 #endif
 
 #ifdef LOGGING_LEVEL_2
 
-#define ELOG log_inst.print<logging::logmsg_type::debug>
-#define ELOG_ERR log_inst.print<logging::logmsg_type::error>
-#define ELOG_WARN log_inst.print<logging::logmsg_type::warning>
+    #define ELOG log_inst.print<logging::logmsg_type::debug>
+    #define ELOG_ERR log_inst.print<logging::logmsg_type::error>
+    #define ELOG_WARN log_inst.print<logging::logmsg_type::warning>
 
 #else
 
-#define ELOG(...)
-#define ELOG_ERR(...)
-#define ELOG_WARN(...)
+    #define ELOG(...)
+    #define ELOG_ERR(...)
+    #define ELOG_WARN(...)
 
 #endif
-
 #endif //SFMLTEST_LOGGER_H
