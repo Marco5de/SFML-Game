@@ -5,3 +5,5 @@
 #include "Tile.h"
 
 Tile::Tile(sf::CircleShape shape1,int id) : shape(shape1), id(id){}
+
+int Tile::getID() { return this->id;}

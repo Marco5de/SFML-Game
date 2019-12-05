@@ -18,9 +18,10 @@ public:
     //todo hacky find better way!
     bool red;
     int stoneID;
+    int getID();
 
 private:
-    int id;
+    const int id;
 };
 
 

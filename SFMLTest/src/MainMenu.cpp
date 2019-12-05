@@ -65,7 +65,6 @@ int MainMenu::initMainMenu() {
     LOG("Laden der Musik erfolgreich");
 
 
-
     backgroundSprite.setTexture(backgroundImage);
     menuButton.setTexture(menuTexture);
 
