@@ -19,6 +19,8 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "Game.h"
+#include "Stone.h"
+#include "Tile.h"
 
 
 #define GAMEVIEW_IMAGELOADING_ERROR ((-1))
@@ -29,6 +31,13 @@
 //Todo das ganze acceleration zeugs in eine eigene player klasse packen, nur temp für test hier drin
 //todo als nächstes muss dann keypress implementiert werden
 //todo danach implementieren der hindernisse
+
+enum class State{
+    SELECTION,
+    FIELD_SELECTED
+};
+
+
 
 class GameView{
 public:
@@ -41,6 +50,7 @@ public:
 private:
     const int windowWidth;
     const int windowHeight;
+
     GameProperties &gameProperties;
 
     bool menuOpen = false;
@@ -71,7 +81,10 @@ private:
 
     sf::CircleShape moveTracker;
 
-    std::vector<sf::CircleShape> playingField;
+    //std::vector<sf::CircleShape> playingField;
+    std::vector<Tile> playingField;
+    std::vector<Stone> redStones;
+    std::vector<Stone> blueStones;
 
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
@@ -80,9 +93,10 @@ private:
     void handleMouseCursour();
     void handleEvent();
     bool isInside(sf::CircleShape &shape );
+    void moveStone(int target);
 
-
-
+    State state;
+    int selectedField;
 };
 
 

@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include "ChangeNameMenu.h"
+#define LOGGING_LEVEL_1
+
+#include "logger.h"
 
 #define FONT ("Fonts/arial.ttf")
 #define BACKGROUND_IMAGE ("images/MainMenu/background.jpg")
@@ -58,7 +61,7 @@ int ChangeNameMenu::initChangeNameMenu() {
     returnToMainMenu.setOutlineColor(sf::Color::Black);
     returnToMainMenu.setOutlineThickness(50);
 
-
+    LOG("Init changeNameMenu done");
     return NAME_MENU_SUCCESS;
 }
 

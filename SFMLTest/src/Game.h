@@ -13,6 +13,10 @@
 #include <string>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#define NUMBER_START_STONES 6
+constexpr std::array<int,NUMBER_START_STONES> redStartingPositions = {21,22,29,31,38,39};
+constexpr std::array<int,NUMBER_START_STONES> blueStartingPositions = {0,4,26,34,56,60};
+
 enum class gameState{
     MAINMENU,
     INGAME,
@@ -21,7 +25,6 @@ enum class gameState{
 
 std::string getStringFromFile(std::string filepath); /**< read String from File to a String. Can be used for text Ressources */
 void writeStringToFile(std::string filepath,std::string name);
-
 
 
 class GameProperties{

@@ -11,6 +11,10 @@
 #include <iostream>
 #include "MainMenu.h"
 
+#define LOGGING_LEVEL_1
+#include "logger.h"
+
+#define VOLUME 0
 
 
 #define FONTS_MAINMENU_PATH ("Fonts/arial.ttf")
@@ -50,6 +54,16 @@ int MainMenu::initMainMenu() {
         return MAINMENU_IMAGELOADING_ERROR;
     if (!menuTexture.loadFromFile(IMAGE_MAINMENU_MENU_PATH))
         return MAINMENU_IMAGELOADING_ERROR;
+    if(!music.openFromFile("Sound/fade.wav"))
+        return MAINMENU_IMAGELOADING_ERROR;
+
+
+    music.setVolume(VOLUME);
+    music.setLoop(true);
+    music.setAttenuation(0);
+    music.play();
+    LOG("Laden der Musik erfolgreich");
+
 
 
     backgroundSprite.setTexture(backgroundImage);

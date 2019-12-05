@@ -11,6 +11,10 @@
 #include "GameView.h"
 #include "Game.h"
 
+#define LOGGING_LEVEL_1
+
+#include "logger.h"
+
 
 #define IMAGE_PLAYINGFIELD_PATH ("images/GameView/lavafull.jpg")
 #define IMAGE_PLAYINGFIELDVOID_PATH ("images/GameView/sky_tryker_dusk_fair.png")
@@ -18,6 +22,9 @@
 #define FONT_GAMEVIEW_TITLE ("Fonts/orange juice 2.0.ttf")
 #define FONT_GAMEVIEW_MENU ("Fonts/BebasNeue-Regular.ttf")
 #define TEXTRESSOURCES_HELPTEXT ("TextRessources/help.txt")
+
+
+
 
 
 /**
@@ -28,7 +35,7 @@
  * @param gs
  */
 
-GameView::GameView(sf::RenderWindow &gw,  GameProperties &gameProperties)
+GameView::GameView(sf::RenderWindow &gw, GameProperties &gameProperties)
         : gameWindow(gw), gameProperties(gameProperties),
           windowWidth(gameProperties.WINDOW_WIDTH), windowHeight(gameProperties.WINDOW_HEIGHT) {
 }
@@ -124,46 +131,86 @@ int GameView::initGameView() {
     menuClose.setOutlineColor(sf::Color::Blue);
     menuClose.setString("Close Menu");
 
+    state = State::SELECTION;
+    selectedField = 0;
+
 
     for (int i = 0; i < 61; i++) {
-        playingField.push_back(sf::CircleShape(40.0f, 6));
+        playingField.emplace_back(sf::CircleShape(40.0f, 6), i);
         if (std::find(forbiddenFields.begin(), forbiddenFields.end(), i + 1) != forbiddenFields.end()) {
-            playingField[i].setTexture(&playingFieldVoidTexture);
+            playingField[i].shape.setTexture(&playingFieldVoidTexture);
         } else
-            playingField[i].setTexture(&playingFieldTexture);
+            playingField[i].shape.setTexture(&playingFieldTexture);
         //rotate so that long edge is horizontally
-        playingField[i].rotate(30);
+        playingField[i].shape.rotate(30);
         //playingField[i].setOutlineThickness(2.5);
-        playingField[i].setOutlineThickness(1);
-        playingField[i].setOutlineColor(sf::Color::White);
+        playingField[i].shape.setOutlineThickness(1);
+        playingField[i].shape.setOutlineColor(sf::Color::White);
     }
 
     createPlayingField();
 
+    //initial gibt es 4 Steine pro Spieler
+    redStones.reserve(redStartingPositions.size());
+    blueStones.reserve(blueStartingPositions.size());
+    if(redStartingPositions.size() != blueStartingPositions.size()){
+        LOG_ERR("Anzahl der Spielsteine am Start stimmt nicht überein");
+        std::exit(1);
+    }
+
+    for (int i = 0; i < redStartingPositions.size(); i++) {
+        int redIndex = redStartingPositions[i];
+        int blueIndex = blueStartingPositions[i];
+
+        redStones.emplace_back(true, sf::CircleShape(15));
+        redStones[i].moveToField(playingField[redIndex].shape);
+        redStones[i].setField(redIndex);
+        redStones[i].shape.setOutlineColor(sf::Color::Black);
+        redStones[i].shape.setOutlineThickness(5);
+        redStones[i].shape.setFillColor(sf::Color::Red);
+        playingField[redIndex].empty = false;
+        playingField[redIndex].red = true;
+        playingField[redIndex].stoneID = i;
+
+        blueStones.emplace_back(false, sf::CircleShape(15));
+        blueStones[i].moveToField(playingField[blueIndex].shape);
+        blueStones[i].setField(blueIndex);
+        blueStones[i].shape.setOutlineColor(sf::Color::Black);
+        blueStones[i].shape.setOutlineThickness(5);
+        blueStones[i].shape.setFillColor(sf::Color::Blue);
+        playingField[blueIndex].empty = false;
+        playingField[blueIndex].red = false;
+        playingField[blueIndex].stoneID = i;
+    }
+    setScore(blueStones.size(), redStones.size());
+
+    LOG("Init Gameview successfull");
+
     return GAMEVIEW_SUCCESS;
 }
+
 
 //todo das spielfeld darf auf gar keinen Fall hardcoded sein! finde abhängigkeit zwischen abstand, bildgröße und spritegröße!
 void GameView::createPlayingField() {
     //offset below are .075
     for (int i = 0; i < 5; i++) {
-        playingField[i].setPosition(.1 * windowWidth, (.25 + i * .1) * windowHeight);
-        playingField[56 + i].setPosition(.5 * windowWidth, (.25 + i * .1) * windowHeight);
+        playingField[i].shape.setPosition(.1 * windowWidth, (.25 + i * .1) * windowHeight);
+        playingField[56 + i].shape.setPosition(.5 * windowWidth, (.25 + i * .1) * windowHeight);
     }
     for (int i = 0; i < 6; i++) {
-        playingField[5 + i].setPosition(.15 * windowWidth, (.2 + i * .1) * windowHeight);
-        playingField[50 + i].setPosition(.45 * windowWidth, (.2 + i * .1) * windowHeight);
+        playingField[5 + i].shape.setPosition(.15 * windowWidth, (.2 + i * .1) * windowHeight);
+        playingField[50 + i].shape.setPosition(.45 * windowWidth, (.2 + i * .1) * windowHeight);
     }
     for (int i = 0; i < 7; i++) {
-        playingField[11 + i].setPosition(.2 * windowWidth, (.15 + i * .1) * windowHeight);
-        playingField[43 + i].setPosition(.4 * windowWidth, (.15 + i * .1) * windowHeight);
+        playingField[11 + i].shape.setPosition(.2 * windowWidth, (.15 + i * .1) * windowHeight);
+        playingField[43 + i].shape.setPosition(.4 * windowWidth, (.15 + i * .1) * windowHeight);
     }
     for (int i = 0; i < 8; i++) {
-        playingField[18 + i].setPosition(.25 * windowWidth, (.1 + i * .1) * windowHeight);
-        playingField[35 + i].setPosition(.35 * windowWidth, (.1 + i * .1) * windowHeight);
+        playingField[18 + i].shape.setPosition(.25 * windowWidth, (.1 + i * .1) * windowHeight);
+        playingField[35 + i].shape.setPosition(.35 * windowWidth, (.1 + i * .1) * windowHeight);
     }
     for (int i = 0; i < 9; i++) {
-        playingField[26 + i].setPosition(.3 * windowWidth, (.05 + i * .1) * windowHeight);
+        playingField[26 + i].shape.setPosition(.3 * windowWidth, (.05 + i * .1) * windowHeight);
     }
 }
 
@@ -176,10 +223,19 @@ int GameView::handleGameView() {
 
     gameWindow.clear();
 
+    //Todo mal checken ob man das so lassen kann
+    setScore(redStones.size(), blueStones.size());
 
-    for (sf::CircleShape cs : playingField) {
-        gameWindow.draw(cs);
+    for (Tile tile : playingField) {
+        gameWindow.draw(tile.shape);
     }
+    for (Stone stone : redStones) {
+        gameWindow.draw(stone.shape);
+    }
+    for (Stone stone : blueStones) {
+        gameWindow.draw(stone.shape);
+    }
+
     gameWindow.draw(titleText);
     gameWindow.draw(helpText);
     gameWindow.draw(menuText);
@@ -209,11 +265,34 @@ void GameView::handleEvent() {
         menuOpen ? menuOpen = false : menuOpen = true;
     }
     //Todo fix, that field are double detected by checking if in close proximity of oriign
-    //todo --> fit circle shape in hexagon, that is fully contained!
+    //todo --> fit circle shape in hexagon, that is fully contained
+    int localTarget;
     if (!menuOpen) {
+        int count = 0;
         for (int i = 0; i < playingField.size(); i++) {
-            if (event.type == sf::Event::MouseButtonPressed && isInside(playingField[i])) {
-                std::cout << "Clicked Field #" << i << std::endl;
+            if (event.type == sf::Event::MouseButtonPressed && isInside(playingField[i].shape)) {
+                localTarget = i;
+                count++;
+            }
+        }
+
+        if (count == 1) {
+            switch (state) {
+                case State::SELECTION:
+                    if (!playingField[localTarget].empty) {
+                        state = State::FIELD_SELECTED;
+                        selectedField = localTarget;
+                        LOG("Field selected #" + std::to_string(selectedField));
+                    }
+                    break;
+                case State::FIELD_SELECTED:
+                    //check that selected field is empty and non void
+                    if (playingField[localTarget].empty &&
+                        !(std::find(forbiddenFields.begin(), forbiddenFields.end(), localTarget + 1) != forbiddenFields.end())) {
+                        moveStone(localTarget);
+                        state = State::SELECTION;
+                    }
+                    break;
             }
         }
     }
@@ -228,6 +307,26 @@ void GameView::handleEvent() {
     }
 }
 
+
+void GameView::moveStone(int localTarget) {
+    LOG("Target Field selected #" + std::to_string(localTarget));
+    if(playingField[selectedField].red ){
+        redStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
+        redStones[playingField[selectedField].stoneID].setField(localTarget);
+        playingField[localTarget].red = true;
+    }else{
+        blueStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
+        blueStones[playingField[selectedField].stoneID].setField(localTarget);
+        playingField[localTarget].red = false;
+    }
+    //todo später hier züge erkennen gegenfalls anders machen
+    playingField[selectedField].empty = true;
+    playingField[localTarget].empty = false;
+    playingField[localTarget].stoneID = playingField[selectedField].stoneID;
+    playingField[selectedField].stoneID = -1;
+
+}
+
 bool GameView::isInside(sf::CircleShape &shape) {
     sf::Vector2f middle;
     sf::Vector2f transformed;
@@ -239,10 +338,10 @@ bool GameView::isInside(sf::CircleShape &shape) {
     transformed.x = std::abs(currWorldMousePos.x - middle.x);
     transformed.y = std::abs(currWorldMousePos.y - middle.y);
 
-    if(transformed.x > shape.getGlobalBounds().width/2 || transformed.y > shape.getGlobalBounds().height/2)
+    if (transformed.x > shape.getGlobalBounds().width / 2 || transformed.y > shape.getGlobalBounds().height / 2)
         return false;
 
-    return v/2 * h/2 - v/4 * transformed.x - h/2 * transformed.y >= 0;
+    return v / 2 * h / 2 - v / 4 * transformed.x - h / 2 * transformed.y >= 0;
 }
 
 void GameView::handleMouseCursour() {
@@ -259,11 +358,11 @@ void GameView::handleMouseCursour() {
     //todo --> fit circle shape in hexagon, that is fully contained!
     //todo remove code douplitcation! --> combine handle cursor and handleEvent
     if (!menuOpen) {
-        for (auto &shape : playingField) {
-            if (isInside(shape)) {
-                shape.setOutlineColor(sf::Color::Yellow);
+        for (auto &tile : playingField) {
+            if (isInside(tile.shape)) {
+                tile.shape.setOutlineColor(sf::Color::Yellow);
             } else
-                shape.setOutlineColor(sf::Color::White);
+                tile.shape.setOutlineColor(sf::Color::White);
         }
     }
 

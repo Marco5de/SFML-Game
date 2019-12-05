@@ -12,11 +12,17 @@ file(GLOB SOURCE
         )
 
 set ( PROJECT_LINK_LIBS sfml-graphics sfml-audio)
+find_package(nlohmann_json 3.7.0 REQUIRED)
+find_package(websocketpp REQUIRED)
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
+#fuege lib hinzu, damit ich in anderen directories dagegen linken kann, siehe test!
+add_library(Game ${SOURCE})
 
-add_executable(app ${SOURCE} )
+#fuer das ausführen des eigentlichen spiels
+add_executable(app ${SOURCE} Stone.cpp Stone.h Tile.cpp Tile.h)
 
 target_link_libraries(app ${PROJECT_LINK_LIBS}
         logger
+        nlohmann_json::nlohmann_json
         )

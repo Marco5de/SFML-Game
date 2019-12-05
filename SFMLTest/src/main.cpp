@@ -17,9 +17,6 @@ int main() {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    LOG("Hallo Welt");
-    LOG_WARN("Hallo Warning");
-    LOG_ERR("Hallo ERR");
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Hexxagon", sf::Style::Titlebar | sf::Style::Close,settings);
     window.setFramerateLimit(60);
@@ -30,6 +27,7 @@ int main() {
 
     Controller controller(WINDOW_HEIGHT,WINDOW_WIDTH,8,window);
     controller.initController();
+    LOG("Init erolgreich: starte Loop");
     controller.loop();
 
 

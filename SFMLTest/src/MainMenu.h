@@ -11,6 +11,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Game.h"
 
@@ -62,6 +63,8 @@ private:
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
     sf::RenderWindow &mainMenuWindow;   /**< RenderWindow in which the mainMenu is drawn */
+
+    sf::Music music;
 
     /* todo implement */
     std::vector<sf::Drawable> drawableVector; /**< vector containing all the drawables to simplify the drawing porcess, currently NOT used */

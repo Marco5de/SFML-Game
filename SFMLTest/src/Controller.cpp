@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "Controller.h"
+#define LOGGING_LEVEL_1
+#include "logger.h"
 
 
 Controller::Controller(const unsigned int windowHeight, const unsigned int windowWidth,
@@ -36,6 +38,7 @@ void Controller::initController() {
     //todo remove, just for testing
     gameView.setScore(17, 12);
     gameView.setMoveTracker(false);
+    LOG("Init Controller Done");
 }
 
 void Controller::loop() {

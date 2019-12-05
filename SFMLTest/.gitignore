@@ -3,6 +3,7 @@ reated by https://www.gitignore.io/api/c++,clion
 out
 nameConfig.txt
 *.log
+*.wav
 ### C++ ###
 # Prerequisites
 *.d
