@@ -365,7 +365,6 @@ void GameView::checkPlayingField(bool movedStoneRed,int target) {
         if(playingField[id].empty)
             continue;
         if(!playingField[id].red && movedStoneRed){
-            std::cout << "StoneID: " << playingField[id].stoneID << std::endl;
             auto it = blueStones.begin() + playingField[id].stoneID;
             blueStones.erase(it);
 
@@ -378,6 +377,19 @@ void GameView::checkPlayingField(bool movedStoneRed,int target) {
             playingField[id].empty = false;
             playingField[id].red = true;
             playingField[id].stoneID = redStones.size()-1;
+        }else if(playingField[id].red && !movedStoneRed){
+            auto it = redStones.begin() + playingField[id].stoneID;
+            redStones.erase(it);
+
+            blueStones.emplace_back(true,sf::CircleShape(15));
+            blueStones[blueStones.size()-1].setField(id);
+            blueStones[blueStones.size()-1].moveToField(playingField[id].shape);
+            blueStones[blueStones.size()-1].shape.setOutlineColor(sf::Color::Black);
+            blueStones[blueStones.size()-1].shape.setOutlineThickness(5);
+            blueStones[blueStones.size()-1].shape.setFillColor(sf::Color::Blue);
+            playingField[id].empty = false;
+            playingField[id].red = false;
+            playingField[id].stoneID = blueStones.size()-1;
         }
     }
 }
