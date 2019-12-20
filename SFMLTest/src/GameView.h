@@ -22,6 +22,7 @@
 #include "Stone.h"
 #include "Tile.h"
 #include "GameMoveChecker.h"
+#include "GUIView.h"
 
 
 #define GAMEVIEW_IMAGELOADING_ERROR ((-1))
@@ -40,11 +41,11 @@ enum class State{
 
 
 
-class GameView{
+class GameView : GUIView{
 public:
     GameView(sf::RenderWindow &gameWindow,  GameProperties &gameProperties);
-    int initGameView();
-    int handleGameView();
+    int init() override;
+    int handleWindow() override;
     void setScore(int scoreRed, int scoreBlue);
     void setMoveTracker(bool red);
 
@@ -93,8 +94,8 @@ private:
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
 
     void createPlayingField();
-    void handleMouseCursour();
-    void handleEvent();
+    void handleMouseCursor() override;
+    void handleEvent() override;
     bool isInside(sf::CircleShape &shape );
     void moveStone(int target);
     void highlightValidMoves(Tile &tile);

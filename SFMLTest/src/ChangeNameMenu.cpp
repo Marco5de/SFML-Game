@@ -19,7 +19,7 @@ ChangeNameMenu::ChangeNameMenu(sf::RenderWindow &window,
 }
 
 
-int ChangeNameMenu::initChangeNameMenu() {
+int ChangeNameMenu::init() {
     if (!menuFont.loadFromFile(FONT))
         return NAME_MENU_FONTLOADING_ERROR;
     if (!backgroundImage.loadFromFile(BACKGROUND_IMAGE))
@@ -66,8 +66,8 @@ int ChangeNameMenu::initChangeNameMenu() {
 }
 
 
-void ChangeNameMenu::handleChangeNameMenu() {
-    handleMouseCursour();
+int ChangeNameMenu::handleWindow() {
+    handleMouseCursor();
     while (changeNameWindow.pollEvent(event)) {
         handleEvent();
     }
@@ -84,7 +84,7 @@ void ChangeNameMenu::handleChangeNameMenu() {
 
 }
 
-void ChangeNameMenu::handleMouseCursour() {
+void ChangeNameMenu::handleMouseCursor() {
     currMousePos = sf::Mouse::getPosition(changeNameWindow);
     currWorldMousePos = changeNameWindow.mapPixelToCoords(currMousePos);
 }

@@ -44,7 +44,7 @@ GameView::GameView(sf::RenderWindow &gw, GameProperties &gameProperties)
  *
  * @return
  */
-int GameView::initGameView() {
+int GameView::init() {
     if (!playingFieldTexture.loadFromFile(IMAGE_PLAYINGFIELD_PATH))
         return GAMEVIEW_IMAGELOADING_ERROR;
     if (!playingFieldVoidTexture.loadFromFile(IMAGE_PLAYINGFIELDVOID_PATH))
@@ -214,8 +214,8 @@ void GameView::createPlayingField() {
     }
 }
 
-int GameView::handleGameView() {
-    handleMouseCursour();
+int GameView::handleWindow() {
+    handleMouseCursor();
 
     while (gameWindow.pollEvent(event)) {
         handleEvent();
@@ -344,7 +344,7 @@ bool GameView::isInside(sf::CircleShape &shape) {
     return v / 2 * h / 2 - v / 4 * transformed.x - h / 2 * transformed.y >= 0;
 }
 
-void GameView::handleMouseCursour() {
+void GameView::handleMouseCursor() {
     //get current mouse position relative to the window and convert from images coords to global coords
     currMousePos = sf::Mouse::getPosition(gameWindow);
     currWorldMousePos = gameWindow.mapPixelToCoords(currMousePos);

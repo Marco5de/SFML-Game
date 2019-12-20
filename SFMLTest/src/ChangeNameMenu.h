@@ -12,6 +12,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "Game.h"
+#include "GUIView.h"
 
 //todo documentation copied from main menu
 
@@ -19,11 +20,11 @@
 #define NAME_MENU_FONTLOADING_ERROR ((-1))
 #define NAME_MENU_IMAGELOADING_ERROR ((-2))
 
-class ChangeNameMenu {
+class ChangeNameMenu : public GUIView{
 public:
     ChangeNameMenu(sf::RenderWindow &window, GameProperties &gameProperties);
-    int initChangeNameMenu();
-    void handleChangeNameMenu();
+    int init() override;
+    int handleWindow() override;
 
 private:
     const int windowWidth;     /**< Width of the window (not resizeable) */
@@ -51,8 +52,8 @@ private:
     sf::RenderWindow &changeNameWindow;   /**< RenderWindow in which the mainMenu is drawn */
     //gameState *currentGameState;
 
-    void handleEvent();
-    void handleMouseCursour();
+    void handleEvent() override;
+    void handleMouseCursor() override;
 
 };
 

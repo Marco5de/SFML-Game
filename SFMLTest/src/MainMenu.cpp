@@ -13,6 +13,7 @@
 #include "Centering.h"
 
 #define LOGGING_LEVEL_1
+
 #include "logger.h"
 
 #define VOLUME 0
@@ -37,8 +38,11 @@
  * @param windowHeight          height of the given window
  */
 MainMenu::MainMenu(sf::RenderWindow &window, GameProperties &gameProperties)
-        : windowWidth(gameProperties.WINDOW_WIDTH),
-          windowHeight(gameProperties.WINDOW_HEIGHT), mainMenuWindow(window),gameProperties(gameProperties) {;
+        : renderWindow(window),
+          gameProperties(gameProperties),
+          windowWidth(gameProperties.WINDOW_WIDTH),
+          windowHeight(gameProperties.WINDOW_HEIGHT) {
+    ;
 }
 
 /**
@@ -47,7 +51,7 @@ MainMenu::MainMenu(sf::RenderWindow &window, GameProperties &gameProperties)
  *
  * @return      MAINMENU_FONTLOADING_ERROR if loading the font failed, MAINMENU_SUCCESS if successfull
  */
-int MainMenu::initMainMenu() {
+int MainMenu::init() {
     if (!mainMenuFont.loadFromFile(FONTS_MAINMENU_PATH))
         return MAINMENU_FONTLOADING_ERROR;
     if (!titleFont.loadFromFile(FONTS_TITLE_PATH))
@@ -121,7 +125,7 @@ int MainMenu::initMainMenu() {
 
     displayName.setFont(mainMenuFont);
     displayName.setCharacterSize(30);
-    Centering::center(nameBackground,displayName);
+    Centering::center(nameBackground, displayName);
     //displayName.setPosition(.35 * windowWidth, .65 * windowHeight);
     LOG("x-Pos : " + std::to_string(displayName.getPosition().x));
     LOG("y-Pos : " + std::to_string(displayName.getPosition().y));
@@ -137,33 +141,33 @@ int MainMenu::initMainMenu() {
  *
  * @return      MAINMENU_SUCCESS if successfull
  */
-int MainMenu::handleMainMenu() {
+int MainMenu::handleWindow() {
     handleMouseCursor();
     //sf::Event event;
-    while (mainMenuWindow.pollEvent(event)) {
+    while (renderWindow.pollEvent(event)) {
         handleEvent();
     }
 
     //Todo sollte nicht jedes mal neu gemacht werden --> erstellen eines rename events!
     std::string name = std::string("Hey ").append(gameProperties.playerName);
     displayName.setString(name);
-    Centering::center(nameBackground,displayName);
+    Centering::center(nameBackground, displayName);
 
-    mainMenuWindow.clear();
-    mainMenuWindow.draw(backgroundSprite);
-    mainMenuWindow.draw(textStartGame);
-    mainMenuWindow.draw(textLeaveGame);
-    mainMenuWindow.draw(backgroundRect);
-    mainMenuWindow.draw(textTitle);
-    mainMenuWindow.draw(menuButton);
-    mainMenuWindow.draw(nameBackground);
-    mainMenuWindow.draw(displayName);
+    renderWindow.clear();
+    renderWindow.draw(backgroundSprite);
+    renderWindow.draw(textStartGame);
+    renderWindow.draw(textLeaveGame);
+    renderWindow.draw(backgroundRect);
+    renderWindow.draw(textTitle);
+    renderWindow.draw(menuButton);
+    renderWindow.draw(nameBackground);
+    renderWindow.draw(displayName);
     if (menuOpen) {
-        mainMenuWindow.draw(subMenuBackground);
-        mainMenuWindow.draw(subMenuChangeName);
+        renderWindow.draw(subMenuBackground);
+        renderWindow.draw(subMenuChangeName);
     }
 
-    mainMenuWindow.display();
+    renderWindow.display();
 
 
     return MAINMENU_SUCCESS;
@@ -176,8 +180,8 @@ int MainMenu::handleMainMenu() {
  */
 void MainMenu::handleMouseCursor() {
     //get current mouse position relative to the window and convert from images coords to global coords
-    currMousePos = sf::Mouse::getPosition(mainMenuWindow);
-    currWorldMousePos = mainMenuWindow.mapPixelToCoords(currMousePos);
+    currMousePos = sf::Mouse::getPosition(renderWindow);
+    currWorldMousePos = renderWindow.mapPixelToCoords(currMousePos);
     if (textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
         textStartGame.setColor(sf::Color::Cyan);
     } else {
@@ -194,24 +198,25 @@ void MainMenu::handleMouseCursor() {
 
 void MainMenu::handleEvent() {
     if (event.type == sf::Event::Closed)
-        mainMenuWindow.close();
+        renderWindow.close();
     else if (event.type == sf::Event::MouseButtonPressed &&
              textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
         gameProperties.currentGameState = gameState::INGAME;
     else if (event.type == sf::Event::MouseButtonPressed &&
              textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-        mainMenuWindow.close();
+        renderWindow.close();
 
     if (event.type == sf::Event::MouseButtonPressed &&
         menuButton.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
         menuOpen ? menuOpen = false : menuOpen = true;
 
-    if(menuOpen){
-        if(event.type == sf::Event::MouseButtonPressed && subMenuChangeName.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y)) {
+    if (menuOpen) {
+        if (event.type == sf::Event::MouseButtonPressed &&
+            subMenuChangeName.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
             gameProperties.currentGameState = gameState::CHANGENAME;
             //todo verursacht flicker, weil frame nochmal gemalt wird, bevor screen gewechselt wird
             menuOpen = false;
-            mainMenuWindow.setKeyRepeatEnabled(true);
+            renderWindow.setKeyRepeatEnabled(true);
         }
 
     }

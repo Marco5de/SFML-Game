@@ -11,18 +11,11 @@
 
 class GUIView{
 public:
-    GUIView(sf::RenderWindow &window,GameProperties &gameProperties) : window(window), gameProperties(gameProperties){}
     virtual int init() = 0;
     virtual int handleWindow() = 0;
 private:
-    sf::Event event;
-    sf::RenderWindow &window;
-    sf::Vector2i currRelMousePos;
-    sf::Vector2f currWorldMousePos;
-    GameProperties &gameProperties;
-
     virtual void handleMouseCursor() = 0;
-    virtual void handleEvnet() = 0;
+    virtual void handleEvent() = 0;
 };
 
 #endif //SFMLTEST_GUIVIEW_H
