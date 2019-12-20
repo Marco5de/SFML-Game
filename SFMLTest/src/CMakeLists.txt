@@ -13,16 +13,17 @@ file(GLOB SOURCE
 
 set ( PROJECT_LINK_LIBS sfml-graphics sfml-audio)
 find_package(nlohmann_json 3.7.0 REQUIRED)
-find_package(websocketpp REQUIRED)
+#find_package(websocketpp REQUIRED)
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 #fuege lib hinzu, damit ich in anderen directories dagegen linken kann, siehe test!
 add_library(Game ${SOURCE})
 
 #fuer das ausführen des eigentlichen spiels
-add_executable(app ${SOURCE} Stone.cpp Stone.h Tile.cpp Tile.h)
+add_executable(app ${SOURCE} Stone.cpp Stone.h Tile.cpp Tile.h GameMoveChecker.cpp GameMoveChecker.h ../Utils/GUI/Include/Centering.h GUIView.h)
 
 target_link_libraries(app ${PROJECT_LINK_LIBS}
         logger
+        centering
         nlohmann_json::nlohmann_json
         )

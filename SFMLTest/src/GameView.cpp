@@ -358,24 +358,29 @@ void GameView::handleMouseCursour() {
     //todo --> fit circle shape in hexagon, that is fully contained!
     //todo remove code douplitcation! --> combine handle cursor and handleEvent
     if (!menuOpen) {
-        //Todo warum klappt das nicht, wenn ich das in der anderen for mache?!
         for(int i=0; i<61;i++){
             playingField[i].shape.setOutlineColor(sf::Color::White);
             playingField[i].shape.setOutlineThickness(1);
         }
         for (auto &tile : playingField) {
-            if (isInside(tile.shape)) {
-                tile.shape.setOutlineColor(sf::Color::Yellow);
-                //todo das alle hier schön in fkt packen! und die markierten dürfen unten im else nicht wieder weiß gemacht werden! --
-                for(int id : neighbors[tile.getID()]){
-                    playingField[id].shape.setOutlineColor(sf::Color::Magenta);
-                    playingField[id].shape.setOutlineThickness(2.5);
+            if (isInside(tile.shape))
+                highlightValidMoves(tile);
 
-                }
-            }
         }
     }
 
+}
+
+void GameView::highlightValidMoves(Tile &tile) {
+    auto indirectNeighbors = moveChecker.getIndirectNeighbors(tile);
+    for(int id : neighbors[tile.getID()]){
+        playingField[id].shape.setOutlineColor(sf::Color::Yellow);
+        playingField[id].shape.setOutlineThickness(2.5);
+    }
+    for(int id : indirectNeighbors){
+        playingField[id].shape.setOutlineColor(sf::Color::Green);
+        playingField[id].shape.setOutlineThickness(2.5);
+    }
 }
 
 

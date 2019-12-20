@@ -21,6 +21,7 @@
 #include "Game.h"
 #include "Stone.h"
 #include "Tile.h"
+#include "GameMoveChecker.h"
 
 
 #define GAMEVIEW_IMAGELOADING_ERROR ((-1))
@@ -85,6 +86,8 @@ private:
     std::vector<Tile> playingField;
     std::vector<Stone> redStones;
     std::vector<Stone> blueStones;
+    GameMoveChecker moveChecker;
+
 
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
@@ -94,6 +97,7 @@ private:
     void handleEvent();
     bool isInside(sf::CircleShape &shape );
     void moveStone(int target);
+    void highlightValidMoves(Tile &tile);
 
     State state;
     int selectedField;

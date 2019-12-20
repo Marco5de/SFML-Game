@@ -10,11 +10,13 @@
 
 #include <iostream>
 #include "MainMenu.h"
+#include "Centering.h"
 
 #define LOGGING_LEVEL_1
 #include "logger.h"
 
 #define VOLUME 0
+//#define SOUND
 
 
 #define FONTS_MAINMENU_PATH ("Fonts/arial.ttf")
@@ -54,8 +56,10 @@ int MainMenu::initMainMenu() {
         return MAINMENU_IMAGELOADING_ERROR;
     if (!menuTexture.loadFromFile(IMAGE_MAINMENU_MENU_PATH))
         return MAINMENU_IMAGELOADING_ERROR;
+#ifdef SOUND
     if(!music.openFromFile("Sound/fade.wav"))
         return MAINMENU_IMAGELOADING_ERROR;
+
 
 
     music.setVolume(VOLUME);
@@ -63,7 +67,7 @@ int MainMenu::initMainMenu() {
     music.setAttenuation(0);
     music.play();
     LOG("Laden der Musik erfolgreich");
-
+#endif
 
     backgroundSprite.setTexture(backgroundImage);
     menuButton.setTexture(menuTexture);
@@ -117,7 +121,10 @@ int MainMenu::initMainMenu() {
 
     displayName.setFont(mainMenuFont);
     displayName.setCharacterSize(30);
-    displayName.setPosition(.35 * windowWidth, .65 * windowHeight);
+    Centering::center(nameBackground,displayName);
+    //displayName.setPosition(.35 * windowWidth, .65 * windowHeight);
+    LOG("x-Pos : " + std::to_string(displayName.getPosition().x));
+    LOG("y-Pos : " + std::to_string(displayName.getPosition().y));
     displayName.setColor(sf::Color::Magenta);
 
     gameProperties.playerName = std::string("Hey ").append(getStringFromFile("nameConfig.txt"));
@@ -137,9 +144,10 @@ int MainMenu::handleMainMenu() {
         handleEvent();
     }
 
-    //Todo sollte nicht jedes mal neu gemacht werden
+    //Todo sollte nicht jedes mal neu gemacht werden --> erstellen eines rename events!
     std::string name = std::string("Hey ").append(gameProperties.playerName);
     displayName.setString(name);
+    Centering::center(nameBackground,displayName);
 
     mainMenuWindow.clear();
     mainMenuWindow.draw(backgroundSprite);
