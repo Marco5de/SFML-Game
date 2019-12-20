@@ -100,6 +100,9 @@ private:
     void moveStone(int target);
     void highlightValidMoves(Tile &tile);
 
+    //todo logik auslagern
+    void checkPlayingField(bool movedStoneRed,int target);
+
     State state;
     int selectedField;
 };

@@ -11,6 +11,8 @@ file(GLOB SOURCE
         "*.hpp"
         )
 
+
+
 set ( PROJECT_LINK_LIBS sfml-graphics sfml-audio)
 find_package(nlohmann_json 3.7.0 REQUIRED)
 #find_package(websocketpp REQUIRED)
@@ -28,3 +30,5 @@ target_link_libraries(app ${PROJECT_LINK_LIBS}
         wsclient
         nlohmann_json::nlohmann_json
         )
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread")

@@ -5,6 +5,11 @@
 #ifndef SFMLTEST_TILE_H
 #define SFMLTEST_TILE_H
 
+enum FIELD_STATE{
+    RED,
+    BLUE,
+    EMPTY
+};
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include "Stone.h"

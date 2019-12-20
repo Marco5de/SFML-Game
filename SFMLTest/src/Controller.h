@@ -9,6 +9,10 @@
 #include "MainMenu.h"
 #include "GameView.h"
 #include "ChangeNameMenu.h"
+#include "easywsclient.h"
+#include <thread>
+
+using easywsclient::WebSocket;
 
 class Controller {
 public:
@@ -22,10 +26,14 @@ private:
     GameView gameView;
     ChangeNameMenu changeNameMenu;
 
+    WebSocket::pointer ws;
+    std::thread networkThread;
 
     void handleGUI();
+    void networkTest();
 
 };
+
 
 
 #endif //SFMLTEST_CONTROLLER_H

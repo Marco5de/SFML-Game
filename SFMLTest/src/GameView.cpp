@@ -261,7 +261,6 @@ void GameView::handleEvent() {
         gameWindow.close();
     if (event.type == sf::Event::MouseButtonPressed &&
         menuText.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
-        //*currentGameState = gameState::MAINMENU;
         menuOpen ? menuOpen = false : menuOpen = true;
     }
     //Todo fix, that field are double detected by checking if in close proximity of oriign
@@ -309,22 +308,78 @@ void GameView::handleEvent() {
 
 
 void GameView::moveStone(int localTarget) {
-    LOG("Target Field selected #" + std::to_string(localTarget));
-    if(playingField[selectedField].red ){
-        redStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
-        redStones[playingField[selectedField].stoneID].setField(localTarget);
-        playingField[localTarget].red = true;
-    }else{
-        blueStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
-        blueStones[playingField[selectedField].stoneID].setField(localTarget);
-        playingField[localTarget].red = false;
+    int status = moveChecker.checkMove(selectedField,localTarget);
+    bool red = false;
+    if(!status)
+        return;
+    if(status == SIMPLE_MOVE) {
+        if (playingField[selectedField].red) {
+            redStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
+            redStones[playingField[selectedField].stoneID].setField(localTarget);
+            playingField[localTarget].red = true;
+            red = true;
+        } else {
+            blueStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
+            blueStones[playingField[selectedField].stoneID].setField(localTarget);
+            playingField[localTarget].red = false;
+        }
+        //todo später hier züge erkennen gegenfalls anders machen
+        playingField[selectedField].empty = true;
+        playingField[localTarget].empty = false;
+        playingField[localTarget].stoneID = playingField[selectedField].stoneID;
+        playingField[selectedField].stoneID = -1;
+    } else if (status == DUPLICATE){
+        //Todo Duplicate Stone
+        if(playingField[selectedField].red){
+            redStones.emplace_back(true,sf::CircleShape(15));
+            redStones[redStones.size()-1].setField(localTarget);
+            redStones[redStones.size()-1].moveToField(playingField[localTarget].shape);
+            redStones[redStones.size()-1].shape.setOutlineColor(sf::Color::Black);
+            redStones[redStones.size()-1].shape.setOutlineThickness(5);
+            redStones[redStones.size()-1].shape.setFillColor(sf::Color::Red);
+            playingField[localTarget].empty = false;
+            playingField[localTarget].red = true;
+            playingField[localTarget].stoneID = redStones.size()-1;
+            red = true;
+        }else{
+            blueStones.emplace_back(false,sf::CircleShape(15));
+            blueStones[blueStones.size()-1].setField(localTarget);
+            blueStones[blueStones.size()-1].moveToField(playingField[localTarget].shape);
+            blueStones[blueStones.size()-1].shape.setOutlineColor(sf::Color::Black);
+            blueStones[blueStones.size()-1].shape.setOutlineThickness(5);
+            blueStones[blueStones.size()-1].shape.setFillColor(sf::Color::Blue);
+            playingField[localTarget].empty = false;
+            playingField[localTarget].red = false;
+            playingField[localTarget].stoneID = blueStones.size()-1;
+        }
     }
-    //todo später hier züge erkennen gegenfalls anders machen
-    playingField[selectedField].empty = true;
-    playingField[localTarget].empty = false;
-    playingField[localTarget].stoneID = playingField[selectedField].stoneID;
-    playingField[selectedField].stoneID = -1;
 
+    //todo zusammenfassen von nebeneinanderliegenden!
+    checkPlayingField(red,localTarget);
+}
+//todo remove logik from view!, remove duplicate code,
+void GameView::checkPlayingField(bool movedStoneRed,int target) {
+    //ich brauch statt dem boolean ein ENUM! Field RED,BLUE,EMPTY --> damit eindeutig zugeordnet werden kann!
+    std::vector<int> directNeighbors = neighbors[target];
+    for(int id : directNeighbors){
+        if(playingField[id].empty)
+            continue;
+        if(!playingField[id].red && movedStoneRed){
+            std::cout << "StoneID: " << playingField[id].stoneID << std::endl;
+            auto it = blueStones.begin() + playingField[id].stoneID;
+            blueStones.erase(it);
+
+            redStones.emplace_back(true,sf::CircleShape(15));
+            redStones[redStones.size()-1].setField(id);
+            redStones[redStones.size()-1].moveToField(playingField[id].shape);
+            redStones[redStones.size()-1].shape.setOutlineColor(sf::Color::Black);
+            redStones[redStones.size()-1].shape.setOutlineThickness(5);
+            redStones[redStones.size()-1].shape.setFillColor(sf::Color::Red);
+            playingField[id].empty = false;
+            playingField[id].red = true;
+            playingField[id].stoneID = redStones.size()-1;
+        }
+    }
 }
 
 bool GameView::isInside(sf::CircleShape &shape) {
