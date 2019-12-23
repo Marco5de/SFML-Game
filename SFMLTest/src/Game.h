@@ -95,6 +95,7 @@ const std::array<const std::vector<int>,NUMBER_TILES> neighbors = {
 
 enum class gameState{
     MAINMENU,
+    LOBBY,
     INGAME,
     CHANGENAME
 };

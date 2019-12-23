@@ -24,9 +24,6 @@
 #define TEXTRESSOURCES_HELPTEXT ("TextRessources/help.txt")
 
 
-
-
-
 /**
  *
  * @param gameWindow
@@ -310,6 +307,9 @@ void GameView::moveStone(int localTarget) {
     bool red = false;
     if(!status)
         return;
+
+    // Todo hier kann im Grunde auch lokal aufgehört werden und einfach eine Servernachricht gesendet werden
+    // denn es wird nur der Move von feld x -> y gebraucht und ob der valide ist --> hier schon alles bekannt!
 
     if(status == SIMPLE_MOVE) {
         if (playingField[selectedField].fieldstate == FIELD_STATE::RED) {

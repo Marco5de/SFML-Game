@@ -16,7 +16,9 @@ Controller::Controller(const unsigned int windowHeight, const unsigned int windo
         gameProperties(windowWidth, windowHeight, aliasingLevel, window),
         mainMenu(gameProperties.window, gameProperties),
         gameView(gameProperties.window, gameProperties),
-        changeNameMenu(gameProperties.window, gameProperties) {}
+        changeNameMenu(gameProperties.window, gameProperties),
+        lobbyOverview(gameProperties.window,gameProperties)
+        {}
 
 void Controller::initController() {
     gameProperties.window.setFramerateLimit(60);
@@ -34,6 +36,11 @@ void Controller::initController() {
 
     if (changeNameMenu.init() != NAME_MENU_SUCCESS) {
         std::cout << "Error initting name change menu. Exiting with error code 1" << std::endl;
+        std::exit(1);
+    }
+
+    if (lobbyOverview.init() != MAINMENU_SUCCESS) {
+        std::cout << "Error initting lobby view. Exiting with error code 1" << std::endl;
         std::exit(1);
     }
 
@@ -61,6 +68,9 @@ void Controller::handleGUI() {
         switch (gameProperties.currentGameState) {
             case gameState::MAINMENU:
                 mainMenu.handleWindow();
+                break;
+            case gameState::LOBBY:
+                lobbyOverview.handleWindow();
                 break;
             case gameState::INGAME:
                 gameView.handleWindow();

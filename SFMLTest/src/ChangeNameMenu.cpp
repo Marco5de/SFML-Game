@@ -61,6 +61,7 @@ int ChangeNameMenu::init() {
     returnToMainMenu.setOutlineColor(sf::Color::Black);
     returnToMainMenu.setOutlineThickness(50);
 
+
     LOG("Init changeNameMenu done");
     return NAME_MENU_SUCCESS;
 }

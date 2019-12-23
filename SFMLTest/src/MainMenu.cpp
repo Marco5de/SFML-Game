@@ -201,7 +201,7 @@ void MainMenu::handleEvent() {
         renderWindow.close();
     else if (event.type == sf::Event::MouseButtonPressed &&
              textStartGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-        gameProperties.currentGameState = gameState::INGAME;
+        gameProperties.currentGameState = gameState::LOBBY;
     else if (event.type == sf::Event::MouseButtonPressed &&
              textLeaveGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
         renderWindow.close();

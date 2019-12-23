@@ -9,6 +9,7 @@
 #include "MainMenu.h"
 #include "GameView.h"
 #include "ChangeNameMenu.h"
+#include "LobbyOverview.h"
 #include "easywsclient.h"
 #include <thread>
 
@@ -25,6 +26,7 @@ private:
     MainMenu mainMenu;
     GameView gameView;
     ChangeNameMenu changeNameMenu;
+    LobbyOverview lobbyOverview;
 
     WebSocket::pointer ws;
     std::thread networkThread;
