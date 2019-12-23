@@ -168,8 +168,7 @@ int GameView::init() {
         redStones[i].shape.setOutlineColor(sf::Color::Black);
         redStones[i].shape.setOutlineThickness(5);
         redStones[i].shape.setFillColor(sf::Color::Red);
-        playingField[redIndex].empty = false;
-        playingField[redIndex].red = true;
+        playingField[redIndex].fieldstate = FIELD_STATE::RED;
         playingField[redIndex].stoneID = i;
 
         blueStones.emplace_back(false, sf::CircleShape(15));
@@ -178,8 +177,7 @@ int GameView::init() {
         blueStones[i].shape.setOutlineColor(sf::Color::Black);
         blueStones[i].shape.setOutlineThickness(5);
         blueStones[i].shape.setFillColor(sf::Color::Blue);
-        playingField[blueIndex].empty = false;
-        playingField[blueIndex].red = false;
+        playingField[blueIndex].fieldstate = FIELD_STATE::BLUE;
         playingField[blueIndex].stoneID = i;
     }
     setScore(blueStones.size(), redStones.size());
@@ -278,7 +276,7 @@ void GameView::handleEvent() {
         if (count == 1) {
             switch (state) {
                 case State::SELECTION:
-                    if (!playingField[localTarget].empty) {
+                    if (playingField[localTarget].fieldstate != FIELD_STATE::EMPTY) {
                         state = State::FIELD_SELECTED;
                         selectedField = localTarget;
                         LOG("Field selected #" + std::to_string(selectedField));
@@ -286,7 +284,7 @@ void GameView::handleEvent() {
                     break;
                 case State::FIELD_SELECTED:
                     //check that selected field is empty and non void
-                    if (playingField[localTarget].empty &&
+                    if (playingField[localTarget].fieldstate == FIELD_STATE::EMPTY &&
                         !(std::find(forbiddenFields.begin(), forbiddenFields.end(), localTarget + 1) != forbiddenFields.end())) {
                         moveStone(localTarget);
                         state = State::SELECTION;
@@ -312,33 +310,34 @@ void GameView::moveStone(int localTarget) {
     bool red = false;
     if(!status)
         return;
+
     if(status == SIMPLE_MOVE) {
-        if (playingField[selectedField].red) {
+        if (playingField[selectedField].fieldstate == FIELD_STATE::RED) {
             redStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
             redStones[playingField[selectedField].stoneID].setField(localTarget);
-            playingField[localTarget].red = true;
+            playingField[localTarget].fieldstate = FIELD_STATE::RED;
             red = true;
         } else {
             blueStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
             blueStones[playingField[selectedField].stoneID].setField(localTarget);
-            playingField[localTarget].red = false;
+            //playingField[localTarget].red = false;
+            playingField[localTarget].fieldstate = FIELD_STATE::BLUE;
         }
         //todo später hier züge erkennen gegenfalls anders machen
-        playingField[selectedField].empty = true;
-        playingField[localTarget].empty = false;
+        //playingField[selectedField].empty = true;
+        playingField[selectedField].fieldstate = FIELD_STATE::EMPTY;
         playingField[localTarget].stoneID = playingField[selectedField].stoneID;
-        playingField[selectedField].stoneID = -1;
+        playingField[selectedField].stoneID = -1; //todo mögliche Fehlerquelle!
     } else if (status == DUPLICATE){
         //Todo Duplicate Stone
-        if(playingField[selectedField].red){
+        if(playingField[selectedField].fieldstate == FIELD_STATE::RED){
             redStones.emplace_back(true,sf::CircleShape(15));
             redStones[redStones.size()-1].setField(localTarget);
             redStones[redStones.size()-1].moveToField(playingField[localTarget].shape);
             redStones[redStones.size()-1].shape.setOutlineColor(sf::Color::Black);
             redStones[redStones.size()-1].shape.setOutlineThickness(5);
             redStones[redStones.size()-1].shape.setFillColor(sf::Color::Red);
-            playingField[localTarget].empty = false;
-            playingField[localTarget].red = true;
+            playingField[localTarget].fieldstate = FIELD_STATE::RED;
             playingField[localTarget].stoneID = redStones.size()-1;
             red = true;
         }else{
@@ -348,8 +347,7 @@ void GameView::moveStone(int localTarget) {
             blueStones[blueStones.size()-1].shape.setOutlineColor(sf::Color::Black);
             blueStones[blueStones.size()-1].shape.setOutlineThickness(5);
             blueStones[blueStones.size()-1].shape.setFillColor(sf::Color::Blue);
-            playingField[localTarget].empty = false;
-            playingField[localTarget].red = false;
+            playingField[localTarget].fieldstate = FIELD_STATE::BLUE;
             playingField[localTarget].stoneID = blueStones.size()-1;
         }
     }
@@ -362,9 +360,9 @@ void GameView::checkPlayingField(bool movedStoneRed,int target) {
     //ich brauch statt dem boolean ein ENUM! Field RED,BLUE,EMPTY --> damit eindeutig zugeordnet werden kann!
     std::vector<int> directNeighbors = neighbors[target];
     for(int id : directNeighbors){
-        if(playingField[id].empty)
+        if(playingField[id].fieldstate == FIELD_STATE::EMPTY)
             continue;
-        if(!playingField[id].red && movedStoneRed){
+        if(!(playingField[id].fieldstate == FIELD_STATE::RED) && movedStoneRed){
             auto it = blueStones.begin() + playingField[id].stoneID;
             blueStones.erase(it);
 
@@ -374,10 +372,9 @@ void GameView::checkPlayingField(bool movedStoneRed,int target) {
             redStones[redStones.size()-1].shape.setOutlineColor(sf::Color::Black);
             redStones[redStones.size()-1].shape.setOutlineThickness(5);
             redStones[redStones.size()-1].shape.setFillColor(sf::Color::Red);
-            playingField[id].empty = false;
-            playingField[id].red = true;
+            playingField[id].fieldstate = FIELD_STATE::RED;
             playingField[id].stoneID = redStones.size()-1;
-        }else if(playingField[id].red && !movedStoneRed){
+        }else if(playingField[id].fieldstate == FIELD_STATE::RED && !movedStoneRed){
             auto it = redStones.begin() + playingField[id].stoneID;
             redStones.erase(it);
 
@@ -387,8 +384,7 @@ void GameView::checkPlayingField(bool movedStoneRed,int target) {
             blueStones[blueStones.size()-1].shape.setOutlineColor(sf::Color::Black);
             blueStones[blueStones.size()-1].shape.setOutlineThickness(5);
             blueStones[blueStones.size()-1].shape.setFillColor(sf::Color::Blue);
-            playingField[id].empty = false;
-            playingField[id].red = false;
+            playingField[id].fieldstate = FIELD_STATE::BLUE;
             playingField[id].stoneID = blueStones.size()-1;
         }
     }

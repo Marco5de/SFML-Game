@@ -18,12 +18,10 @@ class Tile {
 public:
     Tile(sf::CircleShape shape,int id);
     sf::CircleShape shape;
-    //Stone &stone;
-    bool empty{true};
-    //todo hacky find better way!
-    bool red;
+
     int stoneID;
     int getID();
+    FIELD_STATE fieldstate{FIELD_STATE::EMPTY};
 
 private:
     const int id;
