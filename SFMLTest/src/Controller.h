@@ -13,6 +13,17 @@
 #include "easywsclient.h"
 #include <thread>
 
+#include "Game.h"
+#include "Network.h"
+#include "Messages/GetAvailableLobbies.h"
+#include "Messages/CreateNewLobby.h"
+#include "Messages/JoinLobby.h"
+#include "Messages/LeaveLobby.h"
+#include "Messages/StartGame.h"
+#include "Messages/GameMove.h"
+#include "Messages/LeaveGame.h"
+#include "Messages/IncomingMessageParser.h"
+
 using easywsclient::WebSocket;
 
 class Controller {
@@ -29,9 +40,12 @@ private:
     LobbyOverview lobbyOverview;
 
     WebSocket::pointer ws;
-    std::thread networkThread;
+    //std::thread networkThread;
+    IncomingMessageParser messageParser;
+
 
     void handleGUI();
+    void handleNetwork();
     void networkTest();
 
 };

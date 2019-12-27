@@ -12,6 +12,7 @@
 #include "Messages/GameMove.h"
 #include "Messages/LeaveGame.h"
 #include <nlohmann/json.hpp>
+#include "Messages/IncomingMessageParser.h"
 
 using json = nlohmann::json;
 
@@ -19,7 +20,7 @@ using json = nlohmann::json;
 #define LOGGING_LEVEL_1
 //#define LOGGING_FILE
 #include "logger.h"
-#include "Messages/IncomingMessageParser.h"
+
 
 
 #define WINDOW_WIDTH 1280

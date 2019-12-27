@@ -11,13 +11,15 @@
 #include "logger.h"
 
 
+
 Controller::Controller(const unsigned int windowHeight, const unsigned int windowWidth,
                        const unsigned int aliasingLevel, sf::RenderWindow &window) :
         gameProperties(windowWidth, windowHeight, aliasingLevel, window),
         mainMenu(gameProperties.window, gameProperties),
         gameView(gameProperties.window, gameProperties),
         changeNameMenu(gameProperties.window, gameProperties),
-        lobbyOverview(gameProperties.window,gameProperties)
+        lobbyOverview(gameProperties.window, gameProperties),
+        messageParser()
         {}
 
 void Controller::initController() {
@@ -51,47 +53,51 @@ void Controller::initController() {
     LOG("Init Controller Done")
 
     //todo minimal example --> Todo work on this!
-    ws = WebSocket::from_url("ws://localhost:8080");
+    ws = WebSocket::from_url("ws://localhost:4444");
     assert(ws);
-    networkThread = std::thread(&Controller::networkTest, this);
-    networkThread.detach();
+    //networkThread = std::thread(&Controller::networkTest, this);
+    //networkThread.detach();
+
 }
 
 
 void Controller::loop() {
-    handleGUI();
+    while (gameProperties.window.isOpen()) {
+        handleGUI();
+        handleNetwork();
+    }
+}
+
+void Controller::handleNetwork() {
+    if (ws->getReadyState() != WebSocket::CLOSED) {
+        WebSocket::pointer wsp = &*ws; // <-- because a unique_ptr cannot be copied into a lambda
+        ws->poll(); //does not block by default!
+        ws->dispatch([wsp](const std::string &message) {
+            printf(">>> %s\n", message.c_str());
+        });
+    }
+
+    class GetAvailableLobbies gal(1337);
+    ws->send(gal.getMessageString());
+
 }
 
 
 void Controller::handleGUI() {
-    while (gameProperties.window.isOpen()) {
-        switch (gameProperties.currentGameState) {
-            case gameState::MAINMENU:
-                mainMenu.handleWindow();
-                break;
-            case gameState::LOBBY:
-                lobbyOverview.handleWindow();
-                break;
-            case gameState::INGAME:
-                gameView.handleWindow();
-                break;
-            case gameState::CHANGENAME:
-                changeNameMenu.handleWindow();
-                break;
-        }
+    switch (gameProperties.currentGameState) {
+        case gameState::MAINMENU:
+            mainMenu.handleWindow();
+            break;
+        case gameState::LOBBY:
+            lobbyOverview.handleWindow();
+            break;
+        case gameState::INGAME:
+            gameView.handleWindow();
+            break;
+        case gameState::CHANGENAME:
+            changeNameMenu.handleWindow();
+            break;
     }
+
 }
 
-
-void Controller::networkTest() {
-    ws->send("goodbye");
-    ws->send("hello");
-    while (ws->getReadyState() != WebSocket::CLOSED) {
-        WebSocket::pointer wsp = &*ws; // <-- because a unique_ptr cannot be copied into a lambda
-        ws->poll();
-        ws->dispatch([wsp](const std::string &message) {
-            printf(">>> %s\n", message.c_str());
-            if (message == "world") { wsp->close(); }
-        });
-    }
-}

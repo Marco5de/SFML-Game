@@ -5,8 +5,9 @@
 #ifndef SFMLTEST_NETWORK_H
 #define SFMLTEST_NETWORK_H
 
-#include <easywsclient.h>
+
 #include <nlohmann/json.hpp>
+#include "../Utils/Network/Include/easywsclient.h"
 
 using easywsclient::WebSocket;
 
