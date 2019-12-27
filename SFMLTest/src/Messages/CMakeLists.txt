@@ -7,4 +7,4 @@ file(GLOB SOURCE
         "*.hpp"
         )
 
-add_executable(messages ${SOURCE} StartGame.cpp StartGame.h LeaveGame.cpp LeaveGame.h)
+add_executable(messages ${SOURCE} StartGame.cpp StartGame.h LeaveGame.cpp LeaveGame.h IncomingMessageParser.cpp IncomingMessageParser.h)

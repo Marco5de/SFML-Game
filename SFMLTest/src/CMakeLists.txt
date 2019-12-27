@@ -41,6 +41,7 @@ add_executable(app ${SOURCE} Stone.cpp
         Messages/StartGame.h Messages/StartGame.cpp
         Messages/GameMove.cpp Messages/GameMove.h
         Messages/LeaveGame.h Messages/LeaveGame.cpp
+        Messages/IncomingMessageParser.h Messages/IncomingMessageParser.cpp
         )
 
 target_link_libraries(app ${PROJECT_LINK_LIBS}

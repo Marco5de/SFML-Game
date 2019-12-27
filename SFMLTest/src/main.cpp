@@ -3,6 +3,7 @@
 #include "Controller.h"
 
 #include "Game.h"
+#include "Network.h"
 #include "Messages/GetAvailableLobbies.h"
 #include "Messages/CreateNewLobby.h"
 #include "Messages/JoinLobby.h"
@@ -10,24 +11,114 @@
 #include "Messages/StartGame.h"
 #include "Messages/GameMove.h"
 #include "Messages/LeaveGame.h"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 
 #define LOGGING_LEVEL_1
 //#define LOGGING_FILE
 #include "logger.h"
+#include "Messages/IncomingMessageParser.h"
 
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
-void test(){
+std::string getExJson(MessageType type) {
+    json j;
+    switch (type) {
+        case MessageType::Welcome:
+            j["messageType"] = MessageType::Welcome;
+            j["userId"] = 1337;
+            j["welcomeMessage"] = "Hallo du bist hier drinne";
+            break;
+        case MessageType::AvailableLobbies:
+            j["messageType"] = MessageType::AvailableLobbies;
+            j["userId"] = 1337;
+            j["availableLobbies"] =
+                    {"objects", {
+                            {"object", {
+                                    {"address", "adr1"},
+                            },},
+                            {"object", {
+                                    {"address", "adr2"},
+                            },},
+                            {"object", {
+                                    {"address", "adr3"},
+                            },},
+                    },
+                    };
+            break;
+        case MessageType::LobbyCreated:
+            j["messageType"] = MessageType::LobbyCreated;
+            j["userId"] = 1337;
+            j["lobbyId"] = 6969;
+            j["successfullyCreated"] = true;
+            break;
+        case MessageType::LobbyJoined:
+            j["messageType"] = MessageType::LobbyJoined;
+            j["userId"] = 1337;
+            j["lobbyId"] = 6969;
+            j["successfullyJoined"] = false;
+            break;
+        case MessageType::LobbyStatus:
+            j["messageType"] = MessageType::LobbyStatus;
+            j["userId"] = 1337;
+            j["lobbyId"] = 6969;
+            j["lobby"] = "Todo lobby einfügen!";
+            break;
+
+        case MessageType::GameStarted:
+            j["messageType"] = MessageType::GameStarted;
+            j["userId"] = 1337;
+            j["gameId"] = 6969;
+            j["creationDate"] = "20:02:53_02-01-2020";
+            break;
+        case MessageType::GameStatus:
+            j["messageType"] = MessageType::GameStatus;
+            j["userId"] = 1337;
+            j["gameId"] = 6969;
+            j["playerOne"] = "Hier muss UUID hin";
+            j["playerTwo"] = "Hier muss UUID hin 2";
+            j["playerOneUserName"] = "UsernameP1";
+            j["playerTwoUserName"] = "UsernameP2";
+            j["playerOneLeft"] = false;
+            j["playerTwoLeft"] = false;
+            j["playerOnePoints"] = 17;
+            j["playerTwoPoints"] = 9;
+            j["board"] = "Hier muss das aktuelle board rein!";
+            j["turn"] = 1;
+            j["lastMoveFrom"] = TileEnum::TILE_4;
+            j["lastMoveTo"] = TileEnum::TILE_42;
+            j["creationDate"] = "20:02:53_02-01-2020";
+            j["actionDate"] = "20:05:32_02-01-2020";
+            j["activePlayer"] = "Hier muss UUID rein";
+            j["tie"] = false;
+            j["winner"] = "hier muss UUID des winners rein";
+            j["isClosed"] = false;
+            break;
+
+        case MessageType::Strike:
+            j["messageType"] = MessageType::Strike;
+            j["userId"] = 1337;
+            j["strikeCount"] = 7;
+            j["maxStrikeCount"] = 14;
+            break;
+    }
+
+    return j.dump();
+
+}
+
+void test() {
     class GetAvailableLobbies gal(1337);
-    class CreateNewLobby cnl(1337,"IBimsLobby");
-    class JoinLobby jl(1337,6969,"UsernamexD");
-    class LeaveLobby ll(1337,6969);
-    class StartGame sg(1337,6969);
-    class GameMove gm(1337,6969,TileEnum::TILE_1,TileEnum::TILE_42);
-    class LeaveGame lg(1337,6969);
+    class CreateNewLobby cnl(1337, "IBimsLobby");
+    class JoinLobby jl(1337, 6969, "UsernamexD");
+    class LeaveLobby ll(1337, 6969);
+    class StartGame sg(1337, 6969);
+    class GameMove gm(1337, 6969, TileEnum::TILE_1, TileEnum::TILE_42);
+    class LeaveGame lg(1337, 6969);
 
     std::cout << "GetAvailableLobbies: " << gal.getMessageString() << std::endl;
     std::cout << "CreateNewLobby: " << cnl.getMessageString() << std::endl;
@@ -37,6 +128,12 @@ void test(){
     std::cout << "GameMove: " << gm.getMessageString() << std::endl;
     std::cout << "LeaveGame: " << lg.getMessageString() << std::endl;
 
+    std::cout << "\n" << std::endl;
+
+    IncomingMessageParser imp;
+    imp.parseMessage(getExJson(Strike));
+
+    std::cout << "\n" << std::endl;
 }
 
 int main() {
@@ -47,14 +144,15 @@ int main() {
     settings.antialiasingLevel = 8;
 
 
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Hexxagon", sf::Style::Titlebar | sf::Style::Close,settings);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML Hexxagon",
+                            sf::Style::Titlebar | sf::Style::Close, settings);
     window.setFramerateLimit(60);
     window.setKeyRepeatEnabled(false);
 
 
-    GameProperties gameProperties(WINDOW_WIDTH,WINDOW_HEIGHT,8,window);
+    GameProperties gameProperties(WINDOW_WIDTH, WINDOW_HEIGHT, 8, window);
 
-    Controller controller(WINDOW_HEIGHT,WINDOW_WIDTH,8,window);
+    Controller controller(WINDOW_HEIGHT, WINDOW_WIDTH, 8, window);
     controller.initController();
     LOG("Init erolgreich: starte Loop");
     controller.loop();
