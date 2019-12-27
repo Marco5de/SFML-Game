@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include "Controller.h"
 
 #define LOGGING_LEVEL_1
