@@ -26,25 +26,12 @@ void Controller::initController() {
     gameProperties.window.setFramerateLimit(60);
     gameProperties.window.setKeyRepeatEnabled(false);
 
-    if (mainMenu.init() != MAINMENU_SUCCESS) {
-        std::cout << "Error initting Main menu. exiting with error code1" << std::endl;
-        std::exit(1);
-    }
 
-    if (gameView.init() != GAMEVIEW_SUCCESS) {
-        std::cout << "Error initting Game View. Exiting with error code 1" << std::endl;
-        std::exit(1);
-    }
+    assert(mainMenu.init() == MAINMENU_SUCCESS);
+    assert(gameView.init() == GAMEVIEW_SUCCESS);
+    assert(changeNameMenu.init() == NAME_MENU_SUCCESS);
+    assert(lobbyOverview.init() == MAINMENU_SUCCESS);
 
-    if (changeNameMenu.init() != NAME_MENU_SUCCESS) {
-        std::cout << "Error initting name change menu. Exiting with error code 1" << std::endl;
-        std::exit(1);
-    }
-
-    if (lobbyOverview.init() != MAINMENU_SUCCESS) {
-        std::cout << "Error initting lobby view. Exiting with error code 1" << std::endl;
-        std::exit(1);
-    }
 
 
     //todo remove, just for testing

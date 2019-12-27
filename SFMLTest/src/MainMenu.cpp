@@ -9,6 +9,7 @@
 
 
 #include <iostream>
+#include <cassert>
 #include "MainMenu.h"
 #include "Centering.h"
 
@@ -16,8 +17,8 @@
 
 #include "logger.h"
 
-#define VOLUME 0
-//#define SOUND
+#define VOLUME 50
+#define SOUND
 
 
 #define FONTS_MAINMENU_PATH ("Fonts/arial.ttf")
@@ -60,11 +61,13 @@ int MainMenu::init() {
         return MAINMENU_IMAGELOADING_ERROR;
     if (!menuTexture.loadFromFile(IMAGE_MAINMENU_MENU_PATH))
         return MAINMENU_IMAGELOADING_ERROR;
+
+    assert(mainMenuFont.loadFromFile(FONTS_MAINMENU_PATH));
+    assert(titleFont.loadFromFile(FONTS_TITLE_PATH));
+    assert(backgroundImage.loadFromFile(BACKGROUNDIMAGE_MAINMENU_PATH));
+    assert(menuTexture.loadFromFile(IMAGE_MAINMENU_MENU_PATH));
 #ifdef SOUND
-    if(!music.openFromFile("Sound/fade.wav"))
-        return MAINMENU_IMAGELOADING_ERROR;
-
-
+    assert(music.openFromFile("Sound/fade.wav"));
 
     music.setVolume(VOLUME);
     music.setLoop(true);

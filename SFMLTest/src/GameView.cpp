@@ -8,6 +8,7 @@
  */
 #include <SFML/Graphics/CircleShape.hpp>
 #include <iostream>
+#include <cassert>
 #include "GameView.h"
 #include "Game.h"
 
@@ -42,17 +43,11 @@ GameView::GameView(sf::RenderWindow &gw, GameProperties &gameProperties)
  * @return
  */
 int GameView::init() {
-    if (!playingFieldTexture.loadFromFile(IMAGE_PLAYINGFIELD_PATH))
-        return GAMEVIEW_IMAGELOADING_ERROR;
-    if (!playingFieldVoidTexture.loadFromFile(IMAGE_PLAYINGFIELDVOID_PATH))
-        return GAMEVIEW_IMAGELOADING_ERROR;
-    if (!titleFont.loadFromFile(FONT_GAMEVIEW_TITLE))
-        return GAMEVIEW_FONTLOADING_ERROR;
-    if (!textFont.loadFromFile(FONT_GAMEVIEW_HELP))
-        return GAMEVIEW_FONTLOADING_ERROR;
-    if (!menuFont.loadFromFile(FONT_GAMEVIEW_MENU))
-        return GAMEVIEW_FONTLOADING_ERROR;
-
+    assert(playingFieldTexture.loadFromFile(IMAGE_PLAYINGFIELD_PATH));
+    assert(playingFieldVoidTexture.loadFromFile(IMAGE_PLAYINGFIELDVOID_PATH));
+    assert(titleFont.loadFromFile(FONT_GAMEVIEW_TITLE));
+    assert(textFont.loadFromFile(FONT_GAMEVIEW_HELP));
+    assert(textFont.loadFromFile(FONT_GAMEVIEW_MENU));
 
     //reserve storage in vector for playing field
     playingField.reserve(61);

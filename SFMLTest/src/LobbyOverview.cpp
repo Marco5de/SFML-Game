@@ -2,6 +2,7 @@
 // Created by marco on 23.12.19.
 //
 
+#include <cassert>
 #include "LobbyOverview.h"
 
 
@@ -21,8 +22,7 @@ LobbyOverview::LobbyOverview(sf::RenderWindow &window, GameProperties &gamePrope
 {}
 
 int LobbyOverview::init() {
-    if (!menuFont.loadFromFile(FONT_LOBBY_MENU))
-        return LOBBY_FONTLOADING_ERROR;
+    assert(menuFont.loadFromFile(FONT_LOBBY_MENU));
 
     titleText.setFont(menuFont);
     titleText.setColor(sf::Color::Yellow);

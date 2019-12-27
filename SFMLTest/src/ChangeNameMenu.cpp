@@ -3,7 +3,9 @@
 //
 
 #include <iostream>
+#include <cassert>
 #include "ChangeNameMenu.h"
+
 #define LOGGING_LEVEL_1
 
 #include "logger.h"
@@ -20,10 +22,8 @@ ChangeNameMenu::ChangeNameMenu(sf::RenderWindow &window,
 
 
 int ChangeNameMenu::init() {
-    if (!menuFont.loadFromFile(FONT))
-        return NAME_MENU_FONTLOADING_ERROR;
-    if (!backgroundImage.loadFromFile(BACKGROUND_IMAGE))
-        return NAME_MENU_IMAGELOADING_ERROR;
+    assert(menuFont.loadFromFile(FONT));
+    assert(backgroundImage.loadFromFile(BACKGROUND_IMAGE));
 
     backgroundSprite.setTexture(backgroundImage);
 
@@ -104,16 +104,21 @@ void ChangeNameMenu::handleEvent() {
                     enteredString += event.text.unicode;
             }
             enteredText.setString(enteredString);
-            break;
-        case sf::Event::KeyPressed: //todo enter funktioniert noch nicht todo
-            if (event.KeyPressed == sf::Keyboard::Enter)
-                std::cout << "Write to file" << std::endl;
+            //siehe hier bewusst kein BREAK!
+        case sf::Event::KeyPressed:
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+                gameProperties.currentGameState = gameState::MAINMENU;
+                enteredString.erase(enteredString.getSize()-1,1);
+                writeStringToFile("nameConfig.txt",enteredString);
+                gameProperties.playerName = enteredString;
+                changeNameWindow.setKeyRepeatEnabled(false);
+            }
             break;
         case sf::Event::MouseButtonPressed:
             if (returnToMainMenu.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
                 //todo nur zum testen, später in richtiges config file!
-                writeStringToFile("nameConfig.txt",enteredString);
+                writeStringToFile("nameConfig.txt", enteredString);
                 gameProperties.playerName = enteredString;
                 changeNameWindow.setKeyRepeatEnabled(false);
             }
