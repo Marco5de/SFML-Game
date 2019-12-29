@@ -4,6 +4,7 @@ PROJECT(WSclient)
 
 file(GLOB SOURCES
         "Include/*.h"
+        "*.cpp"
         )
 add_library(wsclient SHARED ${SOURCES} )
 
