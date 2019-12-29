@@ -17,7 +17,7 @@ NetworkData::NetworkDataBuffer NetworkData::networkDataBuffer = {};
  * @notes puts incoming message in shared struct, then parser is called
  * @param message
  */
-void testCall(const std::string &message) {
+void networkCallback(const std::string &message) {
     NetworkData::networkDataBuffer.updated = true;
     NetworkData::networkDataBuffer.globalStringData = message;
 }
@@ -35,7 +35,7 @@ int Network::initNetwork() {
 void Network::handleNetwork() {
     if (ws->getReadyState() != WebSocket::CLOSED) {
         ws->poll(); //does not block by default!
-        ws->dispatch(testCall);
+        ws->dispatch(networkCallback);
     }
 
     if (NetworkData::networkDataBuffer.updated) {
@@ -45,7 +45,8 @@ void Network::handleNetwork() {
     //having to use explicit block ({}) around cases!
     switch (NetworkData::networkDataBuffer.state) {
         case networkState::welcome:
-
+            LOG("Received welcome Message");
+            NetworkData::networkDataBuffer.state = networkState::idle;
             break;
         case networkState::createLobby: {
             LOG("Create new Lobby");

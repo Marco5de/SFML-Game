@@ -35,8 +35,6 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
 
     switch (type) {
         case MessageType::Welcome:
-            std::cout << "UID: " << jsonMessage["userId"] << std::endl;
-            std::cout << "WMes: " << jsonMessage["welcomeMessage"] << std::endl;
             NetworkData::networkDataBuffer.UUID = jsonMessage["userId"];
             break;
         case MessageType::AvailableLobbies: {
