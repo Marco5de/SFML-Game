@@ -14,10 +14,10 @@ using json = nlohmann::json;
 
 class GameMove {
 public:
-    GameMove(unsigned int userId,
-             unsigned int gameId,
-             TileEnum tile1,
-             TileEnum tile2
+    GameMove(const std::string& userId,
+             const std::string& gameId,
+             const TileEnum& tile1,
+             const TileEnum& tile2
              );
     json getMessage();
     std::string getMessageString();

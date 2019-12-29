@@ -29,6 +29,15 @@ private:
     sf::Text titleText;
     sf::Text returnToMain;
     sf::Text startGame;
+    sf::Text refreshLobbies;
+    sf::Text createLobby;
+    sf::Text joinLobby;
+    sf::Text lobby;
+
+    sf::Text left;
+    sf::Text right;
+
+    unsigned int index = 0;
 
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
@@ -40,6 +49,7 @@ private:
 
     void handleEvent() override;
     void handleMouseCursor() override;
+    void updateLobbyDisplay();
 
 };
 

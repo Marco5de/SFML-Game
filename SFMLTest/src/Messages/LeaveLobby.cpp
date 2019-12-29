@@ -6,8 +6,8 @@
 #include "../Network.h"
 
 
-LeaveLobby::LeaveLobby(unsigned int userId, unsigned int lobbyId){
-    message["messageType"] = MessageType::LeaveLobby;
+LeaveLobby::LeaveLobby(const std::string& userId, const std::string& lobbyId){
+    message["messageType"] = "LeaveLobby";
     message["userId"] = userId;
     message["lobbyId"] = lobbyId;
 }

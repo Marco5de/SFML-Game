@@ -12,7 +12,7 @@ using json = nlohmann::json;
 
 class StartGame {
 public:
-    StartGame(unsigned int userId, unsigned int lobbyId);
+    StartGame(const std::string& userId, const std::string& lobbyId);
     json getMessage();
     std::string getMessageString();
 private:

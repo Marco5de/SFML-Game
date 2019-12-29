@@ -17,8 +17,8 @@
 
 #include "logger.h"
 
-#define VOLUME 50
-#define SOUND
+#define VOLUME 90
+//#define SOUND
 
 
 #define FONTS_MAINMENU_PATH ("Fonts/arial.ttf")

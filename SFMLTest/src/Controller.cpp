@@ -6,6 +6,7 @@
 #include <cassert>
 #include "Controller.h"
 
+
 #define LOGGING_LEVEL_1
 
 #include "logger.h"
@@ -18,33 +19,24 @@ Controller::Controller(const unsigned int windowHeight, const unsigned int windo
         mainMenu(gameProperties.window, gameProperties),
         gameView(gameProperties.window, gameProperties),
         changeNameMenu(gameProperties.window, gameProperties),
-        lobbyOverview(gameProperties.window, gameProperties),
-        messageParser()
+        lobbyOverview(gameProperties.window, gameProperties)
         {}
 
 void Controller::initController() {
     gameProperties.window.setFramerateLimit(60);
     gameProperties.window.setKeyRepeatEnabled(false);
-
+    gameProperties.playerName = getStringFromFile("nameConfig.txt");
 
     assert(mainMenu.init() == MAINMENU_SUCCESS);
     assert(gameView.init() == GAMEVIEW_SUCCESS);
     assert(changeNameMenu.init() == NAME_MENU_SUCCESS);
     assert(lobbyOverview.init() == MAINMENU_SUCCESS);
-
-
+    assert(network.initNetwork());
 
     //todo remove, just for testing
     gameView.setScore(17, 12);
     gameView.setMoveTracker(false);
     LOG("Init Controller Done")
-
-    //todo minimal example --> Todo work on this!
-    ws = WebSocket::from_url("ws://localhost:4444");
-    assert(ws);
-    //networkThread = std::thread(&Controller::networkTest, this);
-    //networkThread.detach();
-
 }
 
 
@@ -55,19 +47,12 @@ void Controller::loop() {
     }
 }
 
+
+
 void Controller::handleNetwork() {
-    if (ws->getReadyState() != WebSocket::CLOSED) {
-        WebSocket::pointer wsp = &*ws; // <-- because a unique_ptr cannot be copied into a lambda
-        ws->poll(); //does not block by default!
-        ws->dispatch([wsp](const std::string &message) {
-            printf(">>> %s\n", message.c_str());
-        });
-    }
-
-    class GetAvailableLobbies gal(1337);
-    ws->send(gal.getMessageString());
-
+   network.handleNetwork();
 }
+
 
 
 void Controller::handleGUI() {

@@ -5,9 +5,9 @@
 #include "GetAvailableLobbies.h"
 #include "../Network.h"
 
-GetAvailableLobbies::GetAvailableLobbies(unsigned int UUID){
+GetAvailableLobbies::GetAvailableLobbies(const std::string& UUID){
     //stimmt so evtl nicht mit der Spezifikatio überein! --> in java sollte enum aber eigentlich auch einfach nur int von 0 an sein
-    message["messageType"] = MessageType::GetAvailableLobbies;
+    message["messageType"] = "GetAvailableLobbies";
     message["userId"] = UUID;
 }
 

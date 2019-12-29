@@ -7,19 +7,33 @@
 
 #include <string>
 
-using UUID = unsigned int;
 
 class Lobby {
 public:
-    UUID player1;
-    UUID player2;
-    UUID lobbyID;
+    Lobby(std::string player1UUID,
+            std::string player2UUID,
+            std::string lobbyId,
+            std::string lobbyName,
+            std::string player1Username,
+            std::string player2Username,
+            std::string date,
+            bool closed);
+
+    std::string player1UUID;
+    std::string player2UUID;
+    std::string lobbyID;
+    std::string lobbyName;
     std::string player1Username;
-    std::string playser2Username;
+    std::string player2Username;
 
     //todo add date class!
     std::string date;
     bool closed;
+
+    friend bool operator==(const Lobby &lhs,const Lobby &rhs){
+        return !lhs.lobbyID.compare(rhs.lobbyID);
+    }
+    std::string to_string();
 };
 
 

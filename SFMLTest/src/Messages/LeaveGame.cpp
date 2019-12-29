@@ -5,8 +5,8 @@
 #include "LeaveGame.h"
 #include "../Network.h"
 
-LeaveGame::LeaveGame(unsigned int userId, unsigned int gameId){
-    message["messageType"] = MessageType::LeaveGame;
+LeaveGame::LeaveGame(const std::string& userId, const std::string& gameId){
+    message["messageType"] = "LeaveGame";
     message["userId"] = userId;
     message["gameId"] = gameId;
 }

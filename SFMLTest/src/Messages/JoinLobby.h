@@ -12,7 +12,7 @@ using json = nlohmann::json;
 
 class JoinLobby {
 public:
-    JoinLobby(unsigned int UUID, unsigned int lobbyID,std::string userName);
+    JoinLobby(const std::string& UUID, const std::string& lobbyID,const std::string& userName);
     json getMessage();
     std::string getMessageString();
 private:

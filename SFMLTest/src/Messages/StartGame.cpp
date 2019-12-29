@@ -5,8 +5,8 @@
 #include "StartGame.h"
 #include "../Network.h"
 
-StartGame::StartGame(unsigned int userId, unsigned int lobbyId){
-    message["messageType"] = MessageType::StartGame;
+StartGame::StartGame(const std::string& userId, const std::string& lobbyId){
+    message["messageType"] = "StartGame";
     message["userId"] = userId;
     message["lobbyId"] = lobbyId;
 }

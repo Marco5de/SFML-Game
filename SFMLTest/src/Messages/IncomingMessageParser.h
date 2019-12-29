@@ -6,15 +6,21 @@
 #define SFMLTEST_INCOMINGMESSAGEPARSER_H
 
 #include <string>
+#include "../Lobby.h"
 #include <nlohmann/json.hpp>
+
 
 using json = nlohmann::json;
 
+
 class IncomingMessageParser {
 public:
-    void parseMessage(std::string message);
+    IncomingMessageParser();
+    void parseMessage(const std::string &message);
 
 private:
+    std::map<std::string, unsigned int> enumMap;
+    Lobby parseAvailableLobbies(json lobby);
 };
 
 

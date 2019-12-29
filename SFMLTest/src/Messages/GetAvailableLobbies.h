@@ -12,7 +12,7 @@ using json = nlohmann::json;
 
 class GetAvailableLobbies {
 public:
-    GetAvailableLobbies(unsigned int UUID);
+    GetAvailableLobbies(const std::string& UUID);
     json getMessage();
     std::string getMessageString();
 

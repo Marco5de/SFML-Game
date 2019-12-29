@@ -9,9 +9,21 @@
 #include <nlohmann/json.hpp>
 #include "../Utils/Network/Include/easywsclient.h"
 
+#include "Game.h"
+#include "Network.h"
+#include "Lobby.h"
+#include "Messages/GetAvailableLobbies.h"
+#include "Messages/CreateNewLobby.h"
+#include "Messages/JoinLobby.h"
+#include "Messages/LeaveLobby.h"
+#include "Messages/StartGame.h"
+#include "Messages/GameMove.h"
+#include "Messages/LeaveGame.h"
+#include "Messages/IncomingMessageParser.h"
+
 using easywsclient::WebSocket;
 
- enum MessageType {
+enum MessageType {
     Welcome,
     GetAvailableLobbies,
     AvailableLobbies,
@@ -29,16 +41,45 @@ using easywsclient::WebSocket;
     Strike
 };
 
-
-
+enum networkState{
+    welcome,
+    createLobby,
+    getAvailableLobbies,
+    joinLobby,
+    leaveLobby,
+    startGame,
+    gameMove,
+    idle
+};
 
 class Network {
 public:
+    void handleNetwork();
+
+    int initNetwork();
 
 private:
     WebSocket::pointer ws;
-
+    IncomingMessageParser messageParser;
+    std::string playerUUID;
 };
+
+namespace NetworkData {
+    struct NetworkDataBuffer {
+        networkState state{networkState::welcome};
+        bool updated{false};
+        std::string globalStringData;
+        std::string UUID;
+        std::string LID;
+        bool lobby{false};
+        bool createLobby{false};
+        std::string lobbyname;
+        std::vector<Lobby> lobbyVec;
+    };
+    extern NetworkDataBuffer networkDataBuffer;
+};
+
+//extern NetworkData::NetworkDataBuffer networkDataBuffer;
 
 
 #endif //SFMLTEST_NETWORK_H

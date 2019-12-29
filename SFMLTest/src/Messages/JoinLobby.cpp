@@ -5,8 +5,8 @@
 #include "JoinLobby.h"
 #include "../Network.h"
 
-JoinLobby::JoinLobby(unsigned int userID, unsigned int lobbyID,std::string userName){
-    message["messageType"] = MessageType::JoinLobby;
+JoinLobby::JoinLobby(const std::string& userID, const std::string& lobbyID,const std::string& userName){
+    message["messageType"] = "JoinLobby";
     message["userId"] = userID;
     message["lobbyId"] = lobbyID;
     message["userName"] = userName;

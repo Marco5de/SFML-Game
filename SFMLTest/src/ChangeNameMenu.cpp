@@ -105,10 +105,10 @@ void ChangeNameMenu::handleEvent() {
             }
             enteredText.setString(enteredString);
             //siehe hier bewusst kein BREAK!
-        case sf::Event::KeyPressed:
+        case sf::Event::KeyPressed: //todo machmal ist enter dings da, manchmal nicht!
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
-                enteredString.erase(enteredString.getSize()-1,1);
+                //enteredString.erase(enteredString.getSize()-1,1);
                 writeStringToFile("nameConfig.txt",enteredString);
                 gameProperties.playerName = enteredString;
                 changeNameWindow.setKeyRepeatEnabled(false);

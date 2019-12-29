@@ -113,13 +113,13 @@ std::string getExJson(MessageType type) {
 }
 
 void test() {
-    class GetAvailableLobbies gal(1337);
-    class CreateNewLobby cnl(1337, "IBimsLobby");
-    class JoinLobby jl(1337, 6969, "UsernamexD");
-    class LeaveLobby ll(1337, 6969);
-    class StartGame sg(1337, 6969);
-    class GameMove gm(1337, 6969, TileEnum::TILE_1, TileEnum::TILE_42);
-    class LeaveGame lg(1337, 6969);
+    class GetAvailableLobbies gal("str");
+    class CreateNewLobby cnl("UUID", "IBimsLobby");
+    class JoinLobby jl("UUID", "UUID", "UsernamexD");
+    class LeaveLobby ll("UUID", "UUID");
+    class StartGame sg("UUID", "UUID");
+    class GameMove gm("UUID", "UUUID", TileEnum::TILE_1, TileEnum::TILE_42);
+    class LeaveGame lg("UUID", "UUID");
 
     std::cout << "GetAvailableLobbies: " << gal.getMessageString() << std::endl;
     std::cout << "CreateNewLobby: " << cnl.getMessageString() << std::endl;
@@ -138,7 +138,7 @@ void test() {
 }
 
 int main() {
-    test();
+    //test();
     //enable antialiasing
     //Todo fenster sollte eigentlich auch im Controller erstellt werden, will aber irgendwie noch nicht so ganz
     sf::ContextSettings settings;

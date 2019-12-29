@@ -12,7 +12,7 @@ using json = nlohmann::json;
 
 class LeaveLobby {
 public:
-    LeaveLobby(unsigned int userId, unsigned int lobbyId);
+    LeaveLobby(const std::string& userId, const std::string& lobbyId);
     json getMessage();
     std::string getMessageString();
 

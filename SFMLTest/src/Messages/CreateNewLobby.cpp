@@ -5,8 +5,8 @@
 #include "CreateNewLobby.h"
 #include "../Network.h"
 
-CreateNewLobby::CreateNewLobby(unsigned int UUID, std::string lobbyName){
-    message["messageType"] = MessageType::CreateNewLobby;
+CreateNewLobby::CreateNewLobby(const std::string& UUID, const std::string& lobbyName){
+    message["messageType"] = "CreateNewLobby";
     message["userId"] = UUID;
     message["lobbyName"] = lobbyName;
 }
