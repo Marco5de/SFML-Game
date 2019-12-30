@@ -3,7 +3,11 @@
 //
 
 #include <cassert>
+#include <iostream>
 #include "LobbyOverview.h"
+#include <iomanip>
+#include <ctime>
+
 
 #include "Network.h"
 
@@ -69,15 +73,24 @@ int LobbyOverview::init() {
 
     left.setFont(menuFont);
     left.setColor(sf::Color::Green);
-    left.setPosition(windowWidth * .4,windowHeight * .65);
+    left.setPosition(windowWidth * .4, windowHeight * .65);
     left.setCharacterSize(30);
     left.setString("Next");
+
+    leaveLobby.setFont(menuFont);
+    leaveLobby.setColor(sf::Color::Yellow);
+    leaveLobby.setPosition(windowWidth * .9, windowHeight * .65);
+    leaveLobby.setCharacterSize(20);
+    leaveLobby.setString("Leave\nLobby");
 
     return LOBBY_SUCCESS;
 }
 
 
 int LobbyOverview::handleWindow() {
+    //check if ready to go ingame
+    if(NetworkData::networkDataBuffer.inGame)
+        gameProperties.currentGameState = gameState::INGAME;
     updateLobbyDisplay();
     handleMouseCursor();
     while (lobbyWindow.pollEvent(event)) {
@@ -92,6 +105,7 @@ int LobbyOverview::handleWindow() {
     lobbyWindow.draw(createLobby);
     lobbyWindow.draw(joinLobby);
     lobbyWindow.draw(lobby);
+    lobbyWindow.draw(leaveLobby);
 
     lobbyWindow.draw(left);
 
@@ -113,24 +127,29 @@ void LobbyOverview::handleEvent() {
         case sf::Event::MouseButtonPressed:
             if (returnToMain.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
-            } else if (startGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
-                gameProperties.currentGameState = gameState::INGAME;
-            else if (refreshLobbies.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+            } else if (startGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+                //start game in here
+                NetworkData::networkDataBuffer.state = networkState::startGame;
+            } else if (refreshLobbies.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
             } else if (createLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 //eingeben eines Lobbynamens
                 NetworkData::networkDataBuffer.state = networkState::createLobby;
-                NetworkData::networkDataBuffer.lobbyname = "hardcoded";
+                NetworkData::networkDataBuffer.lobbyname = "Lobbyname";
             } else if (joinLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 NetworkData::networkDataBuffer.state = networkState::joinLobby;
-            } else if(left.getGlobalBounds().contains(currWorldMousePos.x,currWorldMousePos.y)){
-                index = (index+1) % NetworkData::networkDataBuffer.lobbyVec.size();
+            } else if (left.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+                NetworkData::networkDataBuffer.lobbyIndex = (NetworkData::networkDataBuffer.lobbyIndex + 1) %
+                                                            NetworkData::networkDataBuffer.lobbyVec.size();
+            } else if (leaveLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+                NetworkData::networkDataBuffer.state = networkState::leaveLobby;
             }
             break;
     }
 }
 
 void LobbyOverview::updateLobbyDisplay() {
+    unsigned int index = NetworkData::networkDataBuffer.lobbyIndex;
     if (!NetworkData::networkDataBuffer.lobbyVec.empty())
         lobby.setString(NetworkData::networkDataBuffer.lobbyVec[index].to_string());
 }

@@ -33,11 +33,12 @@ private:
     sf::Text createLobby;
     sf::Text joinLobby;
     sf::Text lobby;
+    sf::Text leaveLobby;
 
     sf::Text left;
     sf::Text right;
 
-    unsigned int index = 0;
+    //unsigned int index = 0;
 
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */

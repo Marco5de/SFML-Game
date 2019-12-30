@@ -45,27 +45,21 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
                 Lobby newLobby = parseAvailableLobbies(lobby);
                 auto it = std::find(NetworkData::networkDataBuffer.lobbyVec.begin(),
                                     NetworkData::networkDataBuffer.lobbyVec.end(), newLobby);
-                //insert only if lobby is not yet inside the vec!
-                //todo der check funktioniert nicht!
-                /*
-                if (it == NetworkData::networkDataBuffer.lobbyVec.end()) {
-                    LOG("Inserted new Lobby");
-
-                }*/
+               //todo do not clear vec each time!
                 NetworkData::networkDataBuffer.lobbyVec.push_back(newLobby);
             }
             break;
         }
         case MessageType::LobbyCreated:
-            std::cout << "UID: " << jsonMessage["userId"] << std::endl;
-            std::cout << "LID: " << jsonMessage["lobbyId"] << std::endl;
-            std::cout << "Success: " << jsonMessage["successfullyCreated"] << std::endl;
             NetworkData::networkDataBuffer.LID = jsonMessage["lobbyId"];
             break;
         case MessageType::LobbyJoined:
-            std::cout << "UID: " << jsonMessage["userId"] << std::endl;
-            std::cout << "LID: " << jsonMessage["lobbyId"] << std::endl;
             std::cout << "success: " << jsonMessage["successfullyJoined"] << std::endl;
+            if(jsonMessage["successfullyJoined"] == "true"){
+                LOG("Joined successfully");
+                NetworkData::networkDataBuffer.insideLobby = true;
+                NetworkData::networkDataBuffer.LID = jsonMessage["lobbyId"];
+            }
             break;
         case MessageType::LobbyStatus:
             std::cout << "UID: " << jsonMessage["userId"] << std::endl;
@@ -73,9 +67,7 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
             std::cout << "Lobby: " << jsonMessage["lobby"] << std::endl;
             break;
         case MessageType::GameStarted:
-            std::cout << "UID: " << jsonMessage["userId"] << std::endl;
-            std::cout << "GID: " << jsonMessage["gameId"] << std::endl;
-            std::cout << "CreationDate: " << jsonMessage["creationDate"] << std::endl;
+            NetworkData::networkDataBuffer.inGame = true;
             break;
         case MessageType::GameStatus:
             std::cout << "UID: " << jsonMessage["userId"] << std::endl;
@@ -124,11 +116,10 @@ Lobby IncomingMessageParser::parseAvailableLobbies(json lobby) {
     lobby["playerOne"].is_null() ? player1UUID = "" : player1UUID = lobby["playerOne"];
     lobby["playerTwo"].is_null() ? playser2UUID = "" : playser2UUID = lobby["playerTwo"];
     lobby["lobbyId"].is_null() ? lobbyId = "" : lobbyId = lobby["lobbyId"];
-    lobby["lobbyName"].is_null() ? lobbyName = "" : lobbyId = lobby["lobbyName"];
+    lobby["lobbyName"].is_null() ? lobbyName = "" : lobbyName = lobby["lobbyName"];
     lobby["playerOneUserName"].is_null() ? player1Username = "" : player1Username = lobby["playerOneUserName"];
     lobby["playerTwoUserName"].is_null() ? player2Username = "" : player2Username = lobby["playerTwoUserName"];
     lobby["creationDate"].is_null() ? date = "" : date = lobby["creationDate"];
-
 
     Lobby newLobby(player1UUID, playser2UUID, lobbyId, lobbyName, player1Username, player2Username, date, closed);
     return newLobby;

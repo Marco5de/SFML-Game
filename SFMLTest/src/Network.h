@@ -75,6 +75,9 @@ namespace NetworkData {
         bool createLobby{false};
         std::string lobbyname;
         std::vector<Lobby> lobbyVec;
+        unsigned int lobbyIndex{0};
+        bool insideLobby{false}; //nach beenden des client ohne beenden des servers ungültig!
+        bool inGame{false};
     };
     extern NetworkDataBuffer networkDataBuffer;
 };
