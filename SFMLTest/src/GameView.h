@@ -23,6 +23,7 @@
 #include "Tile.h"
 #include "GameMoveChecker.h"
 #include "GUIView.h"
+#include "Network.h"
 
 
 #define GAMEVIEW_IMAGELOADING_ERROR ((-1))
@@ -99,6 +100,7 @@ private:
     bool isInside(sf::CircleShape &shape );
     void moveStone(int target);
     void highlightValidMoves(Tile &tile);
+    void handleNetworkUpdate();
 
     //todo logik auslagern
     void checkPlayingField(bool movedStoneRed,int target);

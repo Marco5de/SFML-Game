@@ -5,6 +5,8 @@
 #include <iostream>
 #include "Network.h"
 
+//#define OTTOSERVER
+
 #define LOGGING_LEVEL_1
 
 #include "logger.h"
@@ -24,10 +26,16 @@ void networkCallback(const std::string &message) {
 }
 
 int Network::initNetwork() {
+#ifdef OTTOSERVER
+    ws = WebSocket::from_url("ws://hexxagon.otto.cool:4444");
+#else
     ws = WebSocket::from_url("ws://localhost:4444");
+#endif
     assert(ws);
 
     messageParser = IncomingMessageParser();
+
+    NetworkData::networkDataBuffer.gameStatus.board.reserve(61);
 
     return 1;
 }
@@ -67,7 +75,7 @@ void Network::handleNetwork() {
         }
         case networkState::joinLobby: {
             //todo remove hardcoded username!
-            if(NetworkData::networkDataBuffer.insideLobby)
+            if (NetworkData::networkDataBuffer.insideLobby)
                 break;
             LOG("Joined Lobby");
             //evtl out of bounds!
@@ -79,7 +87,7 @@ void Network::handleNetwork() {
             break;
         }
         case networkState::leaveLobby: {
-            if(!NetworkData::networkDataBuffer.insideLobby)
+            if (!NetworkData::networkDataBuffer.insideLobby)
                 break;
             LOG("Leave Lobby");
             //todo select which lobby is left!
@@ -93,9 +101,18 @@ void Network::handleNetwork() {
         case networkState::startGame: {
             LOG("Start Game");
             std::string LID = NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].lobbyID;
-            class StartGame sg(NetworkData::networkDataBuffer.UUID,LID);
+            class StartGame sg(NetworkData::networkDataBuffer.UUID, LID);
             ws->send(sg.getMessageString());
             NetworkData::networkDataBuffer.state = networkState::idle;
+            break;
+        }
+        case networkState::gameMove: {
+            LOG("Sending game move");
+            class GameMove gm(NetworkData::networkDataBuffer.UUID, NetworkData::networkDataBuffer.gameID,
+                              NetworkData::networkDataBuffer.sourceTile, NetworkData::networkDataBuffer.targetTile);
+            ws->send(gm.getMessageString());
+            NetworkData::networkDataBuffer.state = networkState::idle;
+            break;
         }
 
     }

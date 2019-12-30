@@ -118,7 +118,7 @@ void test() {
     class JoinLobby jl("UUID", "UUID", "UsernamexD");
     class LeaveLobby ll("UUID", "UUID");
     class StartGame sg("UUID", "UUID");
-    class GameMove gm("UUID", "UUUID", TileEnum::TILE_1, TileEnum::TILE_42);
+    class GameMove gm("UUID", "UUUID", "TILE_42","TILE51");
     class LeaveGame lg("UUID", "UUID");
 
     std::cout << "GetAvailableLobbies: " << gal.getMessageString() << std::endl;

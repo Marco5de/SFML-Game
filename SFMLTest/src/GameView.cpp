@@ -204,8 +204,10 @@ void GameView::createPlayingField() {
     }
 }
 
+
 int GameView::handleWindow() {
     handleMouseCursor();
+    handleNetworkUpdate();
 
     while (gameWindow.pollEvent(event)) {
         handleEvent();
@@ -305,6 +307,12 @@ void GameView::moveStone(int localTarget) {
 
     // Todo hier kann im Grunde auch lokal aufgehört werden und einfach eine Servernachricht gesendet werden
     // denn es wird nur der Move von feld x -> y gebraucht und ob der valide ist --> hier schon alles bekannt!
+    NetworkData::networkDataBuffer.sourceTile = "TILE_" + std::to_string(selectedField+1);
+    NetworkData::networkDataBuffer.targetTile = "TILE_" + std::to_string(localTarget+1);
+    NetworkData::networkDataBuffer.state = networkState::gameMove;
+
+    //todo for now play only based on network, later add in checks again to make sure move is legal!
+    return;
 
     if(status == SIMPLE_MOVE) {
         if (playingField[selectedField].fieldstate == FIELD_STATE::RED) {
@@ -460,10 +468,39 @@ void GameView::setMoveTracker(bool red) {
 
 
 
+void GameView::handleNetworkUpdate() {
+    if(!NetworkData::networkDataBuffer.gameStatus.updatet)
+        return;
 
 
+    //todo unnötig das bei jedem mal neu zu machen, suche differenzen
+    redStones.clear();
+    blueStones.clear();
 
+    for(int i=0; i<61; i++){
+        if(NetworkData::networkDataBuffer.gameStatus.board[i] == FIELD_STATE::RED){
+            redStones.emplace_back(true,sf::CircleShape(15));
+            redStones[redStones.size()-1].setField(i);
+            redStones[redStones.size()-1].moveToField(playingField[i].shape);
+            redStones[redStones.size()-1].shape.setOutlineColor(sf::Color::Black);
+            redStones[redStones.size()-1].shape.setOutlineThickness(5);
+            redStones[redStones.size()-1].shape.setFillColor(sf::Color::Red);
+            playingField[i].fieldstate = FIELD_STATE::RED;
+            playingField[i].stoneID = redStones.size()-1;
+        }else if(NetworkData::networkDataBuffer.gameStatus.board[i] == FIELD_STATE::BLUE){
+            blueStones.emplace_back(false,sf::CircleShape(15));
+            blueStones[blueStones.size()-1].setField(i);
+            blueStones[blueStones.size()-1].moveToField(playingField[i].shape);
+            blueStones[blueStones.size()-1].shape.setOutlineColor(sf::Color::Black);
+            blueStones[blueStones.size()-1].shape.setOutlineThickness(5);
+            blueStones[blueStones.size()-1].shape.setFillColor(sf::Color::Blue);
+            playingField[i].fieldstate = FIELD_STATE::BLUE;
+            playingField[i].stoneID = blueStones.size()-1;
+        }
+    }
 
+    NetworkData::networkDataBuffer.gameStatus.updatet = false;
+}
 
 
 

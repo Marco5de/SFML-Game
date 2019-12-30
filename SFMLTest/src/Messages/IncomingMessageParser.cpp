@@ -7,8 +7,10 @@
 #include "../Network.h"
 
 #define LOGGING_LEVEL_1
+
 #include "../../Utils/Logging/Include/logger.h"
 
+void parseGameStatus(json msg);
 
 IncomingMessageParser::IncomingMessageParser() {
     enumMap["Welcome"] = MessageType::Welcome;
@@ -45,7 +47,7 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
                 Lobby newLobby = parseAvailableLobbies(lobby);
                 auto it = std::find(NetworkData::networkDataBuffer.lobbyVec.begin(),
                                     NetworkData::networkDataBuffer.lobbyVec.end(), newLobby);
-               //todo do not clear vec each time!
+                //todo do not clear vec each time!
                 NetworkData::networkDataBuffer.lobbyVec.push_back(newLobby);
             }
             break;
@@ -55,41 +57,25 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
             break;
         case MessageType::LobbyJoined:
             std::cout << "success: " << jsonMessage["successfullyJoined"] << std::endl;
-            if(jsonMessage["successfullyJoined"] == "true"){
+            if (jsonMessage["successfullyJoined"] == "true") {
                 LOG("Joined successfully");
                 NetworkData::networkDataBuffer.insideLobby = true;
                 NetworkData::networkDataBuffer.LID = jsonMessage["lobbyId"];
             }
             break;
         case MessageType::LobbyStatus:
-            std::cout << "UID: " << jsonMessage["userId"] << std::endl;
-            std::cout << "LID: " << jsonMessage["lobbyId"] << std::endl;
-            std::cout << "Lobby: " << jsonMessage["lobby"] << std::endl;
+            LOG("Lobby Status erhalten!");
+            //todo handle updates!
+
             break;
         case MessageType::GameStarted:
+            LOG("Game Started received");
+            NetworkData::networkDataBuffer.gameID = jsonMessage["gameId"];
             NetworkData::networkDataBuffer.inGame = true;
             break;
         case MessageType::GameStatus:
-            std::cout << "UID: " << jsonMessage["userId"] << std::endl;
-            std::cout << "GID: " << jsonMessage["gameId"] << std::endl;
-            std::cout << "playerOne: " << jsonMessage["playerOne"] << std::endl;
-            std::cout << "playerTwo: " << jsonMessage["playerTwo"] << std::endl;
-            std::cout << "playerOneUserName: " << jsonMessage["playerOneUserName"] << std::endl;
-            std::cout << "playerTwoUserName: " << jsonMessage["playerTwoUserName"] << std::endl;
-            std::cout << "playerOneLeft: " << jsonMessage["playerOneLeft"] << std::endl;
-            std::cout << "playerTwoLeft: " << jsonMessage["playerTwoLeft"] << std::endl;
-            std::cout << "playerOnePoints: " << jsonMessage["playerOnePoints"] << std::endl;
-            std::cout << "playerTwoPoints: " << jsonMessage["playerTwoPoints"] << std::endl;
-            std::cout << "Board: " << jsonMessage["board"] << std::endl;
-            std::cout << "Turn: " << jsonMessage["turn"] << std::endl;
-            std::cout << "LastMoveFrom: " << jsonMessage["lastMoveFrom"] << std::endl;
-            std::cout << "LastMoveTo: " << jsonMessage["lastMoveTo"] << std::endl;
-            std::cout << "creation Date: " << jsonMessage["creationDate"] << std::endl;
-            std::cout << "actionDate: " << jsonMessage["actionDate"] << std::endl;
-            std::cout << "Active Player: " << jsonMessage["activePlayer"] << std::endl;
-            std::cout << "Tie: " << jsonMessage["tie"] << std::endl;
-            std::cout << "Winner: " << jsonMessage["winner"] << std::endl;
-            std::cout << "IsClosed: " << jsonMessage["isClosed"] << std::endl;
+            LOG("GameStatus update erhalten");
+            parseGameStatus(jsonMessage);
             break;
         case MessageType::Strike:
             std::cout << "UID: " << jsonMessage["userId"] << std::endl;
@@ -124,3 +110,47 @@ Lobby IncomingMessageParser::parseAvailableLobbies(json lobby) {
     Lobby newLobby(player1UUID, playser2UUID, lobbyId, lobbyName, player1Username, player2Username, date, closed);
     return newLobby;
 }
+
+
+void parseGameStatus(json jsonMessage) {
+    NetworkData::networkDataBuffer.gameStatus.player1Username = jsonMessage["playerOneUserName"];
+    NetworkData::networkDataBuffer.gameStatus.player2Username = jsonMessage["playerTwoUserName"];
+    NetworkData::networkDataBuffer.gameStatus.player1Left = (jsonMessage["playerOneLeft"] ==
+                                                             "true"); //todo check if functinal
+    NetworkData::networkDataBuffer.gameStatus.player2left = (jsonMessage["playerTwoLeft"] == "true");
+    NetworkData::networkDataBuffer.gameStatus.player1Points = jsonMessage["playerOnePoints"];
+    NetworkData::networkDataBuffer.gameStatus.player2Points = jsonMessage["playerTwoPoints"];
+    NetworkData::networkDataBuffer.gameStatus.turn = jsonMessage["turn"];
+    jsonMessage["lastMoveFrom"].is_null() ? NetworkData::networkDataBuffer.gameStatus.lastMoveFrom = ""
+                                          : NetworkData::networkDataBuffer.gameStatus.lastMoveFrom = jsonMessage["lastMoveFrom"];
+    jsonMessage["lastMoveTo"].is_null() ? NetworkData::networkDataBuffer.gameStatus.lastMoveTo = ""
+                                        : NetworkData::networkDataBuffer.gameStatus.lastMoveTo = jsonMessage["lastMoveTo"];
+    NetworkData::networkDataBuffer.gameStatus.creationDate = jsonMessage["creationDate"];
+    jsonMessage["actionDate"].is_null() ? NetworkData::networkDataBuffer.gameStatus.actionDate = ""
+                                        : NetworkData::networkDataBuffer.gameStatus.actionDate = jsonMessage["actionDate"];
+    NetworkData::networkDataBuffer.gameStatus.activePlayer = jsonMessage["activePlayer"];
+    NetworkData::networkDataBuffer.gameStatus.tie = (jsonMessage["tie"] == "true");
+    jsonMessage["winner"].is_null() ? NetworkData::networkDataBuffer.gameStatus.winner = ""
+                                    : NetworkData::networkDataBuffer.gameStatus.winner = jsonMessage["winner"];
+    NetworkData::networkDataBuffer.gameStatus.isClosed = (jsonMessage["isClosed"] == "true");
+    NetworkData::networkDataBuffer.gameID = jsonMessage["gameId"];
+
+    //parse board
+    NetworkData::networkDataBuffer.gameStatus.board.clear();
+    for (int i = 0; i < 61; i++) {
+        std::string index = "TILE_" + std::to_string(i + 1);
+        if (jsonMessage["board"]["tiles"][index] == "FREE")
+            NetworkData::networkDataBuffer.gameStatus.board.push_back(FIELD_STATE::EMPTY);
+        else if(jsonMessage["board"]["tiles"][index] == "BLOCKED")
+            NetworkData::networkDataBuffer.gameStatus.board.push_back(FIELD_STATE::BLOCKED);
+        else if(jsonMessage["board"]["tiles"][index] == "PLAYERONE")
+            NetworkData::networkDataBuffer.gameStatus.board.push_back(FIELD_STATE::RED);
+        else if(jsonMessage["board"]["tiles"][index] == "PLAYERTWO")
+            NetworkData::networkDataBuffer.gameStatus.board.push_back(FIELD_STATE::BLUE);
+    }
+
+
+    //set update flag
+    NetworkData::networkDataBuffer.gameStatus.updatet = true;
+}
+

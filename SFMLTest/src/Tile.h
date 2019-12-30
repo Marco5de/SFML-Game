@@ -8,7 +8,8 @@
 enum FIELD_STATE{
     RED,
     BLUE,
-    EMPTY
+    EMPTY,
+    BLOCKED
 };
 
 #include <SFML/Graphics/CircleShape.hpp>

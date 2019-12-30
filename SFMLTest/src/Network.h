@@ -12,6 +12,7 @@
 #include "Game.h"
 #include "Network.h"
 #include "Lobby.h"
+#include "Tile.h"
 #include "Messages/GetAvailableLobbies.h"
 #include "Messages/CreateNewLobby.h"
 #include "Messages/JoinLobby.h"
@@ -65,6 +66,25 @@ private:
 };
 
 namespace NetworkData {
+    struct GameStatus{
+        std::string player1Username;
+        std::string player2Username;
+        bool player1Left{false};
+        bool player2left{false};
+        int player1Points;
+        int player2Points;
+        std::vector<FIELD_STATE> board{0};
+        int turn;
+        std::string lastMoveFrom;
+        std::string lastMoveTo;
+        std::string creationDate;
+        std::string actionDate;
+        std::string activePlayer;
+        bool tie;
+        std::string winner;
+        bool isClosed;
+        bool updatet;
+    };
     struct NetworkDataBuffer {
         networkState state{networkState::welcome};
         bool updated{false};
@@ -78,6 +98,10 @@ namespace NetworkData {
         unsigned int lobbyIndex{0};
         bool insideLobby{false}; //nach beenden des client ohne beenden des servers ungültig!
         bool inGame{false};
+        std::string sourceTile;
+        std::string targetTile;
+        std::string gameID;
+        GameStatus gameStatus;
     };
     extern NetworkDataBuffer networkDataBuffer;
 };

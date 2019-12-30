@@ -16,8 +16,8 @@ class GameMove {
 public:
     GameMove(const std::string& userId,
              const std::string& gameId,
-             const TileEnum& tile1,
-             const TileEnum& tile2
+             const std::string& tile1,
+             const std::string& tile2
              );
     json getMessage();
     std::string getMessageString();
