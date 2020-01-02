@@ -544,7 +544,8 @@ void GameView::handleNetworkUpdate() {
         std::cout << "Tie. Leaving to MainMenu" << std::endl;
         gameProperties.currentGameState = gameState::MAINMENU;
     }
-    std::cout << "Winnerstring: " << NetworkData::networkDataBuffer.gameStatus.winner << std::endl;
+
+
     //todo not working!
     /*
     if(NetworkData::networkDataBuffer.gameStatus.winner.compare("inGame")){
