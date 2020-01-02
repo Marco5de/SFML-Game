@@ -11,6 +11,8 @@
 #include "../../Utils/Logging/Include/logger.h"
 
 void parseGameStatus(json msg);
+void handleLobbyUpdate(json msg);
+Lobby parseAvailableLobbies(json lobby);
 
 IncomingMessageParser::IncomingMessageParser() {
     enumMap["Welcome"] = MessageType::Welcome;
@@ -67,7 +69,7 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
         case MessageType::LobbyStatus:
             LOG("Lobby Status erhalten!");
             //todo handle updates!
-
+            handleLobbyUpdate(jsonMessage["lobby"]);
             break;
         case MessageType::GameStarted:
             LOG("Game Started received");
@@ -90,7 +92,7 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
 }
 
 //todo remove copies!
-Lobby IncomingMessageParser::parseAvailableLobbies(json lobby) {
+Lobby parseAvailableLobbies(json lobby) {
     std::string player1UUID;
     std::string playser2UUID;
     std::string lobbyId;
@@ -155,5 +157,22 @@ void parseGameStatus(json jsonMessage) {
 
     //set update flag
     NetworkData::networkDataBuffer.gameStatus.updatet = true;
+}
+
+
+void handleLobbyUpdate(json msg){
+    for(auto & x : NetworkData::networkDataBuffer.lobbyVec){
+        //check if update for this lobby exists
+        if(msg["lobbyId"] == x.lobbyID){
+            //update is for this lobby!
+            msg["playerOne"].is_null() ? x.player1UUID = "" : x.player1UUID = msg["playerOne"];
+            msg["playerTwo"].is_null() ? x.player2UUID = "" : x.player2UUID = msg["playerTwo"];
+            msg["lobbyId"].is_null() ? x.lobbyID = "" : x.lobbyID = msg["lobbyId"];
+            msg["lobbyName"].is_null() ? x.lobbyName = "" : x.lobbyName = msg["lobbyName"];
+            msg["playerOneUserName"].is_null() ? x.player1Username = "" : x.player1Username = msg["playerOneUserName"];
+            msg["playerTwoUserName"].is_null() ? x.player2Username = "" : x.player2Username = msg["playerTwoUserName"];
+            msg["creationDate"].is_null() ? x.date = "" : x.date = msg["creationDate"];
+        }
+    }
 }
 

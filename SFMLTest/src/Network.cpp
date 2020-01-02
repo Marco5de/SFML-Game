@@ -66,8 +66,7 @@ void Network::handleNetwork() {
             class CreateNewLobby cnl(NetworkData::networkDataBuffer.UUID, NetworkData::networkDataBuffer.lobbyname);
             ws->send(cnl.getMessageString());
             //fetch update!
-            //NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
-            NetworkData::networkDataBuffer.state = networkState::idle;
+            NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
             break;
         }
         case networkState::getAvailableLobbies: {
@@ -78,7 +77,7 @@ void Network::handleNetwork() {
             break;
         }
         case networkState::joinLobby: {
-            if (NetworkData::networkDataBuffer.insideLobby)
+            if (NetworkData::networkDataBuffer.insideLobby || NetworkData::networkDataBuffer.lobbyVec.empty())
                 break;
             LOG("Joined Lobby");
             //evtl out of bounds!
@@ -87,7 +86,6 @@ void Network::handleNetwork() {
             std::cout << playerName << std::endl;
             class JoinLobby jl(NetworkData::networkDataBuffer.UUID, LID, playerName);
             ws->send(jl.getMessageString());
-            //NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
             NetworkData::networkDataBuffer.state = networkState::idle;
             NetworkData::networkDataBuffer.insideLobby = true;
             break;
@@ -99,8 +97,8 @@ void Network::handleNetwork() {
             std::string LID = NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].lobbyID;
             class LeaveLobby ll(NetworkData::networkDataBuffer.UUID, LID);
             ws->send(ll.getMessageString());
-            //NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
-            NetworkData::networkDataBuffer.state = networkState::idle;
+            //refresh lobbies after leaving, not handled by lobby status!
+            NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
             NetworkData::networkDataBuffer.insideLobby = false;
             break;
         }

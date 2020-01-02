@@ -546,12 +546,6 @@ void GameView::handleNetworkUpdate() {
     }
 
 
-    //todo not working!
-    /*
-    if(NetworkData::networkDataBuffer.gameStatus.winner.compare("inGame")){
-        std::cout << "Someone one, find out who. return to main menu" << std::endl;
-        gameProperties.currentGameState = gameState::MAINMENU;
-    }*/
     NetworkData::networkDataBuffer.gameStatus.turn % 2 ? setMoveTracker(true) : setMoveTracker(false);
     setScore(NetworkData::networkDataBuffer.gameStatus.player1Points,
              NetworkData::networkDataBuffer.gameStatus.player2Points);
@@ -560,6 +554,10 @@ void GameView::handleNetworkUpdate() {
     if (!NetworkData::networkDataBuffer.gameStatus.player1Points ||
         !NetworkData::networkDataBuffer.gameStatus.player2Points) {
         std::cout << "Winner detected" << std::endl;
+        NetworkData::networkDataBuffer.inGame = false;
+        //empty gameId, so check does not fail!
+        //todo method reset network Data
+        NetworkData::networkDataBuffer.gameID.erase();
         winnerView = true;
     }
 

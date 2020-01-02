@@ -34,9 +34,9 @@ void Controller::initController() {
     assert(lobbyOverview.init() == MAINMENU_SUCCESS);
     assert(network.initNetwork());
 
-    //todo remove, just for testing
-    gameView.setScore(17, 12);
-    gameView.setMoveTracker(false);
+    //set initial score --> has to be some value != 0, otherwise winner detection would be activated
+    gameView.setScore(6, 6);
+    gameView.setMoveTracker(false); //player 1 is always the starting player
     LOG("Init Controller Done")
 }
 

@@ -129,10 +129,8 @@ void LobbyOverview::handleEvent() {
             if (returnToMain.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
             } else if (startGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
-                //start game in here
-                //todo remove, just for debugging
-                //gameProperties.currentGameState = gameState::INGAME;
-                NetworkData::networkDataBuffer.state = networkState::startGame;
+                if(NetworkData::networkDataBuffer.insideLobby)
+                    NetworkData::networkDataBuffer.state = networkState::startGame;
             } else if (refreshLobbies.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
             } else if (createLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
@@ -143,6 +141,8 @@ void LobbyOverview::handleEvent() {
                 NetworkData::networkDataBuffer.playerName = gameProperties.playerName;
                 NetworkData::networkDataBuffer.state = networkState::joinLobby;
             } else if (left.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+                if(NetworkData::networkDataBuffer.lobbyVec.empty())
+                    break;
                 NetworkData::networkDataBuffer.lobbyIndex = (NetworkData::networkDataBuffer.lobbyIndex + 1) %
                                                             NetworkData::networkDataBuffer.lobbyVec.size();
             } else if (leaveLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {

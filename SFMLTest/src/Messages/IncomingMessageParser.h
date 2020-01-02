@@ -20,7 +20,7 @@ public:
 
 private:
     std::map<std::string, unsigned int> enumMap;
-    Lobby parseAvailableLobbies(json lobby);
+
 };
 
 
