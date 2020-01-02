@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <thread>
 #include "Network.h"
 
 //#define OTTOSERVER
@@ -23,8 +24,23 @@ NetworkData::NetworkDataBuffer NetworkData::networkDataBuffer = {};
 void networkCallback(const std::string &message) {
     NetworkData::networkDataBuffer.updated = true;
     NetworkData::networkDataBuffer.globalStringData = message;
+
+    //todo remove hacky fix
+    if (message.find("GameStarted") != std::string::npos) {
+        std::cout << "GameStartedFound!" << '\n';
+        json jsonMessage = json::parse(message);
+        NetworkData::networkDataBuffer.gameID = jsonMessage["gameId"];
+    }
 }
 
+void networkThreadFunc(WebSocket::pointer ws){
+    while(true){
+        if (ws->getReadyState() != WebSocket::CLOSED) {
+            ws->poll(100); //blocks for 100 milli
+            ws->dispatch(networkCallback);
+        }
+    }
+}
 
 Network::Network(GameProperties &gp) : gameProperties(gp) {}
 
@@ -38,17 +54,14 @@ int Network::initNetwork() {
 
     messageParser = IncomingMessageParser();
 
+    networkThread = std::thread(networkThreadFunc,ws);
     NetworkData::networkDataBuffer.gameStatus.board.reserve(61);
 
     return 1;
 }
 
-//todo in der gesendet nachricht steht als typ auch nur 1 drin --> muss überall ein string rein!
+
 void Network::handleNetwork() {
-    if (ws->getReadyState() != WebSocket::CLOSED) {
-        ws->poll(); //does not block by default!
-        ws->dispatch(networkCallback);
-    }
 
     if (NetworkData::networkDataBuffer.updated) {
         NetworkData::networkDataBuffer.updated = false;

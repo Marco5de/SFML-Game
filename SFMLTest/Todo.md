@@ -2,7 +2,7 @@
 
 ## General
 * center all the stuff inside rects based on their bounds!
-
+* wenn unentschieden ausgeht, muss noch eine entsprechende meldung angezeigt werden!
 
 ## MainMenu
 * Doc weiterschreiben

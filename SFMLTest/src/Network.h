@@ -7,6 +7,7 @@
 
 
 #include <nlohmann/json.hpp>
+#include <thread>
 #include "../Utils/Network/Include/easywsclient.h"
 
 #include "Game.h"
@@ -65,6 +66,8 @@ private:
     IncomingMessageParser messageParser;
     std::string playerUUID;
     GameProperties gameProperties;
+
+    std::thread networkThread;
 };
 
 namespace NetworkData {
