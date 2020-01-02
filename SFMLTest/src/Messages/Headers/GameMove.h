@@ -7,8 +7,8 @@
 
 #include <string>
 #include <nlohmann/json.hpp>
-#include "../Network.h"
-#include "../Game.h"
+#include "../../Network.h"
+#include "../../Game.h"
 
 using json = nlohmann::json;
 

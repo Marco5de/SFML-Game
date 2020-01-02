@@ -2,7 +2,7 @@
 // Created by marco on 27.12.19.
 //
 
-#include "GameMove.h"
+#include "Headers/GameMove.h"
 
 GameMove::GameMove(const std::string& userId, const std::string& gameId,
         const std::string& tile1, const std::string& tile2){

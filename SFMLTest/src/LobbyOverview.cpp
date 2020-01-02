@@ -18,6 +18,8 @@
 
 #define FONT_LOBBY_TITLE ("Fonts/orange juice 2.0.ttf")
 #define FONT_LOBBY_MENU ("Fonts/BebasNeue-Regular.ttf")
+#define RELOAD_IMAGE_LOBBY ("images/LobbyOverview/reload.png")
+#define NEXT_IMAGE_LOBBY ("images/LobbyOverview/arrow.png")
 
 
 LobbyOverview::LobbyOverview(sf::RenderWindow &window, GameProperties &gameProperties) :
@@ -28,60 +30,63 @@ LobbyOverview::LobbyOverview(sf::RenderWindow &window, GameProperties &gamePrope
 
 int LobbyOverview::init() {
     assert(menuFont.loadFromFile(FONT_LOBBY_MENU));
+    assert(reloadTexture.loadFromFile(RELOAD_IMAGE_LOBBY));
+    assert(nextTexture.loadFromFile(NEXT_IMAGE_LOBBY));
 
     titleText.setFont(menuFont);
-    titleText.setColor(sf::Color::Yellow);
-    titleText.setPosition(windowWidth * .45, windowHeight * 0.01);
-    titleText.setCharacterSize(30);
+    titleText.setColor(sf::Color::Cyan);
+    titleText.setPosition(windowWidth * .3, windowHeight * 0.01);
+    titleText.setCharacterSize(100);
     titleText.setString("Lobby Overview");
 
     returnToMain.setFont(menuFont);
     returnToMain.setColor(sf::Color::Yellow);
-    returnToMain.setPosition(windowWidth * 0.01, windowHeight * 0.9);
+    returnToMain.setPosition(windowWidth * 0.01, windowHeight * 0.01);
     returnToMain.setCharacterSize(20);
     returnToMain.setString("Return to \nMain Menu");
 
     startGame.setFont(menuFont);
     startGame.setColor(sf::Color::Yellow);
-    startGame.setPosition(windowWidth * .95, windowHeight * .9);
+    startGame.setPosition(windowWidth * .95, windowHeight * .01);
     startGame.setCharacterSize(20);
     startGame.setString("Start\nGame");
 
-    refreshLobbies.setFont(menuFont);
-    refreshLobbies.setColor(sf::Color::Yellow);
-    refreshLobbies.setPosition(windowWidth * .25, windowHeight * .9);
-    refreshLobbies.setCharacterSize(20);
-    refreshLobbies.setString("Refresh \nLobbies");
 
     createLobby.setFont(menuFont);
     createLobby.setColor(sf::Color::Yellow);
-    createLobby.setPosition(windowWidth * .75, windowHeight * .9);
+    createLobby.setPosition(windowWidth * .6, windowHeight * .9);
     createLobby.setCharacterSize(20);
     createLobby.setString("Create new\nLobby");
 
     joinLobby.setFont(menuFont);
     joinLobby.setColor(sf::Color::Yellow);
-    joinLobby.setPosition(windowWidth * .45, windowHeight * .9);
+    joinLobby.setPosition(windowWidth * .4, windowHeight * .9);
     joinLobby.setCharacterSize(20);
     joinLobby.setString("Join\nLobby");
 
     lobby.setFont(menuFont);
     lobby.setColor(sf::Color::Magenta);
-    lobby.setPosition(windowWidth * .4, windowHeight * .25);
+    lobby.setPosition(windowWidth * .3, windowHeight * .25);
     lobby.setCharacterSize(40);
-    lobby.setString("Empty"); //todo fix!
+    lobby.setString("Empty");
 
-    left.setFont(menuFont);
-    left.setColor(sf::Color::Green);
-    left.setPosition(windowWidth * .4, windowHeight * .65);
-    left.setCharacterSize(30);
-    left.setString("Next");
 
     leaveLobby.setFont(menuFont);
     leaveLobby.setColor(sf::Color::Yellow);
-    leaveLobby.setPosition(windowWidth * .9, windowHeight * .65);
+    leaveLobby.setPosition(windowWidth * .95, windowHeight * .9);
     leaveLobby.setCharacterSize(20);
     leaveLobby.setString("Leave\nLobby");
+
+    reloadSprite.setTexture(reloadTexture);
+    reloadSprite.setPosition(.4 * windowWidth, .65 * windowHeight);
+    reloadSprite.setColor(sf::Color::Yellow);
+    reloadSprite.scale(.75, .75);
+
+    nextSprite.setTexture(nextTexture);
+    nextSprite.setPosition(.6 * windowWidth, .65 * windowHeight);
+    nextSprite.setColor(sf::Color::Yellow);
+    nextSprite.scale(.75, .75);
+
 
     return LOBBY_SUCCESS;
 }
@@ -89,7 +94,7 @@ int LobbyOverview::init() {
 
 int LobbyOverview::handleWindow() {
     //check if ready to go ingame
-    if(NetworkData::networkDataBuffer.inGame || !NetworkData::networkDataBuffer.gameID.empty())
+    if (NetworkData::networkDataBuffer.inGame || !NetworkData::networkDataBuffer.gameID.empty())
         gameProperties.currentGameState = gameState::INGAME;
     updateLobbyDisplay();
     handleMouseCursor();
@@ -101,14 +106,21 @@ int LobbyOverview::handleWindow() {
     lobbyWindow.clear();
     lobbyWindow.draw(titleText);
     lobbyWindow.draw(returnToMain);
-    lobbyWindow.draw(startGame);
-    lobbyWindow.draw(refreshLobbies);
-    lobbyWindow.draw(createLobby);
-    lobbyWindow.draw(joinLobby);
+    if (NetworkData::networkDataBuffer.insideLobby) {
+        lobbyWindow.draw(leaveLobby);
+        //check if first player and lobby is full!
+        if (NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].player1UUID ==
+            NetworkData::networkDataBuffer.UUID
+            && !NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].player2UUID.empty())
+            lobbyWindow.draw(startGame);
+    } else {
+        lobbyWindow.draw(createLobby);
+        lobbyWindow.draw(joinLobby);
+        if (NetworkData::networkDataBuffer.lobbyVec.size() > 1)
+            lobbyWindow.draw(nextSprite);
+    }
     lobbyWindow.draw(lobby);
-    lobbyWindow.draw(leaveLobby);
-
-    lobbyWindow.draw(left);
+    lobbyWindow.draw(reloadSprite);
 
     lobbyWindow.display();
     return LOBBY_SUCCESS;
@@ -129,19 +141,21 @@ void LobbyOverview::handleEvent() {
             if (returnToMain.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
             } else if (startGame.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
-                if(NetworkData::networkDataBuffer.insideLobby)
+                if (NetworkData::networkDataBuffer.insideLobby)
                     NetworkData::networkDataBuffer.state = networkState::startGame;
-            } else if (refreshLobbies.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+            } else if (reloadSprite.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
             } else if (createLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 //eingeben eines Lobbynamens
                 NetworkData::networkDataBuffer.state = networkState::createLobby;
                 NetworkData::networkDataBuffer.lobbyname = "Lobbyname";
             } else if (joinLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
-                NetworkData::networkDataBuffer.playerName = gameProperties.playerName;
-                NetworkData::networkDataBuffer.state = networkState::joinLobby;
-            } else if (left.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
-                if(NetworkData::networkDataBuffer.lobbyVec.empty())
+                if(NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].player2UUID.empty()) {
+                    NetworkData::networkDataBuffer.playerName = gameProperties.playerName;
+                    NetworkData::networkDataBuffer.state = networkState::joinLobby;
+                }
+            } else if (nextSprite.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+                if (NetworkData::networkDataBuffer.lobbyVec.empty())
                     break;
                 NetworkData::networkDataBuffer.lobbyIndex = (NetworkData::networkDataBuffer.lobbyIndex + 1) %
                                                             NetworkData::networkDataBuffer.lobbyVec.size();

@@ -29,14 +29,16 @@ private:
     sf::Text titleText;
     sf::Text returnToMain;
     sf::Text startGame;
-    sf::Text refreshLobbies;
     sf::Text createLobby;
     sf::Text joinLobby;
     sf::Text lobby;
     sf::Text leaveLobby;
 
-    sf::Text left;
-    sf::Text right;
+    sf::Texture reloadTexture;
+    sf::Sprite reloadSprite;
+    sf::Texture nextTexture;
+    sf::Sprite nextSprite;
+
 
     //unsigned int index = 0;
 

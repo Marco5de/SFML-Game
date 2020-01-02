@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.1)
 project(Messages)
 
 file(GLOB SOURCE_MESSAGES
-        "*.h"
-        "*.cpp"
-        "*.hpp"
+        "Headers/*.h"
+        "Source/*.cpp"
+        "Headers/*.hpp"
         )
 
 add_library(messagesLib ${SOURCE_MESSAGES})

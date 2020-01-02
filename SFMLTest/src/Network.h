@@ -13,14 +13,14 @@
 #include "Network.h"
 #include "Lobby.h"
 #include "Tile.h"
-#include "Messages/GetAvailableLobbies.h"
-#include "Messages/CreateNewLobby.h"
-#include "Messages/JoinLobby.h"
-#include "Messages/LeaveLobby.h"
-#include "Messages/StartGame.h"
-#include "Messages/GameMove.h"
-#include "Messages/LeaveGame.h"
-#include "Messages/IncomingMessageParser.h"
+#include "Headers/GetAvailableLobbies.h"
+#include "Headers/CreateNewLobby.h"
+#include "Headers/JoinLobby.h"
+#include "Headers/LeaveLobby.h"
+#include "Headers/StartGame.h"
+#include "Headers/GameMove.h"
+#include "Headers/LeaveGame.h"
+#include "Headers/IncomingMessageParser.h"
 
 using easywsclient::WebSocket;
 

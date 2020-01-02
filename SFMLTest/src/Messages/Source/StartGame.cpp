@@ -2,8 +2,8 @@
 // Created by marco on 27.12.19.
 //
 
-#include "StartGame.h"
-#include "../Network.h"
+#include "Headers/StartGame.h"
+#include "../../Network.h"
 
 StartGame::StartGame(const std::string& userId, const std::string& lobbyId){
     message["messageType"] = "StartGame";

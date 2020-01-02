@@ -21,3 +21,4 @@
 * Lobby namen eingeben
 * screen aufhübschen
 * Seg faults fixen
+* aktuell ist es noch möglich einer vollen lobby beizutreten!

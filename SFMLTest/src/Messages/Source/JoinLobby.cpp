@@ -2,8 +2,8 @@
 // Created by marco on 27.12.19.
 //
 
-#include "JoinLobby.h"
-#include "../Network.h"
+#include "Headers/JoinLobby.h"
+#include "../../Network.h"
 
 JoinLobby::JoinLobby(const std::string& userID, const std::string& lobbyID,const std::string& userName){
     message["messageType"] = "JoinLobby";

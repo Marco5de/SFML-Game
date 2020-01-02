@@ -13,7 +13,7 @@
 #include "easywsclient.h"
 #include <thread>
 
-#include "Messages/IncomingMessageParser.h"
+#include "Headers/IncomingMessageParser.h"
 #include "Network.h"
 
 using easywsclient::WebSocket;

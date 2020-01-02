@@ -3,15 +3,17 @@
 //
 
 #include <iostream>
-#include "IncomingMessageParser.h"
-#include "../Network.h"
+#include "Headers/IncomingMessageParser.h"
+#include "../../Network.h"
 
 #define LOGGING_LEVEL_1
 
-#include "../../Utils/Logging/Include/logger.h"
+#include "../../../Utils/Logging/Include/logger.h"
 
 void parseGameStatus(json msg);
+
 void handleLobbyUpdate(json msg);
+
 Lobby parseAvailableLobbies(json lobby);
 
 IncomingMessageParser::IncomingMessageParser() {
@@ -146,11 +148,11 @@ void parseGameStatus(json jsonMessage) {
         std::string index = "TILE_" + std::to_string(i + 1);
         if (jsonMessage["board"]["tiles"][index] == "FREE")
             NetworkData::networkDataBuffer.gameStatus.board.push_back(FIELD_STATE::EMPTY);
-        else if(jsonMessage["board"]["tiles"][index] == "BLOCKED")
+        else if (jsonMessage["board"]["tiles"][index] == "BLOCKED")
             NetworkData::networkDataBuffer.gameStatus.board.push_back(FIELD_STATE::BLOCKED);
-        else if(jsonMessage["board"]["tiles"][index] == "PLAYERONE")
+        else if (jsonMessage["board"]["tiles"][index] == "PLAYERONE")
             NetworkData::networkDataBuffer.gameStatus.board.push_back(FIELD_STATE::RED);
-        else if(jsonMessage["board"]["tiles"][index] == "PLAYERTWO")
+        else if (jsonMessage["board"]["tiles"][index] == "PLAYERTWO")
             NetworkData::networkDataBuffer.gameStatus.board.push_back(FIELD_STATE::BLUE);
     }
 
@@ -160,10 +162,17 @@ void parseGameStatus(json jsonMessage) {
 }
 
 
-void handleLobbyUpdate(json msg){
-    for(auto & x : NetworkData::networkDataBuffer.lobbyVec){
+void handleLobbyUpdate(json msg) {
+    for (auto &x : NetworkData::networkDataBuffer.lobbyVec) {
         //check if update for this lobby exists
-        if(msg["lobbyId"] == x.lobbyID){
+        if (msg["lobbyId"] == x.lobbyID) {
+           //if lobby is now closed remove from LobbyVector!
+            if ("true" == msg["isClosed"]) {
+                auto it = std::find(NetworkData::networkDataBuffer.lobbyVec.begin(),
+                                    NetworkData::networkDataBuffer.lobbyVec.end(),x);
+                NetworkData::networkDataBuffer.lobbyVec.erase(it);
+                return;
+            }
             //update is for this lobby!
             msg["playerOne"].is_null() ? x.player1UUID = "" : x.player1UUID = msg["playerOne"];
             msg["playerTwo"].is_null() ? x.player2UUID = "" : x.player2UUID = msg["playerTwo"];
@@ -174,5 +183,9 @@ void handleLobbyUpdate(json msg){
             msg["creationDate"].is_null() ? x.date = "" : x.date = msg["creationDate"];
         }
     }
+    bool closed = ("true" == msg["isClosed"]);
+    std::cout << "Closed string: " << msg["isClosed"] << std::endl;
+    if (closed)
+        std::cout << "Lobby should be closed now" << std::endl;
 }
 

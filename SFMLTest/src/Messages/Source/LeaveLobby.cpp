@@ -2,8 +2,8 @@
 // Created by marco on 27.12.19.
 //
 
-#include "LeaveLobby.h"
-#include "../Network.h"
+#include "Headers/LeaveLobby.h"
+#include "../../Network.h"
 
 
 LeaveLobby::LeaveLobby(const std::string& userId, const std::string& lobbyId){

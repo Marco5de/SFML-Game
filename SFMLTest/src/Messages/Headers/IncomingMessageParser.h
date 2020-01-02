@@ -6,7 +6,7 @@
 #define SFMLTEST_INCOMINGMESSAGEPARSER_H
 
 #include <string>
-#include "../Lobby.h"
+#include "../../Lobby.h"
 #include <nlohmann/json.hpp>
 
 

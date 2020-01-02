@@ -2,8 +2,8 @@
 // Created by marco on 27.12.19.
 //
 
-#include "LeaveGame.h"
-#include "../Network.h"
+#include "Headers/LeaveGame.h"
+#include "../../Network.h"
 
 LeaveGame::LeaveGame(const std::string& userId, const std::string& gameId){
     message["messageType"] = "LeaveGame";
