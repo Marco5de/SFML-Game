@@ -1,8 +1,13 @@
-//
-// Created by marco on 27.11.19.
-//
+/**
+ * @file Controller.cpp
+ * @ingroup Controller
+ * @author Marco Deuscher
+ * @date 27.11.2019
+ * @brief implementing Controller
+ * @notes   should in theory act as a middleman betwenn View and model. In this implementation there is no model so Controller
+ *          also handels that part
+ */
 
-#include <iostream>
 #include <cassert>
 #include "Controller.h"
 
@@ -12,7 +17,13 @@
 #include "logger.h"
 
 
-
+/**
+ * @brief                       Constructor for @Controller
+ * @param windowHeight          height of the window
+ * @param windowWidth           width of the window
+ * @param aliasingLevel         selected aliasing level
+ * @param window                already created render window
+ */
 Controller::Controller(const unsigned int windowHeight, const unsigned int windowWidth,
                        const unsigned int aliasingLevel, sf::RenderWindow &window) :
         gameProperties(windowWidth, windowHeight, aliasingLevel, window),
@@ -20,13 +31,17 @@ Controller::Controller(const unsigned int windowHeight, const unsigned int windo
         gameView(gameProperties.window, gameProperties),
         changeNameMenu(gameProperties.window, gameProperties),
         lobbyOverview(gameProperties.window, gameProperties),
-        network(gameProperties)
-        {}
+        network(gameProperties) {}
 
+/**
+ * @brief   initializes controller and all of its components
+ * @notes   widnow properties are set. All @GUIView are initialized. PlayerName is loaded. Score and MoveTracker are set
+ *          Assertion for init of View in here!
+ */
 void Controller::initController() {
     gameProperties.window.setFramerateLimit(60);
     gameProperties.window.setKeyRepeatEnabled(false);
-    gameProperties.playerName = getStringFromFile("nameConfig.txt");
+    gameProperties.playerName = getStringFromFile("nameConfig.txt"); //todo check if empty
 
     assert(mainMenu.init() == MAINMENU_SUCCESS);
     assert(gameView.init() == GAMEVIEW_SUCCESS);
@@ -40,7 +55,9 @@ void Controller::initController() {
     LOG("Init Controller Done")
 }
 
-
+/**
+ * @brief   Main game Loop, handling GUI and network
+ */
 void Controller::loop() {
     while (gameProperties.window.isOpen()) {
         handleGUI();
@@ -48,14 +65,16 @@ void Controller::loop() {
     }
 }
 
-
-
+/**
+ * @brief   simply calls network class to perform network related tasks
+ */
 void Controller::handleNetwork() {
-   network.handleNetwork();
+    network.handleNetwork();
 }
 
-
-
+/**
+ * @brief   updates the currently selected view, based on the @GameProperties gameState
+ */
 void Controller::handleGUI() {
     switch (gameProperties.currentGameState) {
         case gameState::MAINMENU:
@@ -71,6 +90,5 @@ void Controller::handleGUI() {
             changeNameMenu.handleWindow();
             break;
     }
-
 }
 

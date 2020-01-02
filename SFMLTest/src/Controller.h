@@ -1,7 +1,13 @@
-//
-// Created by marco on 27.11.19.
-//
-
+/**
+ * @file Controller.h
+ * @defgroup Controller Controller
+ * @ingroup Controller
+ * @author Marco Deuscher
+ * @date 27.11.2019
+ * @brief defining Controller
+ * @notes   should in theory act as a middleman betwenn View and model. In this implementation there is no model so Controller
+ *          also handels that part
+ */
 #ifndef SFMLTEST_CONTROLLER_H
 #define SFMLTEST_CONTROLLER_H
 
@@ -25,13 +31,13 @@ public:
     void loop();
 
 private:
-    GameProperties gameProperties;
-    MainMenu mainMenu;
-    GameView gameView;
-    ChangeNameMenu changeNameMenu;
-    LobbyOverview lobbyOverview;
+    GameProperties gameProperties;   /**< contains all the information about the window and current session*/
+    MainMenu mainMenu;  /** object implementing the mainMenu*/
+    GameView gameView;  /** object implementing the gameView*/
+    ChangeNameMenu changeNameMenu;  /** object implementing the change name menu*/
+    LobbyOverview lobbyOverview;    /** object implementing the lobby overview*/
 
-    Network network;
+    Network network;    /** object handling everything network related*/
 
 
     void handleGUI();

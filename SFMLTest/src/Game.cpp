@@ -26,7 +26,11 @@ std::string getStringFromFile(std::string filepath) {
     buffer << ifstream.rdbuf();
     return buffer.str();
 }
-
+/**
+ * @brief               writes a given String, into a file and overrides all the previous content!
+ * @param filepath      selected file
+ * @param name          string to be written
+ */
 void writeStringToFile(std::string filepath,std::string name){
     std::ofstream file;
     file.open(filepath);
@@ -34,6 +38,14 @@ void writeStringToFile(std::string filepath,std::string name){
     file.close();
 }
 
+/**
+ * @brief                   Constructor for @Gameproperties
+ *
+ * @param windowWidth       windowWidth, does not change
+ * @param windowHeight      windowHeight, does not change
+ * @param level             selected level of aliasing
+ * @param window            already created renderWindow
+ */
 GameProperties::GameProperties(const unsigned int windowWidth, const unsigned int windowHeight,
                                const unsigned int level, sf::RenderWindow &window) : WINDOW_WIDTH(windowWidth),
                                                                                      WINDOW_HEIGHT(windowHeight),

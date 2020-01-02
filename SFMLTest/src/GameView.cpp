@@ -26,11 +26,11 @@
 
 
 /**
- *
- * @param gameWindow
- * @param windowWidth
- * @param windowHeight
- * @param gs
+ * @brief                   Constructor for @GameView
+ * @param gameWindow        render window used to display game in
+ * @param windowWidth       window width, does not change
+ * @param windowHeight      window height, does not change
+ * @param gs                gamePropterties
  */
 
 GameView::GameView(sf::RenderWindow &gw, GameProperties &gameProperties)
@@ -39,8 +39,10 @@ GameView::GameView(sf::RenderWindow &gw, GameProperties &gameProperties)
 }
 
 /**
- *
- * @return
+ * @brief   implementing init inherited by @GUIView, called once
+ * @notes   all required ressoures are loaded in here, if not successfull assertion fails
+ *          playingFieldLayout and Stones are also created in here!
+ * @return  GAMEVIEW_SUCCESS if successfull
  */
 int GameView::init() {
     assert(playingFieldTexture.loadFromFile(IMAGE_PLAYINGFIELD_PATH));
@@ -196,7 +198,9 @@ int GameView::init() {
 }
 
 
-//todo das spielfeld darf auf gar keinen Fall hardcoded sein! finde abhängigkeit zwischen abstand, bildgröße und spritegröße!
+/**
+ * @brief sets the Position for the tiles of the playingField
+ */
 void GameView::createPlayingField() {
     //offset below are .075
     for (int i = 0; i < 5; i++) {
@@ -220,7 +224,11 @@ void GameView::createPlayingField() {
     }
 }
 
-
+/**
+ * @brief   implementing handleWindow inherited by @GUIView, called from loop
+ * @notes   drawing is done in here. Performs checks which elements of the View have to be drawn at some moment
+ * @return  GAMEVIEW_SUCCESS if successfull
+ */
 int GameView::handleWindow() {
     handleMouseCursor();
     handleNetworkUpdate();
@@ -243,8 +251,6 @@ int GameView::handleWindow() {
         return GAMEVIEW_SUCCESS;
     }
 
-    //Todo mal checken ob man das so lassen kann
-    //setScore(redStones.size(), blueStones.size());
 
     for (Tile tile : playingField) {
         gameWindow.draw(tile.shape);
@@ -276,7 +282,10 @@ int GameView::handleWindow() {
 
     return GAMEVIEW_SUCCESS;
 }
-
+/**
+ * @brief   implementing handleEvent inherited by @GUIView, called from loop
+ * @notes   all events are handled in here. State information is needed to be sure which submenus are open!
+ */
 void GameView::handleEvent() {
     if (event.type == sf::Event::Closed)
         gameWindow.close();
@@ -336,7 +345,11 @@ void GameView::handleEvent() {
     }
 }
 
-
+/**
+ * @brief                   moves a Stone from the playing field to a selected target Field
+ * @notes                   sets Network Paramters, so GameMove is sent to server. Move is checked locally beforehand!
+ * @param localTarget       index of the selected target field
+ */
 void GameView::moveStone(int localTarget) {
     int status = moveChecker.checkMove(selectedField, localTarget);
     bool red = false;
@@ -432,6 +445,12 @@ void GameView::checkPlayingField(bool movedStoneRed, int target) {
     }
 }
 
+/**
+ * @brief           checks if a button press was inside a hexagon shape
+ * @notes           reference: http://www.playchilla.com/how-to-check-if-a-point-is-inside-a-hexagon
+ * @param shape     shape to check
+ * @return          true if inside, false if outside
+ */
 bool GameView::isInside(sf::CircleShape &shape) {
     sf::Vector2f middle;
     sf::Vector2f transformed;
@@ -448,7 +467,10 @@ bool GameView::isInside(sf::CircleShape &shape) {
 
     return v / 2 * h / 2 - v / 4 * transformed.x - h / 2 * transformed.y >= 0;
 }
-
+/**
+ * @brief   implementing handleMouseCursor inherited by @GUIView
+ * @notes   handles everything mouse cursor related
+ */
 void GameView::handleMouseCursor() {
     //get current mouse position relative to the window and convert from images coords to global coords
     currMousePos = sf::Mouse::getPosition(gameWindow);
@@ -476,6 +498,10 @@ void GameView::handleMouseCursor() {
 
 }
 
+/**
+ * @brief           highlights all valid moves for a given tile
+ * @param tile      selected tile
+ */
 void GameView::highlightValidMoves(Tile &tile) {
     auto indirectNeighbors = moveChecker.getIndirectNeighbors(tile);
     for (int id : neighbors[tile.getID()]) {
@@ -488,12 +514,20 @@ void GameView::highlightValidMoves(Tile &tile) {
     }
 }
 
-
+/**
+ * @brief               sets score for red and blue player
+ * @param scoreRed      score for red player
+ * @param scoreBlue     score for blue player
+ */
 void GameView::setScore(int scoreRed, int scoreBlue) {
     this->scoreBlue.setString(std::to_string(scoreBlue));
     this->scoreRed.setString(std::to_string(scoreRed));
 }
 
+/**
+ * @brief           sets move tracker
+ * @param red       true if move tracker is set for the red player
+ */
 void GameView::setMoveTracker(bool red) {
     if (red) {
         moveTracker.setOutlineColor(sf::Color::Red);
@@ -502,10 +536,12 @@ void GameView::setMoveTracker(bool red) {
     }
     moveTracker.setOutlineColor(sf::Color::Blue);
     moveTracker.setPosition(.055 * windowWidth, .075 * windowHeight);
-    return;
 }
 
-
+/**
+ * @brief   processes network updates that may have happend
+ * @notes   sets positons of playing stones and checks the flags (winner,tie,closed,etc.)
+ */
 void GameView::handleNetworkUpdate() {
     if (!NetworkData::networkDataBuffer.gameStatus.updatet)
         return;

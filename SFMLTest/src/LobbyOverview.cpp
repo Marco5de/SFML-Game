@@ -1,12 +1,15 @@
-//
-// Created by marco on 23.12.19.
-//
+/**
+ * @file LobbyOverview.cpp
+ * @ingroup LobbyOverview
+ * @author Marco Deuscher
+ * @date 23.12.2019
+ * @brief implementing LobbyOverview
+ */
 
 #include <cassert>
 #include <iostream>
 #include "LobbyOverview.h"
-#include <iomanip>
-#include <ctime>
+
 
 
 #include "Network.h"
@@ -21,13 +24,23 @@
 #define RELOAD_IMAGE_LOBBY ("images/LobbyOverview/reload.png")
 #define NEXT_IMAGE_LOBBY ("images/LobbyOverview/arrow.png")
 
-
+/**
+ * @brief                       Constructor for @LobbyOverview
+ *
+ * @param window                render window
+ * @param gameProperties        game Properties
+ */
 LobbyOverview::LobbyOverview(sf::RenderWindow &window, GameProperties &gameProperties) :
         lobbyWindow(window),
         gameProperties(gameProperties),
         windowHeight(gameProperties.WINDOW_HEIGHT),
         windowWidth(gameProperties.WINDOW_WIDTH) {}
 
+/**
+ * @brief   implementing init inherited by @GUIView, called once
+ * @notes   loads all ressources from files and places the GUI elements, assertion for ressources can fail!
+ * @return  LOBBY_SUCCESS if successfull
+ */
 int LobbyOverview::init() {
     assert(menuFont.loadFromFile(FONT_LOBBY_MENU));
     assert(reloadTexture.loadFromFile(RELOAD_IMAGE_LOBBY));
@@ -91,7 +104,11 @@ int LobbyOverview::init() {
     return LOBBY_SUCCESS;
 }
 
-
+/**
+ * @brief   implementing handleWindow inherited by @GUIView, called from loop
+ * @notes   draws the text and scene objects, performs checks based on state infor which objects to draw
+ * @return  LOBBY_SUCESS if successfull
+ */
 int LobbyOverview::handleWindow() {
     //check if ready to go ingame
     if (NetworkData::networkDataBuffer.inGame || !NetworkData::networkDataBuffer.gameID.empty())
@@ -126,11 +143,20 @@ int LobbyOverview::handleWindow() {
     return LOBBY_SUCCESS;
 }
 
+/**
+ * @brief implements handleMouseCursor inherited by @GUIView
+ * @notes simply transforms image to world coords
+ */
 void LobbyOverview::handleMouseCursor() {
     currMousePos = sf::Mouse::getPosition(lobbyWindow);
     currWorldMousePos = lobbyWindow.mapPixelToCoords(currMousePos);
 }
 
+/**
+ * @brief   implements handleEvent inherited by @GUIView
+ * @notes   all events are handled in here(button presses)
+ *          sets Network data needed to set network messages
+ */
 void LobbyOverview::handleEvent() {
     switch (event.type) {
         case sf::Event::Closed:
@@ -166,6 +192,9 @@ void LobbyOverview::handleEvent() {
     }
 }
 
+/**
+ * @brief   displays lobby information on screen
+ */
 void LobbyOverview::updateLobbyDisplay() {
     unsigned int index = NetworkData::networkDataBuffer.lobbyIndex;
     if (!NetworkData::networkDataBuffer.lobbyVec.empty())

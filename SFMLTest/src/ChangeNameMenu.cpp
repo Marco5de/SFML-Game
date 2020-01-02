@@ -1,6 +1,10 @@
-//
-// Created by marco on 10.11.19.
-//
+/**
+ * @file ChangeNameMenu.h
+ * @ingroup ChangeNameMenu
+ * @author Marco Deuscher
+ * @date 10.11.2019
+ * @brief implementing ChangeNameMenu
+ */
 
 #include <iostream>
 #include <cassert>
@@ -13,14 +17,25 @@
 #define FONT ("Fonts/arial.ttf")
 #define BACKGROUND_IMAGE ("images/MainMenu/background.jpg")
 
-
+/**
+ * @brief Constructor with common arguments for GUIView
+ * @notes initializes windowWidth and windowHeight, which is not updated afterwards anymore!
+ *
+ * @param window
+ * @param gameProperties
+ */
 ChangeNameMenu::ChangeNameMenu(sf::RenderWindow &window,
                                GameProperties &gameProperties) :
         changeNameWindow(window), gameProperties(gameProperties), windowHeight(gameProperties.WINDOW_HEIGHT),
         windowWidth(gameProperties.WINDOW_WIDTH) {
 }
 
-
+/**
+ * @brief implements init of ChangeNameMenu inherited by @GUIView
+ * @notes all Ressources are loaded, if not successfully assertin fails inside here!
+ *
+ * @return NAME_MENU_SUCCESS if successfull
+ */
 int ChangeNameMenu::init() {
     assert(menuFont.loadFromFile(FONT));
     assert(backgroundImage.loadFromFile(BACKGROUND_IMAGE));
@@ -66,7 +81,11 @@ int ChangeNameMenu::init() {
     return NAME_MENU_SUCCESS;
 }
 
-
+/**
+ * @brief implements handleWindow inherited by @GUIView
+ * @notes draws all text and objects in the scene
+ * @return NAME_MENU_SUCCESS if successfull
+ */
 int ChangeNameMenu::handleWindow() {
     handleMouseCursor();
     while (changeNameWindow.pollEvent(event)) {
@@ -82,14 +101,22 @@ int ChangeNameMenu::handleWindow() {
     changeNameWindow.draw(returnToMainMenu);
 
     changeNameWindow.display();
-
+    return NAME_MENU_SUCCESS;
 }
 
+/**
+ * @brief implements handleMouseCursor inherited by @GUIView, is called from inside the loop
+ * @notes simply transforms image to world coords
+ */
 void ChangeNameMenu::handleMouseCursor() {
     currMousePos = sf::Mouse::getPosition(changeNameWindow);
     currWorldMousePos = changeNameWindow.mapPixelToCoords(currMousePos);
 }
 
+/**
+ * @brief implements handleEvent inherited by @GUIView, is called from inside the loop
+ * @notes checks if button was clicked, if menu was open and what to do on button press
+ */
 void ChangeNameMenu::handleEvent() {
     switch (event.type) {
         case sf::Event::Closed:

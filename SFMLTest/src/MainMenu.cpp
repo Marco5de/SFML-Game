@@ -138,6 +138,7 @@ int MainMenu::init() {
 
 /**
  * @brief       this function is called from the main game loop
+ * @notes       in this function all the text and sprites are drawn and displayed
  *
  * @return      MAINMENU_SUCCESS if successfull
  */
@@ -176,7 +177,7 @@ int MainMenu::handleWindow() {
 /**
  * @brief   handle everything MouseCursor related inside this function. Color of text is changed is hovering above
  *          Also checking for Mouse Button presses on the textfield, so they act es buttons!
- * @note Take care, that imageCoords have to be transformed to global coords
+ * @note    Take care, that imageCoords have to be transformed to global coords
  */
 void MainMenu::handleMouseCursor() {
     //get current mouse position relative to the window and convert from images coords to global coords
@@ -195,7 +196,10 @@ void MainMenu::handleMouseCursor() {
     }
 }
 
-
+/**
+ * @brief       All incoming events are handled inside this function, is called from the Loop
+ * @notes       checks if button was clicked, if menu was open and what to do on button press
+ */
 void MainMenu::handleEvent() {
     if (event.type == sf::Event::Closed)
         renderWindow.close();
@@ -214,7 +218,6 @@ void MainMenu::handleEvent() {
         if (event.type == sf::Event::MouseButtonPressed &&
             subMenuChangeName.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
             gameProperties.currentGameState = gameState::CHANGENAME;
-            //todo verursacht flicker, weil frame nochmal gemalt wird, bevor screen gewechselt wird
             menuOpen = false;
             renderWindow.setKeyRepeatEnabled(true);
         }

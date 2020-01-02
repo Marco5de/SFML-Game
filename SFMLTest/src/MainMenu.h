@@ -34,7 +34,7 @@ public:
 
 
 private:
-    GameProperties &gameProperties;
+    GameProperties &gameProperties; /**< contains all the information about the window and current session*/
 
     const int windowWidth;     /**< Width of the window (not resizeable) */
     const int windowHeight;   /**< Height of the window (note resizeable)*/
@@ -45,16 +45,16 @@ private:
     sf::Texture backgroundImage;    /**< Texture containing the background image of the main menu */
     sf::Sprite backgroundSprite;    /**< Sprite used for displaying the background image in the main menu*/
 
-    sf::Texture menuTexture;
-    sf::Sprite menuButton;
-    bool menuOpen = false;
-    sf::RectangleShape subMenuBackground;
-    sf::Text subMenuChangeName;
+    sf::Texture menuTexture;    /**< Texture containing the menuButton image*/
+    sf::Sprite menuButton;      /**< Sprite used for displaying the menu Button*/
+    bool menuOpen = false;      /**< Stores state information*/
+    sf::RectangleShape subMenuBackground;   /**< acts as a background for the submenu*/
+    sf::Text subMenuChangeName;             /**< Button inside the submenu*/
 
-    sf::RectangleShape nameBackground;
-    sf::Text displayName;
+    sf::RectangleShape nameBackground;  /**< acts as a background on which the playerName is displayed*/
+    sf::Text displayName;               /**< Text displaying the players name*/
 
-    sf::RectangleShape backgroundRect;
+    sf::RectangleShape backgroundRect;  /**< acts as background for the Title*/
 
     sf::Text textStartGame;         /**< text acting as a button to start the game, changes color when hovered above*/
     sf::Text textLeaveGame;         /**< text acting as a button to leave the game, changes color when hovered above*/
@@ -65,16 +65,13 @@ private:
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
     sf::RenderWindow &renderWindow;   /**< RenderWindow in which the mainMenu is drawn */
 
-    sf::Music music;
+    sf::Music music;        /**< object containing the sound-Track of the game*/
 
     /* todo implement */
     std::vector<sf::Drawable> drawableVector; /**< vector containing all the drawables to simplify the drawing porcess, currently NOT used */
 
     void handleMouseCursor() override;
     void handleEvent() override;
-
-    //gameState *currentGameState; /**< enum class which holds the current game state */
-
 };
 
 
