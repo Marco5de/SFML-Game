@@ -47,7 +47,7 @@ int GameView::init() {
     assert(playingFieldVoidTexture.loadFromFile(IMAGE_PLAYINGFIELDVOID_PATH));
     assert(titleFont.loadFromFile(FONT_GAMEVIEW_TITLE));
     assert(textFont.loadFromFile(FONT_GAMEVIEW_HELP));
-    assert(textFont.loadFromFile(FONT_GAMEVIEW_MENU));
+    assert(menuFont.loadFromFile(FONT_GAMEVIEW_MENU));
 
     //reserve storage in vector for playing field
     playingField.reserve(61);
@@ -78,7 +78,6 @@ int GameView::init() {
     scoreBlue.setColor(sf::Color::Blue);
     scoreBlue.setOutlineThickness(1);
     scoreBlue.setOutlineColor(sf::Color::Yellow);
-    //todo remove hardcoded value, put players score in here
     scoreBlue.setString("0");
     scoreBlue.setPosition(.015 * windowWidth, .01 * windowHeight);
     scoreBlue.setCharacterSize(50);
@@ -90,6 +89,7 @@ int GameView::init() {
     scoreRed.setString("0");
     scoreRed.setPosition(.015 * windowWidth, 0.07 * windowHeight);
     scoreRed.setCharacterSize(50);
+
 
     moveTracker.setRadius(10);
     moveTracker.setPointCount(3);
@@ -123,6 +123,21 @@ int GameView::init() {
     menuClose.setOutlineColor(sf::Color::Blue);
     menuClose.setString("Close Menu");
 
+    winnerText.setPosition(.15 * windowWidth, .25 * windowHeight);
+    winnerText.setCharacterSize(50);
+    winnerText.setFont(menuFont);
+    winnerText.setColor(sf::Color::Yellow);
+    winnerText.setOutlineThickness(2);
+    winnerText.setOutlineColor(sf::Color::Red);
+    winnerText.setString("");
+
+    winnerButton.setPosition(.45 * windowWidth, .85 * windowHeight);
+    winnerButton.setCharacterSize(30);
+    winnerButton.setFont(menuFont);
+    winnerButton.setColor(sf::Color::Cyan);
+    winnerButton.setString("Return to\nMainMenu");
+
+
     state = State::SELECTION;
     selectedField = 0;
 
@@ -145,7 +160,7 @@ int GameView::init() {
     //initial gibt es 4 Steine pro Spieler
     redStones.reserve(redStartingPositions.size());
     blueStones.reserve(blueStartingPositions.size());
-    if(redStartingPositions.size() != blueStartingPositions.size()){
+    if (redStartingPositions.size() != blueStartingPositions.size()) {
         LOG_ERR("Anzahl der Spielsteine am Start stimmt nicht überein");
         std::exit(1);
     }
@@ -172,6 +187,7 @@ int GameView::init() {
         playingField[blueIndex].fieldstate = FIELD_STATE::BLUE;
         playingField[blueIndex].stoneID = i;
     }
+
     setScore(blueStones.size(), redStones.size());
 
     LOG("Init Gameview successfull");
@@ -215,8 +231,20 @@ int GameView::handleWindow() {
 
     gameWindow.clear();
 
+    if (winnerView) {
+        if (std::stoi(std::string(scoreRed.getString())) == 0) {
+            winnerText.setString("GAME OVER\nBlue player has won. Press Button to return to MainMenu");
+        } else if (std::stoi(std::string(scoreRed.getString()))) {
+            winnerText.setString("GAME OVER\nRed player has won. Press Button to return to MainMenu");
+        }
+        gameWindow.draw(winnerText);
+        gameWindow.draw(winnerButton);
+        gameWindow.display();
+        return GAMEVIEW_SUCCESS;
+    }
+
     //Todo mal checken ob man das so lassen kann
-    setScore(redStones.size(), blueStones.size());
+    //setScore(redStones.size(), blueStones.size());
 
     for (Tile tile : playingField) {
         gameWindow.draw(tile.shape);
@@ -242,6 +270,7 @@ int GameView::handleWindow() {
         gameWindow.draw(menuClose);
     }
 
+
     gameWindow.display();
 
 
@@ -258,7 +287,7 @@ void GameView::handleEvent() {
     //Todo fix, that field are double detected by checking if in close proximity of oriign
     //todo --> fit circle shape in hexagon, that is fully contained
     int localTarget;
-    if (!menuOpen) {
+    if (!menuOpen && !winnerView) {
         int count = 0;
         for (int i = 0; i < playingField.size(); i++) {
             if (event.type == sf::Event::MouseButtonPressed && isInside(playingField[i].shape)) {
@@ -279,7 +308,8 @@ void GameView::handleEvent() {
                 case State::FIELD_SELECTED:
                     //check that selected field is empty and non void
                     if (playingField[localTarget].fieldstate == FIELD_STATE::EMPTY &&
-                        !(std::find(forbiddenFields.begin(), forbiddenFields.end(), localTarget + 1) != forbiddenFields.end())) {
+                        !(std::find(forbiddenFields.begin(), forbiddenFields.end(), localTarget + 1) !=
+                          forbiddenFields.end())) {
                         moveStone(localTarget);
                         state = State::SELECTION;
                     }
@@ -296,25 +326,33 @@ void GameView::handleEvent() {
                  menuClose.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y))
             menuOpen = false;
     }
+
+    if (winnerView) {
+        if (event.type == sf::Event::MouseButtonPressed &&
+            winnerButton.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
+            gameProperties.currentGameState = gameState::MAINMENU;
+            winnerView = false;
+        }
+    }
 }
 
 
 void GameView::moveStone(int localTarget) {
-    int status = moveChecker.checkMove(selectedField,localTarget);
+    int status = moveChecker.checkMove(selectedField, localTarget);
     bool red = false;
-    if(!status)
+    if (!status)
         return;
 
     // Todo hier kann im Grunde auch lokal aufgehört werden und einfach eine Servernachricht gesendet werden
     // denn es wird nur der Move von feld x -> y gebraucht und ob der valide ist --> hier schon alles bekannt!
-    NetworkData::networkDataBuffer.sourceTile = "TILE_" + std::to_string(selectedField+1);
-    NetworkData::networkDataBuffer.targetTile = "TILE_" + std::to_string(localTarget+1);
+    NetworkData::networkDataBuffer.sourceTile = "TILE_" + std::to_string(selectedField + 1);
+    NetworkData::networkDataBuffer.targetTile = "TILE_" + std::to_string(localTarget + 1);
     NetworkData::networkDataBuffer.state = networkState::gameMove;
 
     //todo for now play only based on network, later add in checks again to make sure move is legal!
     return;
 
-    if(status == SIMPLE_MOVE) {
+    if (status == SIMPLE_MOVE) {
         if (playingField[selectedField].fieldstate == FIELD_STATE::RED) {
             redStones[playingField[selectedField].stoneID].moveToField(playingField[localTarget].shape);
             redStones[playingField[selectedField].stoneID].setField(localTarget);
@@ -331,64 +369,65 @@ void GameView::moveStone(int localTarget) {
         playingField[selectedField].fieldstate = FIELD_STATE::EMPTY;
         playingField[localTarget].stoneID = playingField[selectedField].stoneID;
         playingField[selectedField].stoneID = -1; //todo mögliche Fehlerquelle!
-    } else if (status == DUPLICATE){
+    } else if (status == DUPLICATE) {
         //Todo Duplicate Stone
-        if(playingField[selectedField].fieldstate == FIELD_STATE::RED){
-            redStones.emplace_back(true,sf::CircleShape(15));
-            redStones[redStones.size()-1].setField(localTarget);
-            redStones[redStones.size()-1].moveToField(playingField[localTarget].shape);
-            redStones[redStones.size()-1].shape.setOutlineColor(sf::Color::Black);
-            redStones[redStones.size()-1].shape.setOutlineThickness(5);
-            redStones[redStones.size()-1].shape.setFillColor(sf::Color::Red);
+        if (playingField[selectedField].fieldstate == FIELD_STATE::RED) {
+            redStones.emplace_back(true, sf::CircleShape(15));
+            redStones[redStones.size() - 1].setField(localTarget);
+            redStones[redStones.size() - 1].moveToField(playingField[localTarget].shape);
+            redStones[redStones.size() - 1].shape.setOutlineColor(sf::Color::Black);
+            redStones[redStones.size() - 1].shape.setOutlineThickness(5);
+            redStones[redStones.size() - 1].shape.setFillColor(sf::Color::Red);
             playingField[localTarget].fieldstate = FIELD_STATE::RED;
-            playingField[localTarget].stoneID = redStones.size()-1;
+            playingField[localTarget].stoneID = redStones.size() - 1;
             red = true;
-        }else{
-            blueStones.emplace_back(false,sf::CircleShape(15));
-            blueStones[blueStones.size()-1].setField(localTarget);
-            blueStones[blueStones.size()-1].moveToField(playingField[localTarget].shape);
-            blueStones[blueStones.size()-1].shape.setOutlineColor(sf::Color::Black);
-            blueStones[blueStones.size()-1].shape.setOutlineThickness(5);
-            blueStones[blueStones.size()-1].shape.setFillColor(sf::Color::Blue);
+        } else {
+            blueStones.emplace_back(false, sf::CircleShape(15));
+            blueStones[blueStones.size() - 1].setField(localTarget);
+            blueStones[blueStones.size() - 1].moveToField(playingField[localTarget].shape);
+            blueStones[blueStones.size() - 1].shape.setOutlineColor(sf::Color::Black);
+            blueStones[blueStones.size() - 1].shape.setOutlineThickness(5);
+            blueStones[blueStones.size() - 1].shape.setFillColor(sf::Color::Blue);
             playingField[localTarget].fieldstate = FIELD_STATE::BLUE;
-            playingField[localTarget].stoneID = blueStones.size()-1;
+            playingField[localTarget].stoneID = blueStones.size() - 1;
         }
     }
 
     //todo zusammenfassen von nebeneinanderliegenden!
-    checkPlayingField(red,localTarget);
+    checkPlayingField(red, localTarget);
 }
+
 //todo remove logik from view!, remove duplicate code,
-void GameView::checkPlayingField(bool movedStoneRed,int target) {
+void GameView::checkPlayingField(bool movedStoneRed, int target) {
     //ich brauch statt dem boolean ein ENUM! Field RED,BLUE,EMPTY --> damit eindeutig zugeordnet werden kann!
     std::vector<int> directNeighbors = neighbors[target];
-    for(int id : directNeighbors){
-        if(playingField[id].fieldstate == FIELD_STATE::EMPTY)
+    for (int id : directNeighbors) {
+        if (playingField[id].fieldstate == FIELD_STATE::EMPTY)
             continue;
-        if(!(playingField[id].fieldstate == FIELD_STATE::RED) && movedStoneRed){
+        if (!(playingField[id].fieldstate == FIELD_STATE::RED) && movedStoneRed) {
             auto it = blueStones.begin() + playingField[id].stoneID;
             blueStones.erase(it);
 
-            redStones.emplace_back(true,sf::CircleShape(15));
-            redStones[redStones.size()-1].setField(id);
-            redStones[redStones.size()-1].moveToField(playingField[id].shape);
-            redStones[redStones.size()-1].shape.setOutlineColor(sf::Color::Black);
-            redStones[redStones.size()-1].shape.setOutlineThickness(5);
-            redStones[redStones.size()-1].shape.setFillColor(sf::Color::Red);
+            redStones.emplace_back(true, sf::CircleShape(15));
+            redStones[redStones.size() - 1].setField(id);
+            redStones[redStones.size() - 1].moveToField(playingField[id].shape);
+            redStones[redStones.size() - 1].shape.setOutlineColor(sf::Color::Black);
+            redStones[redStones.size() - 1].shape.setOutlineThickness(5);
+            redStones[redStones.size() - 1].shape.setFillColor(sf::Color::Red);
             playingField[id].fieldstate = FIELD_STATE::RED;
-            playingField[id].stoneID = redStones.size()-1;
-        }else if(playingField[id].fieldstate == FIELD_STATE::RED && !movedStoneRed){
+            playingField[id].stoneID = redStones.size() - 1;
+        } else if (playingField[id].fieldstate == FIELD_STATE::RED && !movedStoneRed) {
             auto it = redStones.begin() + playingField[id].stoneID;
             redStones.erase(it);
 
-            blueStones.emplace_back(true,sf::CircleShape(15));
-            blueStones[blueStones.size()-1].setField(id);
-            blueStones[blueStones.size()-1].moveToField(playingField[id].shape);
-            blueStones[blueStones.size()-1].shape.setOutlineColor(sf::Color::Black);
-            blueStones[blueStones.size()-1].shape.setOutlineThickness(5);
-            blueStones[blueStones.size()-1].shape.setFillColor(sf::Color::Blue);
+            blueStones.emplace_back(true, sf::CircleShape(15));
+            blueStones[blueStones.size() - 1].setField(id);
+            blueStones[blueStones.size() - 1].moveToField(playingField[id].shape);
+            blueStones[blueStones.size() - 1].shape.setOutlineColor(sf::Color::Black);
+            blueStones[blueStones.size() - 1].shape.setOutlineThickness(5);
+            blueStones[blueStones.size() - 1].shape.setFillColor(sf::Color::Blue);
             playingField[id].fieldstate = FIELD_STATE::BLUE;
-            playingField[id].stoneID = blueStones.size()-1;
+            playingField[id].stoneID = blueStones.size() - 1;
         }
     }
 }
@@ -424,7 +463,7 @@ void GameView::handleMouseCursor() {
     //todo --> fit circle shape in hexagon, that is fully contained!
     //todo remove code douplitcation! --> combine handle cursor and handleEvent
     if (!menuOpen) {
-        for(int i=0; i<61;i++){
+        for (int i = 0; i < 61; i++) {
             playingField[i].shape.setOutlineColor(sf::Color::White);
             playingField[i].shape.setOutlineThickness(1);
         }
@@ -439,11 +478,11 @@ void GameView::handleMouseCursor() {
 
 void GameView::highlightValidMoves(Tile &tile) {
     auto indirectNeighbors = moveChecker.getIndirectNeighbors(tile);
-    for(int id : neighbors[tile.getID()]){
+    for (int id : neighbors[tile.getID()]) {
         playingField[id].shape.setOutlineColor(sf::Color::Yellow);
         playingField[id].shape.setOutlineThickness(2.5);
     }
-    for(int id : indirectNeighbors){
+    for (int id : indirectNeighbors) {
         playingField[id].shape.setOutlineColor(sf::Color::Green);
         playingField[id].shape.setOutlineThickness(2.5);
     }
@@ -467,36 +506,60 @@ void GameView::setMoveTracker(bool red) {
 }
 
 
-
 void GameView::handleNetworkUpdate() {
-    if(!NetworkData::networkDataBuffer.gameStatus.updatet)
+    if (!NetworkData::networkDataBuffer.gameStatus.updatet)
         return;
 
-
+    //drawing board!
     //todo unnötig das bei jedem mal neu zu machen, suche differenzen
     redStones.clear();
     blueStones.clear();
 
-    for(int i=0; i<61; i++){
-        if(NetworkData::networkDataBuffer.gameStatus.board[i] == FIELD_STATE::RED){
-            redStones.emplace_back(true,sf::CircleShape(15));
-            redStones[redStones.size()-1].setField(i);
-            redStones[redStones.size()-1].moveToField(playingField[i].shape);
-            redStones[redStones.size()-1].shape.setOutlineColor(sf::Color::Black);
-            redStones[redStones.size()-1].shape.setOutlineThickness(5);
-            redStones[redStones.size()-1].shape.setFillColor(sf::Color::Red);
+    for (int i = 0; i < 61; i++) {
+        if (NetworkData::networkDataBuffer.gameStatus.board[i] == FIELD_STATE::RED) {
+            redStones.emplace_back(true, sf::CircleShape(15));
+            redStones[redStones.size() - 1].setField(i);
+            redStones[redStones.size() - 1].moveToField(playingField[i].shape);
+            redStones[redStones.size() - 1].shape.setOutlineColor(sf::Color::Black);
+            redStones[redStones.size() - 1].shape.setOutlineThickness(5);
+            redStones[redStones.size() - 1].shape.setFillColor(sf::Color::Red);
             playingField[i].fieldstate = FIELD_STATE::RED;
-            playingField[i].stoneID = redStones.size()-1;
-        }else if(NetworkData::networkDataBuffer.gameStatus.board[i] == FIELD_STATE::BLUE){
-            blueStones.emplace_back(false,sf::CircleShape(15));
-            blueStones[blueStones.size()-1].setField(i);
-            blueStones[blueStones.size()-1].moveToField(playingField[i].shape);
-            blueStones[blueStones.size()-1].shape.setOutlineColor(sf::Color::Black);
-            blueStones[blueStones.size()-1].shape.setOutlineThickness(5);
-            blueStones[blueStones.size()-1].shape.setFillColor(sf::Color::Blue);
+            playingField[i].stoneID = redStones.size() - 1;
+        } else if (NetworkData::networkDataBuffer.gameStatus.board[i] == FIELD_STATE::BLUE) {
+            blueStones.emplace_back(false, sf::CircleShape(15));
+            blueStones[blueStones.size() - 1].setField(i);
+            blueStones[blueStones.size() - 1].moveToField(playingField[i].shape);
+            blueStones[blueStones.size() - 1].shape.setOutlineColor(sf::Color::Black);
+            blueStones[blueStones.size() - 1].shape.setOutlineThickness(5);
+            blueStones[blueStones.size() - 1].shape.setFillColor(sf::Color::Blue);
             playingField[i].fieldstate = FIELD_STATE::BLUE;
-            playingField[i].stoneID = blueStones.size()-1;
+            playingField[i].stoneID = blueStones.size() - 1;
         }
+    }
+
+    //handle flags
+    if (NetworkData::networkDataBuffer.gameStatus.isClosed)
+        gameProperties.currentGameState = gameState::MAINMENU;
+    if (NetworkData::networkDataBuffer.gameStatus.tie) {
+        std::cout << "Tie. Leaving to MainMenu" << std::endl;
+        gameProperties.currentGameState = gameState::MAINMENU;
+    }
+    std::cout << "Winnerstring: " << NetworkData::networkDataBuffer.gameStatus.winner << std::endl;
+    //todo not working!
+    /*
+    if(NetworkData::networkDataBuffer.gameStatus.winner.compare("inGame")){
+        std::cout << "Someone one, find out who. return to main menu" << std::endl;
+        gameProperties.currentGameState = gameState::MAINMENU;
+    }*/
+    NetworkData::networkDataBuffer.gameStatus.turn % 2 ? setMoveTracker(true) : setMoveTracker(false);
+    setScore(NetworkData::networkDataBuffer.gameStatus.player1Points,
+             NetworkData::networkDataBuffer.gameStatus.player2Points);
+
+    //check for winner
+    if (!NetworkData::networkDataBuffer.gameStatus.player1Points ||
+        !NetworkData::networkDataBuffer.gameStatus.player2Points) {
+        std::cout << "Winner detected" << std::endl;
+        winnerView = true;
     }
 
     NetworkData::networkDataBuffer.gameStatus.updatet = false;

@@ -25,6 +25,9 @@ void networkCallback(const std::string &message) {
     NetworkData::networkDataBuffer.globalStringData = message;
 }
 
+
+Network::Network(GameProperties &gp) : gameProperties(gp) {}
+
 int Network::initNetwork() {
 #ifdef OTTOSERVER
     ws = WebSocket::from_url("ws://hexxagon.otto.cool:4444");
@@ -56,14 +59,15 @@ void Network::handleNetwork() {
         case networkState::welcome:
             LOG("Received welcome Message");
             //fetch update!
-            NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
+            NetworkData::networkDataBuffer.state = networkState::idle;
             break;
         case networkState::createLobby: {
             LOG("Create new Lobby");
             class CreateNewLobby cnl(NetworkData::networkDataBuffer.UUID, NetworkData::networkDataBuffer.lobbyname);
             ws->send(cnl.getMessageString());
             //fetch update!
-            NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
+            //NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
+            NetworkData::networkDataBuffer.state = networkState::idle;
             break;
         }
         case networkState::getAvailableLobbies: {
@@ -74,15 +78,17 @@ void Network::handleNetwork() {
             break;
         }
         case networkState::joinLobby: {
-            //todo remove hardcoded username!
             if (NetworkData::networkDataBuffer.insideLobby)
                 break;
             LOG("Joined Lobby");
             //evtl out of bounds!
             std::string LID = NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].lobbyID;
-            class JoinLobby jl(NetworkData::networkDataBuffer.UUID, LID, "Marco");
+            std::string playerName = NetworkData::networkDataBuffer.playerName;
+            std::cout << playerName << std::endl;
+            class JoinLobby jl(NetworkData::networkDataBuffer.UUID, LID, playerName);
             ws->send(jl.getMessageString());
-            NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
+            //NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
+            NetworkData::networkDataBuffer.state = networkState::idle;
             NetworkData::networkDataBuffer.insideLobby = true;
             break;
         }
@@ -90,11 +96,11 @@ void Network::handleNetwork() {
             if (!NetworkData::networkDataBuffer.insideLobby)
                 break;
             LOG("Leave Lobby");
-            //todo select which lobby is left!
             std::string LID = NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].lobbyID;
             class LeaveLobby ll(NetworkData::networkDataBuffer.UUID, LID);
             ws->send(ll.getMessageString());
-            NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
+            //NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
+            NetworkData::networkDataBuffer.state = networkState::idle;
             NetworkData::networkDataBuffer.insideLobby = false;
             break;
         }

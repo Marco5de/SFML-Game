@@ -19,7 +19,8 @@ Controller::Controller(const unsigned int windowHeight, const unsigned int windo
         mainMenu(gameProperties.window, gameProperties),
         gameView(gameProperties.window, gameProperties),
         changeNameMenu(gameProperties.window, gameProperties),
-        lobbyOverview(gameProperties.window, gameProperties)
+        lobbyOverview(gameProperties.window, gameProperties),
+        network(gameProperties)
         {}
 
 void Controller::initController() {

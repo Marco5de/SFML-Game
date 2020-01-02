@@ -129,12 +129,9 @@ int MainMenu::init() {
     displayName.setFont(mainMenuFont);
     displayName.setCharacterSize(30);
     Centering::center(nameBackground, displayName);
-    //displayName.setPosition(.35 * windowWidth, .65 * windowHeight);
-    LOG("x-Pos : " + std::to_string(displayName.getPosition().x));
-    LOG("y-Pos : " + std::to_string(displayName.getPosition().y));
     displayName.setColor(sf::Color::Magenta);
 
-    gameProperties.playerName = std::string("Hey ").append(getStringFromFile("nameConfig.txt"));
+    gameProperties.playerName = getStringFromFile("nameConfig.txt");
 
     return MAINMENU_SUCCESS;
 }

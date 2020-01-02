@@ -37,6 +37,7 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
 
     switch (type) {
         case MessageType::Welcome:
+            std::cout << "Received Welcome message: " << jsonMessage["userId"] << std::endl;
             NetworkData::networkDataBuffer.UUID = jsonMessage["userId"];
             break;
         case MessageType::AvailableLobbies: {
@@ -130,9 +131,12 @@ void parseGameStatus(json jsonMessage) {
                                         : NetworkData::networkDataBuffer.gameStatus.actionDate = jsonMessage["actionDate"];
     NetworkData::networkDataBuffer.gameStatus.activePlayer = jsonMessage["activePlayer"];
     NetworkData::networkDataBuffer.gameStatus.tie = (jsonMessage["tie"] == "true");
-    jsonMessage["winner"].is_null() ? NetworkData::networkDataBuffer.gameStatus.winner = ""
+    std::cout << "Message parser winner: " << jsonMessage["winner"] << std::endl;
+    //todo for some reason, this string is always null even if a player has won --> moved check for winner into gameView/MoveChecker
+    jsonMessage["winner"].is_null() ? NetworkData::networkDataBuffer.gameStatus.winner = "inGame"
                                     : NetworkData::networkDataBuffer.gameStatus.winner = jsonMessage["winner"];
     NetworkData::networkDataBuffer.gameStatus.isClosed = (jsonMessage["isClosed"] == "true");
+
     NetworkData::networkDataBuffer.gameID = jsonMessage["gameId"];
 
     //parse board

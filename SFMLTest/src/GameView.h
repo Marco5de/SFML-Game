@@ -57,6 +57,7 @@ private:
     GameProperties &gameProperties;
 
     bool menuOpen = false;
+    bool winnerView = false;
 
     sf::Event event;
 
@@ -81,6 +82,9 @@ private:
     sf::RectangleShape menuBackground;
     sf::Text menuMainMenu;
     sf::Text menuClose;
+
+    sf::Text winnerText;
+    sf::Text winnerButton;
 
     sf::CircleShape moveTracker;
 

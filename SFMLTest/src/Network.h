@@ -55,6 +55,7 @@ enum networkState{
 
 class Network {
 public:
+    Network(GameProperties &gameProperties);
     void handleNetwork();
 
     int initNetwork();
@@ -63,6 +64,7 @@ private:
     WebSocket::pointer ws;
     IncomingMessageParser messageParser;
     std::string playerUUID;
+    GameProperties gameProperties;
 };
 
 namespace NetworkData {
@@ -94,6 +96,7 @@ namespace NetworkData {
         bool lobby{false};
         bool createLobby{false};
         std::string lobbyname;
+        std::string playerName;
         std::vector<Lobby> lobbyVec;
         unsigned int lobbyIndex{0};
         bool insideLobby{false}; //nach beenden des client ohne beenden des servers ungültig!
