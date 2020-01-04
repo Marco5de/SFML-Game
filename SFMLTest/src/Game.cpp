@@ -52,3 +52,12 @@ GameProperties::GameProperties(const unsigned int windowWidth, const unsigned in
                                                                                      window(window){
     currentGameState = gameState::MAINMENU;
 }
+
+
+/**
+ * @brief sanitizes string to a format expected by server
+ * @param str
+ */
+void sanitizeString(std::string & str){
+    str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
+}

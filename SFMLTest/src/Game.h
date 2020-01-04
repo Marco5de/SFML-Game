@@ -104,6 +104,7 @@ enum class gameState {
 std::string
 getStringFromFile(std::string filepath); /**< read String from File to a String. Can be used for text Ressources */
 void writeStringToFile(std::string filepath, std::string name);  /**< write String into a file */
+void sanitizeString(std::string &str);
 
 
 class GameProperties {

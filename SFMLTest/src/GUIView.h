@@ -16,7 +16,8 @@
 #include "Game.h"
 
 /**
- * @brief abstract class used for all Views
+ *
+ * @class abstract class used for all Views
  */
 class GUIView{
 public:

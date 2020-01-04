@@ -9,7 +9,8 @@
 #include <cassert>
 #include <iostream>
 #include "LobbyOverview.h"
-
+#include <string>
+#include "Game.h"
 
 
 #include "Network.h"
@@ -100,6 +101,24 @@ int LobbyOverview::init() {
     nextSprite.setColor(sf::Color::Yellow);
     nextSprite.scale(.75, .75);
 
+    backgroundTextField.setPosition(.25 * windowWidth, .25 * windowHeight);
+    backgroundTextField.setSize(sf::Vector2f(windowWidth, windowHeight));
+    backgroundTextField.setScale(2, 2);
+    backgroundTextField.setFillColor(sf::Color::Black);
+    backgroundTextField.setOutlineColor(sf::Color::Magenta);
+
+    enteredText.setPosition(.25 * windowWidth, .25 * windowHeight);
+    enteredText.setFont(menuFont);
+    enteredText.setColor(sf::Color::Yellow);
+    enteredText.setCharacterSize(40);
+    enteredText.setString((""));
+
+    menuText.setPosition(.01 * windowWidth, .01 * windowHeight);
+    menuText.setFont(menuFont);
+    menuText.setColor(sf::Color::Magenta);
+    menuText.setCharacterSize(30);
+    menuText.setString("Enter a lobby name and confirm with enter:");
+
 
     return LOBBY_SUCCESS;
 }
@@ -121,6 +140,15 @@ int LobbyOverview::handleWindow() {
 
 
     lobbyWindow.clear();
+
+    if (enterLobbyName) {
+        lobbyWindow.draw(backgroundTextField);
+        lobbyWindow.draw(menuText);
+        lobbyWindow.draw(enteredText);
+        lobbyWindow.display();
+        return LOBBY_SUCCESS;
+    }
+
     lobbyWindow.draw(titleText);
     lobbyWindow.draw(returnToMain);
     if (NetworkData::networkDataBuffer.insideLobby) {
@@ -138,6 +166,7 @@ int LobbyOverview::handleWindow() {
     }
     lobbyWindow.draw(lobby);
     lobbyWindow.draw(reloadSprite);
+
 
     lobbyWindow.display();
     return LOBBY_SUCCESS;
@@ -162,7 +191,25 @@ void LobbyOverview::handleEvent() {
         case sf::Event::Closed:
             lobbyWindow.close();
             break;
-
+        case sf::Event::KeyPressed:
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+                enterLobbyName = false;
+                sanitizeString(enteredString);
+                NetworkData::networkDataBuffer.lobbyname = enteredString;
+                NetworkData::networkDataBuffer.state = networkState::createLobby;
+            }
+            break;
+        case sf::Event::TextEntered:
+            if (event.text.unicode == '\b') {
+                if (!enteredString.empty())
+                    enteredString.erase(enteredString.size() - 1, 1);
+            } else {
+                if (enteredString.size() < 35)
+                    enteredString += event.text.unicode;
+            }
+            enteredText.setString(enteredString);
+            break;
+            //siehe hier bewusst kein BREAK!
         case sf::Event::MouseButtonPressed:
             if (returnToMain.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
@@ -173,10 +220,9 @@ void LobbyOverview::handleEvent() {
                 NetworkData::networkDataBuffer.state = networkState::getAvailableLobbies;
             } else if (createLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 //eingeben eines Lobbynamens
-                NetworkData::networkDataBuffer.state = networkState::createLobby;
-                NetworkData::networkDataBuffer.lobbyname = "Lobbyname";
+                enterLobbyName = true;
             } else if (joinLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
-                if(NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].player2UUID.empty()) {
+                if (NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].player2UUID.empty()) {
                     NetworkData::networkDataBuffer.playerName = gameProperties.playerName;
                     NetworkData::networkDataBuffer.state = networkState::joinLobby;
                 }

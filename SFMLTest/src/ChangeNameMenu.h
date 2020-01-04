@@ -46,7 +46,7 @@ private:
     sf::Text enteredText;      /**< displays the entered Text*/
     sf::Text returnToMainMenu;  /**< button to return to MainMenu*/
 
-    sf::String enteredString="";    /**< contains the entered string*/
+    std::string enteredString="";    /**< contains the entered string*/
 
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */

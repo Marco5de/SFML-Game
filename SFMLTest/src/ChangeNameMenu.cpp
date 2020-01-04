@@ -122,29 +122,29 @@ void ChangeNameMenu::handleEvent() {
         case sf::Event::Closed:
             changeNameWindow.close();
             break;
-        case sf::Event::TextEntered:
-            if (event.text.unicode == '\b') {
-                if (enteredString.getSize() != 0)
-                    enteredString.erase(enteredString.getSize() - 1, 1);
-            } else {
-                if (enteredString.getSize() < 18)
-                    enteredString += event.text.unicode;
-            }
-            enteredText.setString(enteredString);
-            //siehe hier bewusst kein BREAK!
-        case sf::Event::KeyPressed: //todo machmal ist enter dings da, manchmal nicht!
+        case sf::Event::KeyPressed:
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
                 //enteredString.erase(enteredString.getSize()-1,1);
-                writeStringToFile("nameConfig.txt",enteredString);
+                sanitizeString(enteredString);
+                writeStringToFile("nameConfig.txt", enteredString);
                 gameProperties.playerName = enteredString;
                 changeNameWindow.setKeyRepeatEnabled(false);
             }
             break;
+        case sf::Event::TextEntered:
+            if (event.text.unicode == '\b') {
+                if (!enteredString.empty())
+                    enteredString.erase(enteredString.size() - 1, 1);
+            } else {
+                if (enteredString.size() < 25)
+                    enteredString += event.text.unicode;
+            }
+            enteredText.setString(enteredString);
+            break;
         case sf::Event::MouseButtonPressed:
             if (returnToMainMenu.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 gameProperties.currentGameState = gameState::MAINMENU;
-                //todo nur zum testen, später in richtiges config file!
                 writeStringToFile("nameConfig.txt", enteredString);
                 gameProperties.playerName = enteredString;
                 changeNameWindow.setKeyRepeatEnabled(false);

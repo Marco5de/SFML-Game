@@ -44,6 +44,12 @@ private:
     sf::Texture nextTexture;    /**< texture containing arrow image*/
     sf::Sprite nextSprite;      /**< displaying next button*/
 
+    sf::RectangleShape backgroundTextField;
+    sf::Text menuText;
+    sf::Text enteredText;
+    std::string enteredString;
+    bool enterLobbyName = false;
+
 
 
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
