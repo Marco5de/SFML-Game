@@ -1,0 +1,3 @@
+[submodule "SFMLTest/googletest"]
+	path = SFMLTest/googletest
+	url = git@github.com:google/googletest.git
