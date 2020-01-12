@@ -26,21 +26,14 @@
 #include "Network.h"
 
 
-#define GAMEVIEW_IMAGELOADING_ERROR ((-1))
-#define GAMEVIEW_FONTLOADING_ERROR ((-2))
+
 #define GAMEVIEW_SUCCESS (0)
 
-
-//Todo das ganze acceleration zeugs in eine eigene player klasse packen, nur temp für test hier drin
-//todo als nächstes muss dann keypress implementiert werden
-//todo danach implementieren der hindernisse
 
 enum class State{
     SELECTION,      /**< player has to select source field*/
     FIELD_SELECTED  /**< player has to select target field*/
 }; /**< enum representing the two states inside GameView*/
-
-
 
 class GameView : GUIView{
 public:
@@ -65,7 +58,6 @@ private:
 
     sf::Texture playingFieldTexture;        /** texture containing image used for tiles*/
     sf::Texture playingFieldVoidTexture;    /** texture containing image used for void tiles*/
-    //todo should go inside game.h
     std::vector<int> forbiddenFields{3,14,16,29,31,33,46,48,59};    /** const vector containing forbidden fields*/
 
     sf::Text scoreRed;      /**< Text field displaying the score of the red player*/
@@ -98,6 +90,8 @@ private:
     sf::Vector2i currMousePos;          /**< Mouse position during the last frame in IMAGE COORDS! */
     sf::Vector2f currWorldMousePos;     /**< Mouse position during last frame in GLOBAL COORDS! */
 
+    bool redTurn;
+
     State state;                        /**< enum containing state information*/
     int selectedField;                  /**< index of selected field*/
 
@@ -108,9 +102,6 @@ private:
     void moveStone(int target);
     void highlightValidMoves(Tile &tile);
     void handleNetworkUpdate();
-
-    //todo logik auslagern
-    void checkPlayingField(bool movedStoneRed,int target);
 };
 
 

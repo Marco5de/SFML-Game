@@ -9,6 +9,7 @@
 #define DUPLICATE 2
 #define SIMPLE_MOVE 1
 
+
 #include "Tile.h"
 #include "Game.h"
 #include "logger.h"
@@ -25,6 +26,7 @@ private:
     std::vector<Tile> playingField;
     std::vector<Stone> redStones;
     std::vector<Stone> blueStones;
+    std::vector<int> forbiddenFields{3,14,16,29,31,33,46,48,59};    /** const vector containing forbidden fields*/
 
 };
 

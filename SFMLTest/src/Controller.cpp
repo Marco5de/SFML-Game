@@ -41,7 +41,7 @@ Controller::Controller(const unsigned int windowHeight, const unsigned int windo
 void Controller::initController() {
     gameProperties.window.setFramerateLimit(60);
     gameProperties.window.setKeyRepeatEnabled(false);
-    gameProperties.playerName = getStringFromFile("nameConfig.txt"); //todo check if empty
+    gameProperties.playerName = getStringFromFile("nameConfig.txt");
 
     assert(mainMenu.init() == MAINMENU_SUCCESS);
     assert(gameView.init() == GAMEVIEW_SUCCESS);

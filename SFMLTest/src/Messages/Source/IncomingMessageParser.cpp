@@ -70,7 +70,6 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
             break;
         case MessageType::LobbyStatus:
             LOG("Lobby Status erhalten!");
-            //todo handle updates!
             handleLobbyUpdate(jsonMessage["lobby"]);
             break;
         case MessageType::GameStarted:
@@ -93,7 +92,6 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
     }
 }
 
-//todo remove copies!
 Lobby parseAvailableLobbies(json lobby) {
     std::string player1UUID;
     std::string playser2UUID;
@@ -135,7 +133,7 @@ void parseGameStatus(json jsonMessage) {
                                         : NetworkData::networkDataBuffer.gameStatus.actionDate = jsonMessage["actionDate"];
     NetworkData::networkDataBuffer.gameStatus.activePlayer = jsonMessage["activePlayer"];
     NetworkData::networkDataBuffer.gameStatus.tie = (jsonMessage["tie"] == "true");
-    //todo for some reason, this string is always null even if a player has won --> moved check for winner into gameView/MoveChecker
+
     jsonMessage["winner"].is_null() ? NetworkData::networkDataBuffer.gameStatus.winner = "inGame"
                                     : NetworkData::networkDataBuffer.gameStatus.winner = jsonMessage["winner"];
     NetworkData::networkDataBuffer.gameStatus.isClosed = (jsonMessage["isClosed"] == "true");

@@ -32,7 +32,7 @@ public:
     std::string player1Username;    /**< username of first player*/
     std::string player2Username;    /**< username of second player*/
 
-    //todo add date class!
+
     std::string date;               /**< creation date of the lobby*/
     bool closed;                    /** state information about lobby*/
 

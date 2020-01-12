@@ -29,7 +29,6 @@ using json = nlohmann::json;
 int main() {
 
     //enable antialiasing
-    //Todo fenster sollte eigentlich auch im Controller erstellt werden, will aber irgendwie noch nicht so ganz
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 

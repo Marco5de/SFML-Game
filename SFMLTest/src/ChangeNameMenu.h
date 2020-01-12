@@ -19,7 +19,6 @@
 #include "Game.h"
 #include "GUIView.h"
 
-//todo documentation copied from main menu
 
 #define NAME_MENU_SUCCESS ((0))
 #define NAME_MENU_FONTLOADING_ERROR ((-1))

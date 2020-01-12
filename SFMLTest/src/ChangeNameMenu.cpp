@@ -49,7 +49,7 @@ int ChangeNameMenu::init() {
     backgroundText.setOutlineColor(sf::Color::Magenta);
     backgroundText.setOutlineThickness(5);
 
-    //todo center, looks terrible
+
     enterText.setPosition(.25 * windowWidth, .3 * windowHeight);
     enterText.setCharacterSize(30);
     enterText.setFont(menuFont);

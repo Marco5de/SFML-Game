@@ -67,8 +67,6 @@ private:
 
     sf::Music music;        /**< object containing the sound-Track of the game*/
 
-    /* todo implement */
-    std::vector<sf::Drawable> drawableVector; /**< vector containing all the drawables to simplify the drawing porcess, currently NOT used */
 
     void handleMouseCursor() override;
     void handleEvent() override;

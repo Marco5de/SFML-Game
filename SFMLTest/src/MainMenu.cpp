@@ -27,8 +27,6 @@
 #define IMAGE_MAINMENU_MENU_PATH ("images/MainMenu/menu.png")
 
 
-//Todo alle drawables in einen std::vector<drawable> packen (Problem ist das iterieren darüber!
-//todo alles unabhängig von der Fenstergröße machen
 
 
 /**
@@ -149,7 +147,6 @@ int MainMenu::handleWindow() {
         handleEvent();
     }
 
-    //Todo sollte nicht jedes mal neu gemacht werden --> erstellen eines rename events!
     std::string name = std::string("Hey ").append(gameProperties.playerName);
     displayName.setString(name);
     Centering::center(nameBackground, displayName);

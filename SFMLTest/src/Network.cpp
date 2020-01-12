@@ -12,7 +12,7 @@
 
 #include "logger.h"
 
-//todo really bad code! --> clean up!
+
 //define for global usage!
 NetworkData::NetworkDataBuffer NetworkData::networkDataBuffer = {};
 
@@ -25,7 +25,6 @@ void networkCallback(const std::string &message) {
     NetworkData::networkDataBuffer.updated = true;
     NetworkData::networkDataBuffer.globalStringData = message;
 
-    //todo remove hacky fix
     if (message.find("GameStarted") != std::string::npos) {
         std::cout << "GameStartedFound!" << '\n';
         json jsonMessage = json::parse(message);

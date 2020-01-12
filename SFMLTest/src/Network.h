@@ -112,7 +112,6 @@ namespace NetworkData {
     extern NetworkDataBuffer networkDataBuffer;
 };
 
-//extern NetworkData::NetworkDataBuffer networkDataBuffer;
 
 
 #endif //SFMLTEST_NETWORK_H

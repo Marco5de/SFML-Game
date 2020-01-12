@@ -32,7 +32,6 @@ auto GameMoveChecker::getIndirectNeighbors(Tile &tile) -> std::vector<int> {
     return nOfn;
 }
 
-//todo fix code duplication
 auto GameMoveChecker::getIndirectNeighbors(int tileID) -> std::vector<int> {
     std::vector<int> directNeighbors = neighbors[tileID];
     std::vector<int> nOfn(0);
@@ -56,8 +55,11 @@ auto GameMoveChecker::getIndirectNeighbors(int tileID) -> std::vector<int> {
 }
 
 int GameMoveChecker::checkMove(int selectedField, int target) {
-    if(selectedField == target)
+    auto it = std::find(forbiddenFields.begin(),forbiddenFields.end(),target);
+    bool invalidTarget = it != forbiddenFields.end();
+    if(selectedField == target || invalidTarget)
         return INVALID_MOVE;
+
     std::vector<int> directNeighbors = neighbors[selectedField];
     if(std::find(directNeighbors.begin(),directNeighbors.end(),target) != directNeighbors.end())
         return DUPLICATE;
@@ -65,5 +67,7 @@ int GameMoveChecker::checkMove(int selectedField, int target) {
     std::vector<int> indirectNeighbors = this->getIndirectNeighbors(selectedField);
     if(std::find(indirectNeighbors.begin(),indirectNeighbors.end(),target) != indirectNeighbors.end())
         return SIMPLE_MOVE;
+
+    return INVALID_MOVE;
 }
 
