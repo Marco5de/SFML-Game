@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmessagesLib.a  CMakeFiles/messagesLib.dir/Source/CreateNewLobby.cpp.o CMakeFiles/messagesLib.dir/Source/GameMove.cpp.o CMakeFiles/messagesLib.dir/Source/GetAvailableLobbies.cpp.o CMakeFiles/messagesLib.dir/Source/IncomingMessageParser.cpp.o CMakeFiles/messagesLib.dir/Source/JoinLobby.cpp.o CMakeFiles/messagesLib.dir/Source/LeaveGame.cpp.o CMakeFiles/messagesLib.dir/Source/LeaveLobby.cpp.o CMakeFiles/messagesLib.dir/Source/StartGame.cpp.o
+/usr/bin/ranlib libmessagesLib.a

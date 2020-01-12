@@ -194,6 +194,7 @@ void LobbyOverview::handleEvent() {
         case sf::Event::KeyPressed:
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
                 enterLobbyName = false;
+                lobbyWindow.setKeyRepeatEnabled(false);
                 sanitizeString(enteredString);
                 NetworkData::networkDataBuffer.lobbyname = enteredString;
                 NetworkData::networkDataBuffer.state = networkState::createLobby;
@@ -221,6 +222,7 @@ void LobbyOverview::handleEvent() {
             } else if (createLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 //eingeben eines Lobbynamens
                 enterLobbyName = true;
+                lobbyWindow.setKeyRepeatEnabled(true);
             } else if (joinLobby.getGlobalBounds().contains(currWorldMousePos.x, currWorldMousePos.y)) {
                 if (NetworkData::networkDataBuffer.lobbyVec[NetworkData::networkDataBuffer.lobbyIndex].player2UUID.empty()) {
                     NetworkData::networkDataBuffer.playerName = gameProperties.playerName;
