@@ -48,11 +48,9 @@ void IncomingMessageParser::parseMessage(const std::string &message) {
             //clears vector each time! --> implement check from below!!
             NetworkData::networkDataBuffer.lobbyVec.clear();
             for (auto &lobby : jsonMessage["availableLobbies"]) {
-                //todo remove all these copies!
                 Lobby newLobby = parseAvailableLobbies(lobby);
                 auto it = std::find(NetworkData::networkDataBuffer.lobbyVec.begin(),
                                     NetworkData::networkDataBuffer.lobbyVec.end(), newLobby);
-                //todo do not clear vec each time!
                 NetworkData::networkDataBuffer.lobbyVec.push_back(newLobby);
             }
             break;

@@ -55,7 +55,7 @@ auto GameMoveChecker::getIndirectNeighbors(int tileID) -> std::vector<int> {
 }
 
 int GameMoveChecker::checkMove(int selectedField, int target) {
-    auto it = std::find(forbiddenFields.begin(),forbiddenFields.end(),target);
+    auto it = std::find(forbiddenFields.begin(),forbiddenFields.end(),target+1);
     bool invalidTarget = it != forbiddenFields.end();
     if(selectedField == target || invalidTarget)
         return INVALID_MOVE;

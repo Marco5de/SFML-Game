@@ -311,15 +311,15 @@ void GameView::handleEvent() {
         if (count == 1) {
             switch (state) {
                 case State::SELECTION:
-                    if (playingField[localTarget].fieldstate != FIELD_STATE::EMPTY) {
+                    //if (playingField[localTarget].fieldstate != FIELD_STATE::EMPTY) {
                         state = State::FIELD_SELECTED;
                         selectedField = localTarget;
                         LOG("Field selected #" + std::to_string(selectedField));
-                    }
+                    //}
                     break;
                 case State::FIELD_SELECTED:
                     //check that selected field is empty and non void
-                    if (playingField[localTarget].fieldstate == FIELD_STATE::EMPTY &&
+                    if (/*playingField[localTarget].fieldstate == FIELD_STATE::EMPTY &&*/
                         !(std::find(forbiddenFields.begin(), forbiddenFields.end(), localTarget + 1) !=
                           forbiddenFields.end())) {
                         moveStone(localTarget);
@@ -357,13 +357,23 @@ void GameView::moveStone(int localTarget) {
     //todo implement, that move is ignored when its not your turn
     int status = moveChecker.checkMove(selectedField, localTarget);
     bool red = false;
-    if (!status)
+    if (!status) {
+        std::cout << "Not allowed move from: " << selectedField << " to " << localTarget << std::endl;
+        state = State::SELECTION;
         return;
+    }
 
     // denn es wird nur der Move von feld x -> y gebraucht und ob der valide ist --> hier schon alles bekannt!
     NetworkData::networkDataBuffer.sourceTile = "TILE_" + std::to_string(selectedField + 1);
     NetworkData::networkDataBuffer.targetTile = "TILE_" + std::to_string(localTarget + 1);
     NetworkData::networkDataBuffer.state = networkState::gameMove;
+
+    if(status == SIMPLE_MOVE){
+        playingField[localTarget].fieldstate = FIELD_STATE::BLUE;
+        playingField[selectedField].fieldstate = FIELD_STATE::EMPTY;
+    }else if(status == DUPLICATE){
+        playingField[localTarget].fieldstate = FIELD_STATE::BLUE;
+    }
 }
 
 /**
